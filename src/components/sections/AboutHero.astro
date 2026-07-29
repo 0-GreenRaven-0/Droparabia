@@ -1,0 +1,177 @@
+---
+import LebanonDotMap from "../LebanonDotMap.astro";
+---
+
+<section id="about-hero-section" class="relative flex h-screen flex-col justify-center overflow-hidden px-6 lg:block lg:px-16">
+	<!-- Scene 1: Lebanon map + copy, left/right split -->
+	<div id="scene-lebanon" class="absolute inset-0 flex flex-col items-center justify-center gap-8 px-6 lg:flex-row lg:gap-16 lg:px-16">
+		<LebanonDotMap animate class="mt-18 h-auto w-64 max-w-full shrink-0 fill-primary sm:w-80 lg:w-96" />
+
+		<div class="max-w-xl text-center lg:text-start">
+			<p
+				id="about-hero-line1"
+				data-i18n="about.hero.line1"
+				class="font-ibrand text-3xl leading-[1.15] text-neutral-900 sm:text-6xl lg:text-7xl dark:text-white"
+				style="opacity: 0"
+			>
+				With Droparabia
+			</p>
+			<p
+				id="about-hero-line2"
+				data-i18n="about.hero.line2"
+				class="mt-3 font-ibrand text-2xl leading-[1.3] text-neutral-900 sm:text-3xl lg:text-4xl dark:text-white"
+				style="opacity: 0"
+			>
+				you can easily sell anywhere in Lebanon
+			</p>
+			<p
+				id="about-hero-line3"
+				data-i18n="about.hero.line3"
+				class="mt-6 font-ibrand text-4xl leading-[1.15] text-primary sm:text-5xl lg:text-6xl"
+				style="opacity: 0"
+			>
+				And very soon...
+			</p>
+		</div>
+	</div>
+
+	<!-- Scene 2: MENA heading on top, big map underneath — starts invisible, crossfades in -->
+	<div
+		id="scene-mena"
+		class="absolute inset-0 flex flex-col items-center justify-center gap-8 px-6 pb-16 text-center opacity-0 lg:justify-start lg:px-16 lg:pt-40 lg:pb-0"
+	>
+		<p
+			id="about-hero-mena-text"
+			data-i18n="about.hero.mena"
+			class="font-ibrand text-3xl text-neutral-900 sm:text-4xl lg:text-5xl dark:text-white"
+			style="opacity: 0"
+		>
+			You'll be able to sell in the MENA regions
+		</p>
+		<LebanonDotMap
+			src="/gcc-mask.png"
+			cols={70}
+			animate
+			startTrigger="mena-map:start"
+			regionColors={[
+				{ source: [25, 183, 248], output: "#2745ff" }, // Saudi Arabia
+				{ source: [147, 230, 248], output: "#06a2d1" }, // Oman
+				{ source: [25, 159, 215], output: "#7c3aed" }, // UAE
+				{ source: [4, 111, 167], output: "#1e1b4b" }, // Kuwait / Qatar / Bahrain
+			]}
+			class="h-auto w-full max-w-md shrink-0 sm:max-w-xl lg:max-w-3xl"
+		/>
+	</div>
+</section>
+
+<script>
+	import gsap from "gsap";
+
+	// A refresh mid-scroll would otherwise restore the browser's last scroll position, which
+	// re-triggers this section's play-once intro animation somewhere off-screen. Always land
+	// back at the top on load/refresh instead.
+	if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+	window.scrollTo(0, 0);
+
+	const section = document.getElementById("about-hero-section");
+	const sceneLebanon = document.getElementById("scene-lebanon");
+	const sceneMena = document.getElementById("scene-mena");
+	const line1 = document.getElementById("about-hero-line1");
+	const line2 = document.getElementById("about-hero-line2");
+	const line3 = document.getElementById("about-hero-line3");
+	const menaText = document.getElementById("about-hero-mena-text");
+	const lebanonMapRoot = sceneLebanon?.querySelector('[data-lebanon-map="animate"]');
+	const menaMapRoot = sceneMena?.querySelector('[data-lebanon-map="animate"]');
+
+	// Keep the page from scrolling while the hero's Lebanon → MENA sequence plays, so it
+	// can't be scrolled past mid-animation. Always paired with a fallback timeout in case
+	// some expected element/event never shows up, so scrolling can never get stuck locked.
+	let scrollLocked = false;
+	function lockScroll() {
+		scrollLocked = true;
+		document.documentElement.style.overflow = "hidden";
+		document.body.style.overflow = "hidden";
+	}
+	function unlockScroll() {
+		if (!scrollLocked) return;
+		scrollLocked = false;
+		document.documentElement.style.overflow = "";
+		document.body.style.overflow = "";
+	}
+	lockScroll();
+	const unlockFallback = setTimeout(unlockScroll, 10000);
+
+	if (line1 && line2 && line3 && sceneLebanon && sceneMena && menaText) {
+		gsap.set([line1, line2], { opacity: 0, x: 60 });
+		gsap.set(line3, { opacity: 0, y: 24 });
+		gsap.set(menaText, { opacity: 0, y: 24 });
+
+		// Once the MENA map finishes assembling, bring in its caption underneath.
+		if (menaMapRoot) {
+			menaMapRoot.addEventListener(
+				"lebanon-map:done",
+				() => {
+					gsap.to(menaText, {
+						opacity: 1,
+						y: 0,
+						duration: 0.8,
+						ease: "power3.out",
+						delay: 0.2,
+						onComplete: () => {
+							clearTimeout(unlockFallback);
+							unlockScroll();
+						},
+					});
+				},
+				{ once: true },
+			);
+		}
+
+		function crossfadeToMena() {
+			gsap
+				.timeline({ delay: 1.4 })
+				.to(sceneLebanon, { opacity: 0, duration: 0.8, ease: "power2.out" })
+				.set(sceneLebanon, { visibility: "hidden" })
+				.call(() => window.dispatchEvent(new CustomEvent("mena-map:start")))
+				.to(sceneMena, { opacity: 1, duration: 0.8, ease: "power2.out" }, "<")
+				.call(() => {
+					// The MENA map is taller than one viewport once enlarged. Both scenes need
+					// `position: absolute` to overlap for the crossfade, but that also takes them
+					// out of the document's normal flow — leaving the section pinned to exactly
+					// `h-screen` and forcing scene-mena to scroll in its own nested container
+					// (a second, fighting scrollbar) instead of the page's own. Once the fade is
+					// done and scene-lebanon is gone for good, drop scene-mena into normal flow so
+					// its real height becomes part of the page and the one native scrollbar handles it.
+					section?.classList.remove("h-screen", "overflow-hidden");
+					section?.classList.add("min-h-screen");
+					sceneMena?.classList.remove("absolute", "inset-0");
+					sceneMena?.classList.add("relative");
+				});
+		}
+
+		function playLebanonText() {
+			gsap
+				.timeline({ delay: 0.2 })
+				.to([line1, line2], { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" })
+				.to(line3, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "+=1.2")
+				.call(crossfadeToMena);
+		}
+
+		// The Lebanon map fires this once its own assemble animation finishes — text should
+		// only start after the map is done, not on a guessed delay.
+		if (lebanonMapRoot) {
+			lebanonMapRoot.addEventListener("lebanon-map:done", playLebanonText, { once: true });
+		} else {
+			playLebanonText();
+		}
+
+		if (!menaMapRoot) {
+			// No MENA map to wait on, so the fade-in-triggered unlock above will never fire.
+			clearTimeout(unlockFallback);
+			unlockScroll();
+		}
+	} else {
+		clearTimeout(unlockFallback);
+		unlockScroll();
+	}
+</script>

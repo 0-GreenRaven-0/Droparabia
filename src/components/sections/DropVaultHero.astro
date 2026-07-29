@@ -1,0 +1,220 @@
+---
+import HexBackground from "../HexBackground.astro";
+import { ik } from "../../lib/imagekit";
+
+// Real community post screenshots, floated up past the pinned hero as the page scrolls.
+const posts = [
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d1.png",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d3.png",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d3.png",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d5.png",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d2.png",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d6.png",
+];
+---
+
+<section
+	id="dropvault-hero"
+	class="relative flex h-screen flex-col justify-center overflow-hidden px-6 pt-24 pb-24 text-center lg:px-16"
+>
+	<HexBackground cutCorner={true} cutSide="right" />
+
+	<div class="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden="true">
+		{
+			posts.map((src, i) => (
+				<img
+					src={src}
+					alt=""
+					data-community-card
+					data-index={i}
+					class="community-card absolute rounded-2xl object-contain shadow-[0_12px_28px_-15px_rgba(0,0,0,0.22)]"
+				/>
+			))
+		}
+	</div>
+
+	<div class="relative mx-auto max-w-3xl">
+		<div class="mx-auto flex w-fit flex-row items-center gap-3 sm:gap-4">
+			<img
+				id="dropvault-logo"
+				src={ik("/Dropvault.png", "w-800,q-80")}
+				alt="Dropvault"
+				class="relative z-10 h-24 w-24 object-contain sm:h-44 sm:w-44 lg:h-80 lg:w-80"
+				style="opacity: 0"
+			/>
+			<h1
+				id="dropvault-heading"
+				class="font-ibrand text-5xl leading-none text-neutral-900 sm:text-7xl lg:text-9xl dark:text-white"
+				style="clip-path: inset(0 100% 0 0)"
+			>
+				Dropvault
+			</h1>
+		</div>
+		<p
+			id="dropvault-subtext"
+			data-i18n="dropvault.subtext"
+			class="mt-8 font-helvetica text-base text-neutral-600 sm:text-lg dark:text-neutral-400"
+			style="opacity: 0"
+		>
+			A community where you can grow, learn and get support whenever you need it!
+		</p>
+	</div>
+</section>
+
+<style>
+	/* Off-screen by default, before any JS runs — the GSAP setup below only refines this to
+		a precise randomized value. Without this, the images have no `top` at all for the
+		first paint (position: absolute with no top/left falls back to each element's normal
+		in-flow stacking position), which is what was flashing all the cards stacked in view
+		for a frame before the script executes. */
+	.community-card {
+		top: 130%;
+	}
+</style>
+
+<script>
+	import gsap from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+	gsap.registerPlugin(ScrollTrigger);
+
+	// Startup animation: the logo starts dead-center on screen, slides to its resting
+	// spot next to the wordmark, and the wordmark reveals left-to-right (as if it were
+	// hidden behind the logo) as the logo passes over it. Scrolling is locked for the
+	// duration so the user can't scroll past the section mid-animation.
+	const introLogo = document.getElementById("dropvault-logo");
+	const introHeading = document.getElementById("dropvault-heading");
+	const introSubtext = document.getElementById("dropvault-subtext");
+	if (introLogo && introHeading && introSubtext) {
+		// Lock scroll purely by swallowing the input events — no toggling `overflow` on
+		// html/body, which was shifting layout (scrollbar popping in/out) during the intro.
+		const preventScroll = (e: Event) => e.preventDefault();
+		window.addEventListener("wheel", preventScroll, { passive: false });
+		window.addEventListener("touchmove", preventScroll, { passive: false });
+		window.addEventListener("keydown", preventScroll);
+
+		function unlockScroll() {
+			window.removeEventListener("wheel", preventScroll);
+			window.removeEventListener("touchmove", preventScroll);
+			window.removeEventListener("keydown", preventScroll);
+		}
+
+		// The logo already sits in its final resting position in the DOM/layout — work out
+		// how far that is from dead-center of the viewport, then animate from there back to 0.
+		// Its size never changes — only position and rotation — so it reads the same size
+		// before, during, and after the intro.
+		function playIntro() {
+			const logoRect = introLogo!.getBoundingClientRect();
+			const logoCenterX = logoRect.left + logoRect.width / 2;
+			const deltaX = window.innerWidth / 2 - logoCenterX;
+			// Y is always 0 — the logo starts on the same horizontal line as its final
+			// resting position and only slides in along X, never drifting up/down from
+			// below the viewport (which is what made it look like it rose from the bottom
+			// on mobile, since its resting spot sits above vertical center there).
+			const deltaY = 0;
+
+			// opacity: 1 here (not baked into the initial HTML) is deliberate — the logo stays
+			// invisible via inline `style="opacity: 0"` in the markup until this exact moment,
+			// when it's already positioned dead-center/rotated. Without that, the browser
+			// paints the logo in its final resting position for a frame or two while this
+			// script waits on document.fonts.ready, and the "intro" reads as replaying an
+			// animation that already finished.
+			gsap.set(introLogo, { x: deltaX, y: deltaY, rotation: 180, opacity: 1 });
+			gsap.set(introHeading, { clipPath: "inset(0 100% 0 0)" });
+			gsap.set(introSubtext, { opacity: 0, y: 16 });
+
+			gsap
+				.timeline({ onComplete: unlockScroll })
+				.to(introLogo, { x: 0, y: 0, rotation: 0, duration: 1.1, ease: "power3.inOut" })
+				.to(introHeading, { clipPath: "inset(0 0% 0 0)", duration: 0.9, ease: "power2.out" }, "-=0.7")
+				.to(introSubtext, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, "-=0.2");
+		}
+
+		// Wait for the custom Ibrand font to finish loading before measuring the logo's
+		// resting position — otherwise the wordmark's fallback-font width shifts once the
+		// real font swaps in, and the computed center-of-viewport delta is wrong.
+		if (document.fonts?.ready) {
+			document.fonts.ready.then(playIntro);
+		} else {
+			playIntro();
+		}
+	}
+
+	// The "away for 5+ seconds" sound alert lives in TabAttention.astro now (site-wide,
+	// not just this page) — see that component instead of here.
+
+	const section = document.getElementById("dropvault-hero");
+	const cards = Array.from(document.querySelectorAll<HTMLImageElement>(".community-card"));
+	if (section && cards.length) {
+		// Each card gets its own slot on a shared timeline (with a little overlap so the
+		// motion stays fluid) instead of every card animating across the exact same window —
+		// so they visibly enter one at a time rather than all at once. The pinned scroll
+		// distance is scaled to the number of cards so the section stays pinned for exactly
+		// as long as it takes the last card to finish, however many cards there are.
+		// Only a few lanes (not one per card) so each card can stay big — cards cycle
+		// through the lanes in order, and the stagger below is spaced out enough that two
+		// cards sharing the same lane never have a card on screen at the same time.
+		// Mobile gets a single lane — one card at a time, sliding straight up a single
+		// vertical line, instead of alternating between two side-by-side lanes.
+		const LANES = window.innerWidth < 640 ? 1 : Math.min(2, cards.length);
+		const SLOT = 0.65; // scroll-distance "units" each card's rise takes
+		// A single lane has no neighboring lane to prevent overlap for, so SLOT/LANES (no
+		// overlap at all) would show exactly one card at a time — tightened here so several
+		// cards are mid-rise (and visible at different heights) together instead.
+		const STAGGER = LANES === 1 ? SLOT * 0.32 : SLOT / LANES;
+		const totalUnits = SLOT + (cards.length - 1) * STAGGER;
+		const VH_PER_UNIT = 90;
+
+		const master = gsap.timeline({
+			scrollTrigger: {
+				trigger: section,
+				start: "top top",
+				end: `+=${totalUnits * VH_PER_UNIT}%`,
+				pin: true,
+				scrub: 1,
+			},
+		});
+
+		// Size + position each card to fit inside its lane so it can never overlap a
+		// neighboring lane or spill past the left/right edge of the screen. Recomputed on
+		// resize since the section width changes across breakpoints.
+		const INWARD_SHIFT = 24; // nudge each lane a few px toward the center
+		function layoutCards() {
+			const sectionWidth = section!.clientWidth;
+			const laneWidth = sectionWidth / LANES;
+			// The 440px floor assumes a lane wide enough to hold it — on a narrow phone
+			// that's wider than the whole viewport, so scale the floor down with it there.
+			const minCardWidth = Math.min(440, sectionWidth * 0.88);
+			// A single lane spans the full section width, so "fit the lane" alone would make
+			// the card the full width of the screen — cap it a bit narrower instead.
+			const cardWidth = LANES === 1 ? sectionWidth * 0.88 : Math.max(minCardWidth, Math.min(laneWidth, 960));
+			cards.forEach((card, i) => {
+				const lane = i % LANES;
+				const laneStart = lane * laneWidth;
+				const maxOffset = Math.max(laneWidth - cardWidth, 0);
+				const laneCenter = laneStart + laneWidth / 2;
+				const shift = Math.sign(sectionWidth / 2 - laneCenter) * INWARD_SHIFT;
+				const leftPx = laneStart + maxOffset / 2 + shift;
+				gsap.set(card, { left: leftPx, width: cardWidth });
+			});
+		}
+		layoutCards();
+		window.addEventListener("resize", layoutCards);
+
+		cards.forEach((card, i) => {
+			// Random rise distance — the motion itself is a straight vertical line, no
+			// horizontal drift or rotation, and no horizontal movement at all (lanes above
+			// already keep each card clear of its neighbors).
+			const riseDistance = 130 + Math.random() * 60; // how far (in %) this card travels
+			const startTop = 100 + Math.random() * 20;
+			const endTop = startTop - riseDistance;
+
+			gsap.set(card, { top: `${startTop}%` });
+			master.fromTo(
+				card,
+				{ top: `${startTop}%` },
+				{ top: `${endTop}%`, ease: "none", duration: SLOT },
+				i * STAGGER,
+			);
+		});
+	}
+</script>

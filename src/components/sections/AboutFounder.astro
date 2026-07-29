@@ -1,0 +1,33 @@
+---
+import { ik } from "../../lib/imagekit";
+import HexBackground from "../HexBackground.astro";
+
+// Same founder bio/photo used in droparabia-webinar's HostSection.astro, restyled to this
+// site's card/gradient language instead of that page's oval-pill treatment.
+---
+
+<section class="relative overflow-hidden px-6 py-20 lg:px-16">
+	<HexBackground cutCorner={false} fadeTop={true} fadeBottom={true} fadeHeight={1} />
+
+	<div class="relative mx-auto max-w-5xl">
+		<div class="grid items-center gap-14 lg:grid-cols-2">
+			<div class="flex justify-center lg:order-2">
+				<img
+					src={ik("/mj.jpeg", "w-800,q-80")}
+					alt="Majd Abdulsalam"
+					class="h-88 w-72 rounded-3xl border-4 border-white object-cover shadow-[0_15px_35px_-15px_rgba(0,30,255,0.3)] sm:h-112 sm:w-96 dark:border-neutral-900"
+				/>
+			</div>
+
+			<div class="text-center lg:order-1 lg:text-start">
+				<span data-i18n="about.founder.label" class="font-ibrand text-sm font-semibold text-neutral-900 dark:text-white">Founder of Droparabia</span>
+				<h2 data-i18n="about.founder.name" class="mt-2 font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-5xl dark:text-white">Majd Abdulsalam</h2>
+				<p data-i18n="about.founder.bio" class="mt-6 font-helvetica text-lg text-neutral-900 sm:text-xl dark:text-white">
+					Majd Abdulsalam, a digital marketing expert and 6-figure entrepreneur, created Droparabia, shaped from all the
+					obstacles, trials, and errors during his journey building his own e-com brands, now using that expertise
+					to help others build successful e-com and dropshipping stores.
+				</p>
+			</div>
+		</div>
+	</div>
+</section>

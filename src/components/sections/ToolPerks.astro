@@ -1,0 +1,78 @@
+---
+import type { Tool } from "../../data/tools";
+
+interface Props {
+	tool: Tool;
+}
+const { tool } = Astro.props;
+
+// Same rounded-hexagon path technique used by Header.astro's nav icons and the Hero's
+// product cluster — corners trimmed back along each edge and joined with a curve, instead
+// of the sharp-cornered clip-path polygon this replaced.
+const HEX_W = 300;
+const HEX_SIZE = HEX_W / Math.sqrt(3);
+const HEX_H = HEX_SIZE * 2;
+const HEX_PAD = 3;
+const SVG_W = HEX_W + HEX_PAD * 2;
+const SVG_H = HEX_H + HEX_PAD * 2;
+const hexPoints: [number, number][] = [
+	[HEX_W / 2, 0],
+	[HEX_W, HEX_H * 0.25],
+	[HEX_W, HEX_H * 0.75],
+	[HEX_W / 2, HEX_H],
+	[0, HEX_H * 0.75],
+	[0, HEX_H * 0.25],
+];
+function roundedHexPath(points: [number, number][], radius: number): string {
+	const n = points.length;
+	const lerp = (a: [number, number], b: [number, number], t: number): [number, number] => [
+		a[0] + (b[0] - a[0]) * t,
+		a[1] + (b[1] - a[1]) * t,
+	];
+	const approach: [number, number][] = [];
+	const leave: [number, number][] = [];
+	for (let i = 0; i < n; i++) {
+		const curr = points[i];
+		const prev = points[(i - 1 + n) % n];
+		const next = points[(i + 1) % n];
+		const distPrev = Math.hypot(curr[0] - prev[0], curr[1] - prev[1]);
+		const distNext = Math.hypot(next[0] - curr[0], next[1] - curr[1]);
+		approach.push(lerp(curr, prev, Math.min(radius / distPrev, 0.5)));
+		leave.push(lerp(curr, next, Math.min(radius / distNext, 0.5)));
+	}
+	let d = `M ${leave[n - 1][0]} ${leave[n - 1][1]} `;
+	for (let i = 0; i < n; i++) {
+		d += `L ${approach[i][0]} ${approach[i][1]} Q ${points[i][0]} ${points[i][1]} ${leave[i][0]} ${leave[i][1]} `;
+	}
+	return d + "Z";
+}
+const hexPath = roundedHexPath(hexPoints, HEX_W * 0.05);
+---
+
+<section class="px-6 py-20 lg:px-16">
+	<div class="mx-auto max-w-6xl">
+		<div class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+			{
+				tool.perks.map((perk, i) => (
+					<div class="relative mx-auto w-full max-w-52 sm:max-w-80" style={{ aspectRatio: `${HEX_W} / ${HEX_H}` }}>
+						<svg viewBox={`-${HEX_PAD} -${HEX_PAD} ${SVG_W} ${SVG_H}`} class="absolute inset-0 h-full w-full">
+							<defs>
+								<linearGradient id={`perk-hex-${i}`} x1="0%" y1="50%" x2="100%" y2="50%">
+									<stop offset="0%" stop-color="#06a2d1" />
+									<stop offset="100%" stop-color="#2745ff" />
+								</linearGradient>
+							</defs>
+							<path d={hexPath} fill="none" stroke={`url(#perk-hex-${i})`} stroke-width="5" />
+						</svg>
+						<div class="absolute inset-0 flex flex-col items-center justify-center px-6 py-6 text-center sm:px-12 sm:py-14">
+							<svg class="h-8 w-8 sm:h-12 sm:w-12" viewBox="0 0 24 24" fill="none" stroke="#2745ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M4.5 12.5c2 2.5 4.2 4.3 5.7 6.2 3-5.3 6.2-9.8 10-13.4" />
+							</svg>
+							<h3 data-i18n={`tool.${tool.slug}.perk${i}`} class="mt-3 font-ibrand text-sm text-neutral-900 sm:mt-4 sm:text-xl dark:text-white">{perk.title}</h3>
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>

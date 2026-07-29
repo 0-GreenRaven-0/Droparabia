@@ -1,0 +1,176 @@
+---
+// Mission copy adapted from droparabia-landing's "WHO IS THIS FOR" section — same
+// underlying message (a system that removes the obstacles that sink a business before it
+// starts), condensed for an About-page context.
+
+// Zigzag layout for the obstacle pills (same scatter + line-fill animation on every
+// breakpoint). Positions are hand-placed rather than random so the "imperfect" scatter is
+// deliberate and doesn't reshuffle on every build.
+// Each pill is anchored to the LEFT or RIGHT edge of the full-width container (not a
+// percentage-of-container position) so it always sits near the true edge of the available
+// space, on any screen width — a percentage offset has to leave enough margin for the
+// pill's fixed pixel width on the narrowest supported (lg) screen, which then reads as a
+// huge wasted gap on a wide monitor. The small per-item offset is what keeps the zigzag
+// looking imperfect rather than a rigid two-column grid. The final point breaks the
+// alternation and sits dead-center as the "closing" line of the list.
+const points: { text: string; side: "left" | "right" | "center"; offset: number; top: number }[] = [
+	{ text: "Huge upfront investments", side: "left", offset: 0, top: 60 },
+	{ text: "Renting warehouses or owning inventories", side: "right", offset: 40, top: 230 },
+	{ text: "Ordering stocks from China and paying huge shipping fees", side: "left", offset: 70, top: 420 },
+	{ text: "Buying products in bulk that might not sell", side: "right", offset: 10, top: 610 },
+	{ text: "Wasting hours searching and qualifying products to sell", side: "left", offset: 30, top: 800 },
+	{ text: "Finding a reliable delivery system", side: "right", offset: 60, top: 980 },
+	{ text: "Quitting after losing all your savings", side: "center", offset: 0, top: 1170 },
+];
+---
+
+<section id="why-droparabia-exists" class="relative overflow-x-hidden px-6 py-20 lg:px-16">
+	<div class="mx-auto max-w-2xl text-left sm:text-center">
+		<p data-i18n="about.mission.intro" class="font-helvetica text-base leading-[1.3] font-semibold text-neutral-900 sm:text-xl dark:text-white">
+			Droparabia was created to allow anyone to get into e-commerce regardless of their experience by eliminating
+			all obstacles that cause most e-com businesses to fail before they start, such as:
+		</p>
+	</div>
+
+	<!-- Desktop/tablet: scattered zigzag pills, connected by a line that starts empty
+		 (a faint outline, same idea as a button before it's interacted with) and fills in
+		 with blue as the section scrolls through view. Each pill's text stays hidden until
+		 the fill line's drawing progress actually reaches that pill. -->
+	<div id="why-exist-zigzag" class="relative mx-auto mt-16 h-[1230px] w-full sm:h-[1300px] lg:mt-28">
+		<svg id="why-exist-lines" class="pointer-events-none absolute inset-0 h-full w-full overflow-visible">
+			<path
+				id="why-exist-line-empty"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="9"
+				stroke-linecap="round"
+				class="text-black/[0.07] dark:text-white/15"
+			/>
+			<path id="why-exist-line-fill" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" class="text-primary" />
+		</svg>
+
+		{points.map((point, i) => (
+			<div
+				class="why-exist-pill absolute w-44 -translate-y-1/2 sm:w-72 xl:w-80"
+				data-index={i}
+				style={
+					point.side === "center"
+						? `left: 50%; top: ${point.top}px; transform: translate(-50%, -50%);`
+						: `${point.side}: ${point.offset}px; top: ${point.top}px; transform: translateY(-50%);`
+				}
+			>
+				<div class="why-exist-pill-box rounded-full border-2 border-primary bg-white px-3 py-2.5 text-center shadow-[0_12px_28px_-15px_rgba(0,0,0,0.16)] transition-transform duration-500 ease-out sm:border-4 sm:px-9 sm:py-7 dark:bg-neutral-900">
+					<span data-i18n={`about.mission.point${i}`} class="why-exist-pill-text font-ibrand text-sm text-neutral-900 opacity-0 transition-opacity duration-500 ease-out sm:text-lg xl:text-xl dark:text-white">
+						{point.text}
+					</span>
+				</div>
+			</div>
+		))}
+	</div>
+
+	<div class="mx-auto mt-4 max-w-2xl text-left sm:mt-16 sm:text-center">
+		<p data-i18n="about.mission.closing" class="font-helvetica text-base leading-[1.3] font-semibold text-neutral-900 sm:text-xl dark:text-white">
+			Our system is here to save you from burning your budget on meaningless trials and errors that can be easily
+			avoided through our unique infrastructure.
+		</p>
+	</div>
+</section>
+
+<script>
+	import gsap from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+	gsap.registerPlugin(ScrollTrigger);
+
+	const container = document.getElementById("why-exist-zigzag");
+	const svg = document.getElementById("why-exist-lines") as SVGSVGElement | null;
+	const emptyPath = document.getElementById("why-exist-line-empty") as SVGPathElement | null;
+	const fillPath = document.getElementById("why-exist-line-fill") as SVGPathElement | null;
+
+	if (container && svg && emptyPath && fillPath) {
+		const pills = Array.from(container.querySelectorAll<HTMLElement>(".why-exist-pill")).sort(
+			(a, b) => Number(a.dataset.index) - Number(b.dataset.index),
+		);
+
+		let fillTween: gsap.core.Tween | null = null;
+
+		function buildPath() {
+			if (pills.length < 2) return;
+			const containerRect = container!.getBoundingClientRect();
+			const coords = pills.map((pill) => {
+				const rect = pill.getBoundingClientRect();
+				return {
+					x: rect.left + rect.width / 2 - containerRect.left,
+					y: rect.top + rect.height / 2 - containerRect.top,
+				};
+			});
+
+			const d = coords.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
+			emptyPath!.setAttribute("d", d);
+			fillPath!.setAttribute("d", d);
+
+			// Cumulative distance to each pill along the path, as a 0-1 fraction of the total —
+			// used to decide when the drawing line has actually "reached" that pill.
+			const cumulative = [0];
+			for (let i = 1; i < coords.length; i++) {
+				cumulative.push(cumulative[i - 1] + Math.hypot(coords[i].x - coords[i - 1].x, coords[i].y - coords[i - 1].y));
+			}
+			const total = cumulative[cumulative.length - 1] || 1;
+			const revealFractions = cumulative.map((c) => c / total);
+
+			const length = fillPath!.getTotalLength();
+			gsap.set(fillPath, { strokeDasharray: length, strokeDashoffset: length });
+
+			// Mobile scrolls the same fixed-height (px, not vh) container through a much
+			// shorter viewport, so the same "top 80% -> bottom 40%" trigger window and scrub
+			// lag that feels right on desktop reads as sluggish there — shorten the window and
+			// cut the inertia so the fill keeps pace with a normal mobile scroll/flick.
+			const isMobile = window.innerWidth < 640;
+
+			// "bottom 40%" on a section this tall (~1300px) ties completion to the section's
+			// height PLUS most of a viewport height of extra scroll — on desktop that pushed
+			// the line to only finish drawing right as the whole section was about to scroll
+			// out of view. Tying the end to the container's own height instead (a fixed scroll
+			// distance from the start point) finishes the line with room to spare.
+			const desktopEnd = `+=${container!.offsetHeight * 0.7}`;
+
+			fillTween?.scrollTrigger?.kill();
+			fillTween?.kill();
+			fillTween = gsap.to(fillPath, {
+				strokeDashoffset: 0,
+				ease: "none",
+				scrollTrigger: {
+					trigger: container,
+					start: isMobile ? "top 90%" : "top 80%",
+					end: isMobile ? "bottom 65%" : desktopEnd,
+					scrub: isMobile ? 0.5 : 2,
+				},
+				onUpdate() {
+					const dashoffset = Number(gsap.getProperty(fillPath, "strokeDashoffset"));
+					const drawn = 1 - dashoffset / length;
+					pills.forEach((pill, i) => {
+						const reached = drawn >= revealFractions[i] - 0.002;
+						const textEl = pill.querySelector<HTMLElement>(".why-exist-pill-text");
+						if (textEl) textEl.style.opacity = reached ? "1" : "0";
+
+						// The last pill (the closing "Quitting..." line) grows once the line reaches
+						// it, landing the sequence with a bit of emphasis instead of just fading in.
+						if (i === pills.length - 1) {
+							const boxEl = pill.querySelector<HTMLElement>(".why-exist-pill-box");
+							if (boxEl) boxEl.style.transform = reached ? "scale(1.2)" : "scale(1)";
+						}
+					});
+				},
+			});
+		}
+
+		// Rebuilt on resize since pill positions/wrap shift with viewport width.
+		let resizeTimeout: ReturnType<typeof setTimeout>;
+		function scheduleRebuild() {
+			clearTimeout(resizeTimeout);
+			resizeTimeout = setTimeout(buildPath, 150);
+		}
+
+		buildPath();
+		window.addEventListener("resize", scheduleRebuild);
+	}
+</script>

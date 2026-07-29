@@ -1,0 +1,348 @@
+---
+import HexBackground from "../HexBackground.astro";
+
+// Right side: a chat window that fades/scales open once the section is scrolled into
+// view (IntersectionObserver, same reveal-on-scroll pattern used elsewhere). Placeholder
+// questions aren't shown up front — they appear as a dropdown list above the input the
+// moment you focus it, like a suggestions menu. Picking one (or typing your own + Enter)
+// echoes it as a "sent" message, then after a short delay drops in a canned answer to
+// imitate the AI responding.
+const qa = [
+	{
+		q: "What is dropshipping?",
+		a: "Dropshipping is a retail method where you sell products without holding inventory — your supplier ships directly to the customer once an order comes in.",
+	},
+	{
+		q: "How do I find winning products?",
+		a: "Look for products with strong demand, healthy margins, and low competition, then validate them with small test orders before scaling up.",
+	},
+	{
+		q: "How much money do I need to start?",
+		a: "Very little compared to traditional retail — since you only pay your supplier after a customer has already paid you, there's no big upfront inventory cost.",
+	},
+	{
+		q: "How long does shipping usually take?",
+		a: "It depends on the supplier and destination, but most dropshipping orders arrive within 1-3 weeks depending on the shipping method used.",
+	},
+	{
+		q: "Do I need to hold inventory?",
+		a: "No — that's the core benefit of dropshipping. Your supplier stores and ships the products, so you never touch inventory yourself.",
+	},
+];
+---
+
+<section id="majdgbt" class="relative overflow-hidden px-6 py-24 lg:px-16">
+	<HexBackground cutCorner={false} fadeTop={true} fadeBottom={true} fadeHeight={1} />
+
+	<div class="relative mx-auto flex max-w-3xl flex-col items-center">
+		<div class="relative mt-6 w-full shrink-0">
+			<!-- The window's chrome (border/bg/shadow) is a separate absolutely-positioned layer
+				 from its content, so it can stay hidden/scaled-down on load while the heading
+				 above it is still visible and already sitting in its normal resting spot — the
+				 heading was never actually "outside" the window, the window's box just hadn't
+				 painted in yet. -->
+			<div
+				id="majd-window-chrome"
+				class="pointer-events-none absolute inset-0 translate-y-6 scale-75 rounded-3xl border border-black/5 bg-white opacity-0 shadow-[0_2px_12px_-2px_rgba(0,0,0,0.18),0_15px_35px_-15px_rgba(0,0,0,0.28)] transition-[opacity,scale,translate] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] dark:border-white/10 dark:bg-neutral-900 dark:shadow-[0_2px_12px_-2px_rgba(0,0,0,0.4),0_15px_35px_-15px_rgba(0,0,0,0.5)]"
+			>
+			</div>
+
+			<div class="relative z-10 flex h-110 flex-col overflow-hidden rounded-3xl">
+				<div id="majd-messages" class="relative flex flex-1 flex-col gap-3 overflow-y-auto px-5 py-5">
+					<div id="majd-greeting" class="absolute inset-0 flex flex-col items-center justify-center px-10 text-center">
+						<!-- Visible from page load — the chrome/subtext/input bar around it are what's
+							 hidden, not this — and slides up into its resting slot once the section is
+							 scrolled into view, with the rest of the window only starting its own reveal
+							 once that slide finishes (see the script below). -->
+						<h2
+							id="majd-heading"
+							data-i18n="majdgbt.heading"
+							class="translate-y-16 font-ibrand text-5xl leading-[1.1] text-neutral-900 transition-transform duration-1400 ease-[cubic-bezier(0.16,1,0.3,1)] sm:translate-y-20 sm:text-6xl dark:text-white"
+						>
+							Meet MajdGBT
+						</h2>
+						<p
+							id="majd-subtext"
+							data-i18n="majdgbt.subtext"
+							class="mt-3 font-helvetica text-sm text-neutral-900 opacity-0 transition-opacity duration-500 ease-out sm:text-base dark:text-white"
+						>
+							Our own AI model trained on real-time knowledge and experience, made specifically to help you build
+							your e-commerce business.
+						</p>
+					</div>
+				</div>
+
+				<div
+					id="majd-footer-bar"
+					class="relative border-t border-neutral-900/10 p-3 opacity-0 transition-opacity duration-500 ease-out dark:border-white/10"
+				>
+					<div
+						id="majd-suggestions"
+						class="pointer-events-none absolute right-3 bottom-full left-3 mb-2 flex origin-bottom translate-y-2 scale-95 flex-col overflow-hidden rounded-2xl border border-neutral-900/10 bg-white opacity-0 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.15)] transition-[opacity,scale,translate] duration-200 ease-out dark:border-white/10 dark:bg-neutral-900 dark:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.4)]"
+					>
+						{qa.map((item, i) => (
+							<button
+								type="button"
+								data-index={i}
+								data-i18n={`majdgbt.q${i}`}
+								class="cursor-pointer border-b border-neutral-900/5 px-4 py-3 text-left font-helvetica text-sm text-neutral-900 transition-colors last:border-b-0 hover:bg-primary/10 hover:text-primary dark:border-white/5 dark:text-white dark:hover:bg-primary/20"
+							>
+								{item.q}
+							</button>
+						))}
+					</div>
+
+					<div class="flex items-center gap-2">
+						<input
+							id="majd-input"
+							type="text"
+							placeholder="Ask MajdGBT anything..."
+							autocomplete="off"
+							data-i18n-placeholder="majdgbt.inputPlaceholder"
+							class="flex-1 rounded-full bg-neutral-900/5 px-4 py-2.5 font-helvetica text-sm text-neutral-900 outline-none placeholder:text-neutral-400 dark:bg-white/10 dark:text-white"
+						/>
+						<button
+							id="majd-send"
+							type="button"
+							aria-label="Send"
+							class="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-primary text-white transition-opacity hover:opacity-90"
+						>
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+								<line x1="12" y1="19" x2="12" y2="5" />
+								<polyline points="5 12 12 5 19 12" />
+							</svg>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	import { translations } from "../../lib/i18n";
+
+	const QA_COUNT = document.querySelectorAll("#majd-suggestions button").length;
+
+	function currentLang(): "en" | "ar" {
+		return localStorage.getItem("lang") === "ar" ? "ar" : "en";
+	}
+
+	const section = document.getElementById("majdgbt");
+	const heading = document.getElementById("majd-heading");
+	const chrome = document.getElementById("majd-window-chrome");
+	const subtext = document.getElementById("majd-subtext");
+	const footerBar = document.getElementById("majd-footer-bar");
+	const messages = document.getElementById("majd-messages");
+	const suggestions = document.getElementById("majd-suggestions");
+	const input = document.getElementById("majd-input") as HTMLInputElement | null;
+	const sendBtn = document.getElementById("majd-send");
+
+	if (section && chrome) {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						const revealRest = () => {
+							chrome.classList.remove("opacity-0", "scale-75", "translate-y-6");
+							subtext?.classList.remove("opacity-0");
+							footerBar?.classList.remove("opacity-0");
+						};
+						// A flat delay before the sequence starts, so it doesn't fire the instant the
+						// section merely crosses the intersection threshold — gives the section a beat
+						// to actually settle into view first.
+						setTimeout(() => {
+							if (heading) {
+								// The chrome/subtext/input bar only start their own reveal once the
+								// heading has actually finished sliding up, not on a fixed timer
+								// guessing that duration.
+								heading.addEventListener("transitionend", revealRest, { once: true });
+								heading.classList.remove("translate-y-16", "sm:translate-y-20");
+							} else {
+								revealRest();
+							}
+						}, 800);
+						observer.disconnect();
+					}
+				});
+			},
+			{ threshold: 0.3 },
+		);
+		observer.observe(section);
+	}
+
+	function addMessage(text: string, role: "user" | "bot") {
+		if (!messages) return;
+		const bubble = document.createElement("div");
+		bubble.textContent = text;
+		bubble.className =
+			role === "user"
+				? "max-w-[80%] self-end rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 font-helvetica text-sm text-white"
+				: "max-w-[80%] self-start rounded-2xl rounded-bl-sm bg-neutral-900/5 px-4 py-2.5 font-helvetica text-sm text-neutral-900 dark:bg-white/10 dark:text-white";
+		messages.appendChild(bubble);
+		messages.scrollTop = messages.scrollHeight;
+	}
+
+	function addThinkingBubble(): HTMLElement | null {
+		if (!messages) return null;
+		const bubble = document.createElement("div");
+		bubble.className =
+			"flex items-center gap-2 self-start rounded-2xl rounded-bl-sm bg-neutral-900/5 px-4 py-3 font-helvetica text-sm text-neutral-500 dark:bg-white/10 dark:text-neutral-400";
+		const thinkingText = translations["majdgbt.thinking"][currentLang()];
+		bubble.innerHTML =
+			`<span>${thinkingText}</span><span class="flex items-center gap-1"><span class="majd-dot"></span><span class="majd-dot"></span><span class="majd-dot"></span></span>`;
+		messages.appendChild(bubble);
+		messages.scrollTop = messages.scrollHeight;
+		return bubble;
+	}
+
+	function typewriter(el: HTMLElement, text: string) {
+		let i = 0;
+		const id = setInterval(() => {
+			i++;
+			el.textContent = text.slice(0, i);
+			if (messages) messages.scrollTop = messages.scrollHeight;
+			if (i >= text.length) clearInterval(id);
+		}, 16);
+	}
+
+	// Matches typed free-text (in either language) back to a suggestion index, so a manually
+	// typed question still gets its canned answer instead of always falling back.
+	function findAnswerIndex(text: string): number {
+		const t = text.trim();
+		for (let i = 0; i < QA_COUNT; i++) {
+			const entry = translations[`majdgbt.q${i}`];
+			if (entry && (t === entry.en || t === entry.ar)) return i;
+		}
+		return -1;
+	}
+
+	function openSuggestions() {
+		suggestions?.classList.remove("opacity-0", "scale-95", "translate-y-2", "pointer-events-none");
+		suggestions?.classList.add("opacity-100", "scale-100", "translate-y-0", "pointer-events-auto");
+	}
+
+	function closeSuggestions() {
+		suggestions?.classList.add("opacity-0", "scale-95", "translate-y-2", "pointer-events-none");
+		suggestions?.classList.remove("opacity-100", "scale-100", "translate-y-0", "pointer-events-auto");
+	}
+
+	// Resolves once the greeting has actually finished fading/sliding out (or immediately if
+	// there was no greeting to begin with) — the "thinking" indicator waits on this instead of
+	// firing the instant a question is asked, so it doesn't visually overlap the exit animation.
+	function dismissGreeting(): Promise<void> {
+		const greeting = document.getElementById("majd-greeting");
+		if (!greeting) return Promise.resolve();
+		if (greeting.classList.contains("majd-greeting-exit")) {
+			return new Promise((resolve) => greeting.addEventListener("transitionend", () => resolve(), { once: true }));
+		}
+		greeting.classList.add("majd-greeting-exit");
+		return new Promise((resolve) => {
+			greeting.addEventListener(
+				"transitionend",
+				() => {
+					greeting.remove();
+					resolve();
+				},
+				{ once: true },
+			);
+		});
+	}
+
+	function respond(question: string) {
+		if (!question.trim() || !messages) return;
+		addMessage(question, "user");
+		closeSuggestions();
+
+		dismissGreeting().then(() => {
+			const thinking = addThinkingBubble();
+
+			setTimeout(
+				() => {
+					thinking?.remove();
+					const idx = findAnswerIndex(question);
+					const text = idx >= 0 ? translations[`majdgbt.a${idx}`][currentLang()] : translations["majdgbt.fallback"][currentLang()];
+
+					const bubble = document.createElement("div");
+					bubble.className =
+						"max-w-[80%] self-start rounded-2xl rounded-bl-sm bg-neutral-900/5 px-4 py-2.5 font-helvetica text-sm text-neutral-900 dark:bg-white/10 dark:text-white";
+					messages!.appendChild(bubble);
+					typewriter(bubble, text);
+				},
+				900 + Math.random() * 500,
+			);
+		});
+	}
+
+	suggestions?.querySelectorAll("button").forEach((btn) => {
+		btn.addEventListener("click", () => {
+			// The button's own displayed text is already in the current language (Layout.astro's
+			// applyTranslations keeps [data-i18n] elements in sync), so it's used verbatim here
+			// rather than re-deriving it from the dictionary.
+			respond(btn.textContent?.trim() ?? "");
+			input?.blur();
+		});
+	});
+
+	function submitInput() {
+		if (!input) return;
+		respond(input.value);
+		input.value = "";
+	}
+
+	input?.addEventListener("focus", openSuggestions);
+	input?.addEventListener("blur", () => {
+		// Delay so a click on a suggestion registers before the list disappears.
+		setTimeout(closeSuggestions, 150);
+	});
+
+	sendBtn?.addEventListener("click", submitInput);
+	input?.addEventListener("keydown", (e) => {
+		if (e.key === "Enter") {
+			e.preventDefault();
+			submitInput();
+		}
+	});
+</script>
+
+<style>
+	#majd-greeting {
+		opacity: 1;
+		transform: translateY(0);
+		transition-property: opacity, transform;
+		transition-duration: 400ms;
+		transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+	}
+	#majd-greeting.majd-greeting-exit {
+		opacity: 0;
+		transform: translateY(-1.5rem);
+	}
+
+	.majd-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 9999px;
+		background: currentColor;
+		color: #001eff;
+		opacity: 0.4;
+		animation: majd-dot-bounce 1.2s ease-in-out infinite;
+	}
+	.majd-dot:nth-child(2) {
+		animation-delay: 0.15s;
+	}
+	.majd-dot:nth-child(3) {
+		animation-delay: 0.3s;
+	}
+	@keyframes majd-dot-bounce {
+		0%,
+		60%,
+		100% {
+			opacity: 0.4;
+			transform: translateY(0);
+		}
+		30% {
+			opacity: 1;
+			transform: translateY(-3px);
+		}
+	}
+</style>

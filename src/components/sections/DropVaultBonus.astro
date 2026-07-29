@@ -1,0 +1,85 @@
+---
+// Same staircase-list treatment as the homepage's Bonuses.astro, restyled with Dropvault's
+// own perks instead of the platform-wide bonuses.
+const bonuses = [
+	{ title: "Join a community of passionate sellers and brand builders" },
+	{ title: "Get access to +20 hours of FREE courses and recorded tutorials" },
+	{ title: "A place to get support and guidance whenever you need it" },
+	{ title: "Occasional & high‑rewarding events inside the community" },
+];
+const STAIR_STEP = 3.5; // rem indent added per row, going up the list
+---
+
+<section id="dropvault-bonuses" class="px-4 py-20 sm:px-6 lg:px-16">
+	<div class="mx-auto max-w-6xl">
+		<h2 data-i18n="dropvault.bonuses.heading" class="text-center font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-5xl dark:text-white">
+			Dropvault <span class="text-primary">member benefits</span>
+		</h2>
+
+		<div class="mx-auto mt-12 flex max-w-4xl flex-col items-start gap-10 sm:mt-16 sm:gap-16 lg:items-end">
+			{
+				bonuses.map((bonus, i) => (
+					<div
+						class="flex flex-row-reverse items-center gap-2 sm:gap-5 lg:mr-(--stair-margin) lg:flex-row"
+						style={{ "--stair-margin": `${i * STAIR_STEP}rem` }}
+						data-index={i}
+					>
+						<div class="vault-bonus-text flex flex-col gap-1 text-left lg:text-right" style={{ transitionDelay: `${i * 100}ms` }}>
+							<p data-i18n={`dropvault.bonuses.title${i}`} class="font-helvetica text-base font-semibold text-neutral-900 sm:text-3xl dark:text-white">
+								{bonus.title}
+							</p>
+						</div>
+						<svg viewBox="0 0 54 92" width="54" height="92" class="shrink-0">
+							<defs>
+								<linearGradient id={`vault-bonus-slash-${i}`} x1="100%" y1="0%" x2="0%" y2="100%">
+									<stop offset="0%" stop-color="#2745ff" />
+									<stop offset="50%" stop-color="#001eff" />
+									<stop offset="100%" stop-color="#000c66" />
+								</linearGradient>
+							</defs>
+							<polygon points="42,6 18,86 10,86 34,6" fill={`url(#vault-bonus-slash-${i})`} class="sm:hidden" />
+							<polygon points="50,6 18,86 2,86 34,6" fill={`url(#vault-bonus-slash-${i})`} class="hidden sm:block" />
+						</svg>
+					</div>
+				))
+			}
+		</div>
+
+		<p data-i18n="dropvault.bonuses.closing" class="mx-auto mt-16 max-w-xl text-center font-helvetica text-base text-neutral-600 sm:text-lg dark:text-neutral-400">
+			You become a <span class="font-semibold text-primary">Dropvault</span> member the moment you become a Droparabia
+			user!
+		</p>
+	</div>
+</section>
+
+<style>
+	.vault-bonus-text {
+		opacity: 0;
+		transform: translateX(4rem);
+		transition-property: opacity, transform;
+		transition-duration: 700ms;
+		transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.vault-bonus-text.is-revealed {
+		opacity: 1;
+		transform: translateX(0);
+	}
+</style>
+
+<script>
+	const texts = document.querySelectorAll<HTMLElement>(".vault-bonus-text");
+	if (texts.length) {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add("is-revealed");
+						observer.unobserve(entry.target);
+					}
+				});
+			},
+			{ threshold: 0.4 },
+		);
+		texts.forEach((text) => observer.observe(text));
+	}
+</script>

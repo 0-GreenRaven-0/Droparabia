@@ -1,0 +1,288 @@
+---
+// Tools section — left: heading/subheading, right: a clickable hex-button honeycomb
+// (2 rows of 4, tightly interlocked, bottom row offset right+down — same tessellation
+// math as the Hero product cluster, just a plain rectangular grid instead of a diagonal
+// band). Clicking a hex reveals a detail panel styled identically to that tool's own
+// /tools/[slug] hero (ToolHero.astro) — same real copy and screenshot, sourced from the
+// single tools.ts data file instead of a separate placeholder list.
+import { tools as toolsData } from "../../data/tools";
+import { ik } from "../../lib/imagekit";
+// Branding's own hero (BrandingHero.astro) shows the finished-product "branding example"
+// composite, but that image doesn't read well as a quick preview here — this panel uses
+// the catalog "Brandable" screenshot instead.
+const HOME_IMAGE_OVERRIDES: Record<string, string> = {
+	branding: "https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/Branding/brandable.jpg",
+};
+const tools = toolsData.map((t) => ({
+	...t,
+	href: `/tools/${t.slug}`,
+	heroImage: HOME_IMAGE_OVERRIDES[t.slug] ?? t.heroImage,
+}));
+
+const TOOL_HEX_COLORS = ["#2745ff", "#213de9", "#1c35d3", "#162dbd", "#1124a8", "#0b1c92", "#06147c", "#000c66"];
+function shade(hex: string, t: number): string {
+	const n = parseInt(hex.slice(1), 16);
+	const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+	const mix = (c: number) => Math.round(c + ((t > 0 ? 255 : 0) - c) * Math.abs(t));
+	return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+}
+// Single-row zigzag: hexes alternate low/high left to right (not a tessellating
+// honeycomb — just evenly spaced horizontally with an alternating vertical offset).
+const HEX_W = 60;
+const HEX_SIZE = HEX_W / Math.sqrt(3);
+const HEX_H = HEX_SIZE * 2;
+const STROKE_PAD = 4;
+const SVG_W = HEX_W + STROKE_PAD * 2;
+const SVG_H = HEX_H + STROKE_PAD * 2;
+const ICON_SCALE = (HEX_W * 0.34) / 24;
+const ICON_X = HEX_W / 2 - (24 * ICON_SCALE) / 2;
+const ICON_Y = HEX_H / 2 - (24 * ICON_SCALE) / 2;
+
+const H_STEP = HEX_W * 1.35;
+const V_OFFSET = HEX_H * 0.55;
+const hexes = tools.map((tool, i) => ({
+	x: i * H_STEP,
+	y: i % 2 === 0 ? V_OFFSET : 0,
+	tool,
+	color: TOOL_HEX_COLORS[i],
+}));
+const clusterWidth = Math.max(...hexes.map((h) => h.x)) + HEX_W;
+const clusterHeight = Math.max(...hexes.map((h) => h.y)) + HEX_H;
+
+const CORNER_RADIUS = 10;
+const hexPoints: [number, number][] = [
+	[HEX_W / 2, 0],
+	[HEX_W, HEX_H * 0.25],
+	[HEX_W, HEX_H * 0.75],
+	[HEX_W / 2, HEX_H],
+	[0, HEX_H * 0.75],
+	[0, HEX_H * 0.25],
+];
+function roundedHexPath(points: [number, number][], radius: number): string {
+	const n = points.length;
+	const lerp = (a: [number, number], b: [number, number], t: number): [number, number] => [
+		a[0] + (b[0] - a[0]) * t,
+		a[1] + (b[1] - a[1]) * t,
+	];
+	const approach: [number, number][] = [];
+	const leave: [number, number][] = [];
+	for (let i = 0; i < n; i++) {
+		const curr = points[i];
+		const prev = points[(i - 1 + n) % n];
+		const next = points[(i + 1) % n];
+		const distPrev = Math.hypot(curr[0] - prev[0], curr[1] - prev[1]);
+		const distNext = Math.hypot(next[0] - curr[0], next[1] - curr[1]);
+		approach.push(lerp(curr, prev, Math.min(radius / distPrev, 0.5)));
+		leave.push(lerp(curr, next, Math.min(radius / distNext, 0.5)));
+	}
+	let d = `M ${leave[n - 1][0]} ${leave[n - 1][1]} `;
+	for (let i = 0; i < n; i++) {
+		d += `L ${approach[i][0]} ${approach[i][1]} Q ${points[i][0]} ${points[i][1]} ${leave[i][0]} ${leave[i][1]} `;
+	}
+	return d + "Z";
+}
+const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
+---
+
+<section id="tools" class="relative overflow-x-hidden px-6 py-24">
+	<div class="mx-auto flex max-w-3xl flex-col items-center gap-10 text-center">
+		<div>
+			<h2 data-i18n="tools.heading" class="font-ibrand text-3xl leading-[1.15] text-neutral-900 sm:text-6xl md:text-7xl dark:text-white">
+				Access advanced &amp; <span class="text-primary">game changing tools</span>
+			</h2>
+			<p data-i18n="tools.subheading" class="mt-6 font-helvetica text-base text-neutral-900 sm:text-lg dark:text-white">
+				Which you can leverage to build your own successful &amp; high-earning store without managing all the
+				business yourself!
+			</p>
+		</div>
+
+		<!-- Fixed-pixel hex row, sized for desktop — scaled down via CSS transform on an inner
+			 wrapper for mobile/tablet instead of a different mobile layout, so the outer box's
+			 own footprint shrinks to match (via --cluster-scale in a calc()) rather than
+			 reserving the full-size, unscaled space. -->
+		<div
+			class="relative shrink-0 [--cluster-scale:0.62] sm:[--cluster-scale:0.8] lg:[--cluster-scale:1]"
+			style={{ width: `calc(${clusterWidth}px * var(--cluster-scale))`, height: `calc(${clusterHeight}px * var(--cluster-scale))` }}
+		>
+			<div
+				class="absolute top-0 left-0 origin-top-left"
+				style={{ width: `${clusterWidth}px`, height: `${clusterHeight}px`, transform: "scale(var(--cluster-scale))" }}
+			>
+				{hexes.map((hex) => (
+					<button
+						type="button"
+						data-tool={hex.tool.href}
+						class="group absolute cursor-pointer opacity-50 transition-[scale,translate,opacity] duration-200 ease-out hover:-translate-y-1 hover:opacity-100"
+						style={{ left: `${hex.x - STROKE_PAD}px`, top: `${hex.y - STROKE_PAD}px`, width: `${SVG_W}px`, height: `${SVG_H}px` }}
+						aria-label={hex.tool.label}
+					>
+						<svg width={SVG_W} height={SVG_H} viewBox={`-${STROKE_PAD} -${STROKE_PAD} ${SVG_W} ${SVG_H}`}>
+							<defs>
+								<linearGradient id={`tools-hex-${hex.tool.href}`} x1="15%" y1="0%" x2="85%" y2="100%">
+									<stop offset="0%" stop-color={shade(hex.color, 0.55)} />
+									<stop offset="35%" stop-color={hex.color} />
+									<stop offset="65%" stop-color={shade(hex.color, -0.35)} />
+									<stop offset="100%" stop-color={shade(hex.color, 0.55)} />
+								</linearGradient>
+							</defs>
+							<path
+								d={hexPath}
+								fill="white"
+								class="dark:fill-neutral-900"
+								stroke={`url(#tools-hex-${hex.tool.href})`}
+								stroke-width="3"
+							/>
+							<g
+								transform={`translate(${ICON_X}, ${ICON_Y}) scale(${ICON_SCALE})`}
+								style={{ color: hex.color }}
+								fill="none"
+								stroke={hex.color}
+								stroke-width={1.8 / ICON_SCALE}
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								set:html={hex.tool.icon}
+							/>
+						</svg>
+					</button>
+				))}
+			</div>
+		</div>
+	</div>
+
+	<div id="tools-detail" class="mt-16 hidden max-w-6xl">
+		{tools.map((tool, i) => (
+			<div data-tool-panel={tool.href} class="tool-panel hidden">
+				<div class="grid items-start gap-14 lg:grid-cols-2">
+					<div class="text-start">
+						<svg width={SVG_W} height={SVG_H} viewBox={`-${STROKE_PAD} -${STROKE_PAD} ${SVG_W} ${SVG_H}`} class="h-24 w-auto sm:h-28">
+							<defs>
+								<linearGradient id={`tools-detail-hex-${tool.href}`} x1="15%" y1="0%" x2="85%" y2="100%">
+									<stop offset="0%" stop-color={shade(TOOL_HEX_COLORS[i], 0.55)} />
+									<stop offset="35%" stop-color={TOOL_HEX_COLORS[i]} />
+									<stop offset="65%" stop-color={shade(TOOL_HEX_COLORS[i], -0.35)} />
+									<stop offset="100%" stop-color={shade(TOOL_HEX_COLORS[i], 0.55)} />
+								</linearGradient>
+							</defs>
+							<path d={hexPath} fill="white" class="dark:fill-neutral-900" stroke={`url(#tools-detail-hex-${tool.href})`} stroke-width="3" />
+							<g
+								transform={`translate(${ICON_X}, ${ICON_Y}) scale(${ICON_SCALE})`}
+								style={{ color: TOOL_HEX_COLORS[i] }}
+								fill="none"
+								stroke={TOOL_HEX_COLORS[i]}
+								stroke-width={1.8 / ICON_SCALE}
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								set:html={tool.icon}
+							/>
+						</svg>
+						<h3 data-i18n={`tool.${tool.slug}.tagline`} class="mt-4 font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-3xl lg:text-4xl dark:text-white">
+							{tool.tagline}
+						</h3>
+						<p data-i18n={`tool.${tool.slug}.paragraph`} class="mt-3 max-w-lg font-helvetica text-sm text-neutral-600 sm:mt-6 sm:text-lg dark:text-neutral-400">
+							{tool.description.paragraph}
+						</p>
+					</div>
+
+					<div class="-mr-6 w-[145%] sm:mr-0 sm:w-full lg:w-[260%]">
+						<img
+							src={tool.heroImage ?? ik("/Tools/Winning Products.png", "w-1200,q-80")}
+							alt={tool.label}
+							class="tool-image w-full object-contain shadow-[0_0_30px_8px_rgba(0,0,0,0.2)] dark:shadow-[0_0_30px_8px_rgba(0,0,0,0.3)]"
+						/>
+					</div>
+				</div>
+			</div>
+		))}
+	</div>
+</section>
+
+<style>
+	.tool-image {
+		transform: translateX(100%);
+		opacity: 0;
+		transition-property: transform, opacity;
+		transition-duration: 700ms;
+		transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.tool-image.is-shown {
+		transform: translateX(0);
+		opacity: 1;
+	}
+
+	.tool-panel {
+		opacity: 1;
+		transition: opacity 200ms cubic-bezier(0.16, 1, 0.3, 1);
+	}
+</style>
+
+<script>
+	const toolButtons = document.querySelectorAll<HTMLButtonElement>("#tools [data-tool]");
+	const detail = document.getElementById("tools-detail");
+	const panels = document.querySelectorAll<HTMLElement>("#tools-detail [data-tool-panel]");
+
+	// Tracked by href rather than by the specific button clicked — the desktop hex row and
+	// the mobile chip grid are two separate sets of DOM nodes for the same tools (only one
+	// set is visible at a time, per breakpoint), so selection state needs to sync across
+	// both rather than only marking whichever exact node was clicked.
+	let selectedHref: string | null = null;
+
+	const FADE_MS = 180;
+
+	function showPanel(href: string) {
+		panels.forEach((p) => p.classList.add("hidden"));
+
+		detail?.classList.remove("hidden");
+		const nextPanel = document.querySelector<HTMLElement>(`[data-tool-panel="${href}"]`);
+		if (nextPanel) {
+			nextPanel.classList.remove("hidden");
+			nextPanel.style.opacity = "0";
+			void nextPanel.offsetWidth; // force reflow so the opacity reset above applies before the transition-in
+			requestAnimationFrame(() => {
+				nextPanel.style.opacity = "1";
+			});
+		}
+
+		// Slide the newly-shown panel's screenshot in from off-screen right. Reset first
+		// (no transition) so it replays from outside every time a different tool is
+		// clicked, not just the first time this panel is ever shown.
+		const image = document.querySelector<HTMLElement>(`[data-tool-panel="${href}"] .tool-image`);
+		if (image) {
+			image.classList.remove("is-shown");
+			void image.offsetWidth; // force reflow so the reset above actually applies first
+			requestAnimationFrame(() => image.classList.add("is-shown"));
+		}
+	}
+
+	function selectTool(btn: HTMLButtonElement) {
+		const href = btn.getAttribute("data-tool");
+		if (!href || href === selectedHref) return;
+		selectedHref = href;
+
+		toolButtons.forEach((b) => {
+			const match = b.getAttribute("data-tool") === href;
+			b.classList.toggle("is-selected", match);
+			b.classList.toggle("scale-125", match && b.classList.contains("group"));
+			b.classList.toggle("z-20", match);
+			b.classList.toggle("opacity-100", match);
+		});
+
+		// Fade the currently-visible panel out first, then swap — a plain crossfade would need
+		// both panels absolutely positioned on top of each other (different tools have
+		// different content heights, so the container would otherwise jump/collapse mid-fade).
+		const currentPanel = document.querySelector<HTMLElement>("#tools-detail [data-tool-panel]:not(.hidden)");
+		if (currentPanel) {
+			currentPanel.style.opacity = "0";
+			setTimeout(() => showPanel(href), FADE_MS);
+		} else {
+			showPanel(href);
+		}
+	}
+
+	toolButtons.forEach((btn) => {
+		btn.addEventListener("click", () => selectTool(btn));
+	});
+
+	if (toolButtons.length > 0) {
+		selectTool(toolButtons[0]);
+	}
+</script>

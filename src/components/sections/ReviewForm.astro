@@ -1,0 +1,285 @@
+---
+// Submits to the Pages Function at functions/api/reviews.js (same origin, so no CORS to
+// worry about). Every rule mirrored here is enforced again server-side — this copy only
+// exists to give the user fast feedback before a round trip.
+const NAME_MIN = 2;
+const NAME_MAX = 50;
+const TEXT_MIN = 20;
+const TEXT_MAX = 1000;
+---
+
+<section class="px-6 pt-32 pb-20 lg:px-16 lg:pt-40">
+	<div class="mx-auto max-w-xl">
+		<h1 data-i18n="reviewform.heading" class="text-center font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-5xl dark:text-white">
+			Leave a <span class="text-primary">review</span>
+		</h1>
+		<p data-i18n="reviewform.subtext" class="mt-4 text-center font-helvetica text-base text-neutral-600 dark:text-neutral-400">
+			Tell other sellers about your experience with Droparabia. Reviews are checked before they go live.
+		</p>
+
+		<form id="review-form" class="mt-10 flex flex-col gap-5" novalidate>
+			<svg width="0" height="0" class="absolute">
+				<defs>
+					<linearGradient id="review-form-star" x1="0%" y1="0%" x2="100%" y2="100%">
+						<stop offset="0%" stop-color="#06a2d1" />
+						<stop offset="100%" stop-color="#2745ff" />
+					</linearGradient>
+				</defs>
+			</svg>
+
+			<div>
+				<label for="review-name" data-i18n="reviewform.name" class="font-helvetica text-sm font-semibold text-neutral-900 dark:text-white">Name</label>
+				<input
+					id="review-name"
+					name="name"
+					type="text"
+					autocomplete="name"
+					minlength={NAME_MIN}
+					maxlength={NAME_MAX}
+					required
+					class="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 font-helvetica text-sm text-neutral-900 outline-none focus:border-primary dark:border-white/10 dark:bg-neutral-900 dark:text-white"
+				/>
+				<p class="review-field-error mt-1 hidden font-helvetica text-xs text-red-500"></p>
+			</div>
+
+			<div>
+				<span data-i18n="reviewform.rating" class="font-helvetica text-sm font-semibold text-neutral-900 dark:text-white">Rating</span>
+				<div id="review-star-picker" class="mt-3 flex items-end gap-2" role="radiogroup" aria-label="Rating out of 5">
+					{
+						Array.from({ length: 5 }).map((_, i) => (
+							<button
+								type="button"
+								class={[
+									"review-star cursor-pointer p-0.5 transition-transform duration-150 ease-out hover:scale-110",
+									["-translate-y-1", "translate-y-2", "-translate-y-3", "translate-y-2", "-translate-y-1"][i],
+								].join(" ")}
+								data-value={i + 1}
+								role="radio"
+								aria-checked="false"
+								aria-label={`${i + 1} star${i === 0 ? "" : "s"}`}
+							>
+								<svg width="40" height="40" viewBox="0 0 24 24">
+									<path
+										fill="#d4d4d4"
+										d="M12 2l2.9 8.9H23l-7.5 5.5 2.9 8.9L12 19.8l-7.5 5.5 2.9-8.9L0 10.9h8.1z"
+									/>
+								</svg>
+							</button>
+						))
+					}
+				</div>
+				<input type="hidden" id="review-rating" name="rating" value="" required />
+				<p class="review-field-error mt-1 hidden font-helvetica text-xs text-red-500"></p>
+			</div>
+
+			<div>
+				<label for="review-text" data-i18n="reviewform.reviewLabel" class="font-helvetica text-sm font-semibold text-neutral-900 dark:text-white">
+					Your review
+				</label>
+				<textarea
+					id="review-text"
+					name="text"
+					rows="5"
+					minlength={TEXT_MIN}
+					maxlength={TEXT_MAX}
+					required
+					class="mt-2 w-full resize-none rounded-xl border border-black/10 bg-white px-4 py-3 font-helvetica text-sm text-neutral-900 outline-none focus:border-primary dark:border-white/10 dark:bg-neutral-900 dark:text-white"
+				></textarea>
+				<p class="mt-1 font-helvetica text-xs text-neutral-400">
+					<span id="review-text-count">0</span>/{TEXT_MAX}
+				</p>
+				<p class="review-field-error mt-1 hidden font-helvetica text-xs text-red-500"></p>
+			</div>
+
+			<!-- Honeypot — invisible to real visitors (off-screen, not display:none, since some
+				bots skip display:none fields specifically) but bots that fill in every field will
+				fill this too. -->
+			<div class="absolute -left-[9999px]" aria-hidden="true">
+				<label for="review-website">Website</label>
+				<input id="review-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+			</div>
+
+			<p id="review-form-message" class="hidden font-helvetica text-sm"></p>
+
+			<button
+				type="submit"
+				id="review-form-submit"
+				data-i18n="reviewform.submit"
+				class="cursor-pointer rounded-full border-[3px] border-primary bg-white px-11 py-3.5 font-ibrand text-sm text-neutral-900 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 dark:bg-neutral-900 dark:text-white"
+			>
+				Submit review
+			</button>
+		</form>
+	</div>
+</section>
+
+<script>
+	import { translations } from "../../lib/i18n";
+
+	function currentLang(): "en" | "ar" {
+		return localStorage.getItem("lang") === "ar" ? "ar" : "en";
+	}
+	function t(key: string, vars: Record<string, string | number> = {}): string {
+		let text = translations[key][currentLang()];
+		for (const [k, v] of Object.entries(vars)) text = text.replace(`{${k}}`, String(v));
+		return text;
+	}
+
+	const NAME_MIN = 2;
+	const NAME_MAX = 50;
+	const TEXT_MIN = 20;
+	const TEXT_MAX = 1000;
+	const RESUBMIT_BLOCK_MS = 60_000;
+	const LAST_SUBMIT_KEY = "droparabia-review-last-submit";
+
+	const form = document.getElementById("review-form") as HTMLFormElement | null;
+	const nameInput = document.getElementById("review-name") as HTMLInputElement | null;
+	const textInput = document.getElementById("review-text") as HTMLTextAreaElement | null;
+	const textCount = document.getElementById("review-text-count");
+	const ratingInput = document.getElementById("review-rating") as HTMLInputElement | null;
+	const starButtons = Array.from(document.querySelectorAll<HTMLButtonElement>(".review-star"));
+	const submitButton = document.getElementById("review-form-submit") as HTMLButtonElement | null;
+	const messageEl = document.getElementById("review-form-message");
+
+	function setStars(value: number) {
+		starButtons.forEach((btn) => {
+			const starValue = Number(btn.dataset.value);
+			const path = btn.querySelector("path");
+			const filled = starValue <= value;
+			if (path) path.setAttribute("fill", filled ? "url(#review-form-star)" : "#d4d4d4");
+			btn.setAttribute("aria-checked", filled ? "true" : "false");
+		});
+	}
+
+	const starPicker = document.getElementById("review-star-picker");
+
+	starButtons.forEach((btn) => {
+		btn.addEventListener("click", () => {
+			const value = Number(btn.dataset.value);
+			if (ratingInput) ratingInput.value = String(value);
+			setStars(value);
+			clearFieldError(ratingInput);
+		});
+
+		// Hovering a star previews the fill up to that star, live — reverting to whatever's
+		// actually selected (not necessarily empty) once the pointer leaves the whole picker.
+		btn.addEventListener("mouseenter", () => setStars(Number(btn.dataset.value)));
+	});
+	starPicker?.addEventListener("mouseleave", () => setStars(Number(ratingInput?.value) || 0));
+
+	textInput?.addEventListener("input", () => {
+		if (textCount) textCount.textContent = String(textInput.value.length);
+	});
+
+	function fieldError(el: HTMLElement | null): HTMLElement | null {
+		const wrapper = el?.closest("div");
+		return wrapper?.querySelector(".review-field-error") ?? null;
+	}
+	function showFieldError(el: HTMLElement | null, message: string) {
+		const errorEl = fieldError(el);
+		if (errorEl) {
+			errorEl.textContent = message;
+			errorEl.classList.remove("hidden");
+		}
+	}
+	function clearFieldError(el: HTMLElement | null) {
+		const errorEl = fieldError(el);
+		errorEl?.classList.add("hidden");
+	}
+
+	function showMessage(text: string, kind: "success" | "error") {
+		if (!messageEl) return;
+		messageEl.textContent = text;
+		messageEl.className = `font-helvetica text-sm ${kind === "success" ? "text-green-600 dark:text-green-400" : "text-red-500"}`;
+	}
+
+	function validate(): boolean {
+		let valid = true;
+		const name = nameInput?.value.trim() ?? "";
+		const text = textInput?.value.trim() ?? "";
+		const rating = Number(ratingInput?.value);
+
+		if (name.length < NAME_MIN || name.length > NAME_MAX) {
+			showFieldError(nameInput, t("reviewform.errorName", { min: NAME_MIN, max: NAME_MAX }));
+			valid = false;
+		}
+		if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+			showFieldError(ratingInput, t("reviewform.errorRating"));
+			valid = false;
+		}
+		if (text.length < TEXT_MIN || text.length > TEXT_MAX) {
+			showFieldError(textInput, t("reviewform.errorText", { min: TEXT_MIN, max: TEXT_MAX }));
+			valid = false;
+		}
+		return valid;
+	}
+
+	form?.addEventListener("submit", async (e) => {
+		e.preventDefault();
+		if (!submitButton || !nameInput || !textInput || !ratingInput) return;
+
+		showMessage("", "success");
+		messageEl?.classList.add("hidden");
+		[nameInput, ratingInput, textInput].forEach((el) => clearFieldError(el));
+
+		const lastSubmit = Number(localStorage.getItem(LAST_SUBMIT_KEY) ?? "0");
+		if (Date.now() - lastSubmit < RESUBMIT_BLOCK_MS) {
+			messageEl?.classList.remove("hidden");
+			showMessage(t("reviewform.errorRateLimit"), "error");
+			return;
+		}
+
+		if (!validate()) {
+			messageEl?.classList.remove("hidden");
+			return;
+		}
+
+		const websiteInput = form.querySelector<HTMLInputElement>("#review-website");
+
+		submitButton.disabled = true;
+		submitButton.textContent = t("reviewform.submitting");
+
+		// Only messages the server deliberately sent (validation/rate-limit strings) are ever
+		// shown verbatim — anything else (a raw JSON-parse error from an unexpected HTML
+		// response, a network failure, ...) falls back to one generic, non-technical message.
+		// Visitors aren't developers; a stack trace or "Unexpected token '<'" means nothing to
+		// them and just looks broken.
+		const GENERIC_ERROR = t("reviewform.errorGeneric");
+		try {
+			const res = await fetch("/api/reviews", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					name: nameInput.value.trim(),
+					rating: Number(ratingInput.value),
+					text: textInput.value.trim(),
+					website: websiteInput?.value ?? "",
+				}),
+			});
+
+			let data: { ok?: boolean; error?: string };
+			try {
+				data = await res.json();
+			} catch {
+				throw new Error(GENERIC_ERROR);
+			}
+
+			if (!res.ok || !data.ok) {
+				throw new Error(typeof data.error === "string" ? data.error : GENERIC_ERROR);
+			}
+
+			localStorage.setItem(LAST_SUBMIT_KEY, String(Date.now()));
+			messageEl?.classList.remove("hidden");
+			showMessage(t("reviewform.success"), "success");
+			form.reset();
+			setStars(0);
+			if (textCount) textCount.textContent = "0";
+		} catch (err) {
+			messageEl?.classList.remove("hidden");
+			showMessage(err instanceof Error ? err.message : t("reviewform.errorGeneric"), "error");
+		} finally {
+			submitButton.disabled = false;
+			submitButton.textContent = t("reviewform.submit");
+		}
+	});
+</script>

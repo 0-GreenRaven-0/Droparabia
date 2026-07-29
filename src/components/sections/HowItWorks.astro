@@ -1,0 +1,174 @@
+---
+// "How Droparabia works" — heading on top, steps as big rounded hexagons using the same
+// SVG hex-path technique as the Hero product cluster / header Tools menu (clip-path can't
+// round a polygon's corners, so it's drawn as an SVG path instead), filled with a premium
+// blue gradient. Number + description sit inside, alternating up/down for a zigzag feel.
+const steps = [
+	"Integrate your Shopify into Droparabia, which allows you add & sell any product directly on your website",
+	"Droparabia keeps track of stock and inventory for every product so you're not managing any inventory",
+	"Our system will handle packaging and order delivery every time a customer orders from your website",
+	"Droparabia charges per sold item only so you're not gambling with your money on products that might not sell",
+];
+
+const HEX_COLORS = ["#2745ff", "#1c35d3", "#1124a8", "#06147c"];
+function shade(hex: string, t: number): string {
+	const n = parseInt(hex.slice(1), 16);
+	const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+	const mix = (c: number) => Math.round(c + ((t > 0 ? 255 : 0) - c) * Math.abs(t));
+	return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+}
+const HEX_W = 256;
+const HEX_SIZE = HEX_W / Math.sqrt(3);
+const HEX_H = HEX_SIZE * 2;
+const STROKE_PAD = 4;
+const SVG_W = HEX_W + STROKE_PAD * 2;
+const SVG_H = HEX_H + STROKE_PAD * 2;
+
+const CORNER_RADIUS = 16;
+const hexPoints: [number, number][] = [
+	[HEX_W / 2, 0],
+	[HEX_W, HEX_H * 0.25],
+	[HEX_W, HEX_H * 0.75],
+	[HEX_W / 2, HEX_H],
+	[0, HEX_H * 0.75],
+	[0, HEX_H * 0.25],
+];
+function roundedHexPath(points: [number, number][], radius: number): string {
+	const n = points.length;
+	const lerp = (a: [number, number], b: [number, number], t: number): [number, number] => [
+		a[0] + (b[0] - a[0]) * t,
+		a[1] + (b[1] - a[1]) * t,
+	];
+	const approach: [number, number][] = [];
+	const leave: [number, number][] = [];
+	for (let i = 0; i < n; i++) {
+		const curr = points[i];
+		const prev = points[(i - 1 + n) % n];
+		const next = points[(i + 1) % n];
+		const distPrev = Math.hypot(curr[0] - prev[0], curr[1] - prev[1]);
+		const distNext = Math.hypot(next[0] - curr[0], next[1] - curr[1]);
+		approach.push(lerp(curr, prev, Math.min(radius / distPrev, 0.5)));
+		leave.push(lerp(curr, next, Math.min(radius / distNext, 0.5)));
+	}
+	let d = `M ${leave[n - 1][0]} ${leave[n - 1][1]} `;
+	for (let i = 0; i < n; i++) {
+		d += `L ${approach[i][0]} ${approach[i][1]} Q ${points[i][0]} ${points[i][1]} ${leave[i][0]} ${leave[i][1]} `;
+	}
+	return d + "Z";
+}
+const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
+---
+
+<section id="how-it-works" class="relative px-6 py-24">
+	<div class="mx-auto max-w-6xl">
+		<h2 data-i18n="howitworks.heading" class="text-center font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-5xl md:text-6xl dark:text-white">
+			How <span class="text-primary">Droparabia</span> works
+		</h2>
+
+		<div class="mt-16 flex flex-wrap items-start justify-center gap-6" style={{ perspective: "1200px" }}>
+			{steps.map((description, i) => (
+				<div
+					class={`animate-hex-float relative ${i % 2 === 1 ? "sm:mt-16" : ""}`}
+					style={{
+						width: `${SVG_W}px`,
+						height: `${SVG_H}px`,
+						animationDelay: `${i * 0.3}s`,
+						animationDuration: `${4 + i * 0.4}s`,
+					}}
+				>
+					<div
+						id={`how-hex-flip-${i}`}
+						class="how-hex-flip absolute inset-0"
+						style={{ backfaceVisibility: "hidden", willChange: "transform" }}
+					>
+						<svg width={SVG_W} height={SVG_H} viewBox={`-${STROKE_PAD} -${STROKE_PAD} ${SVG_W} ${SVG_H}`}>
+							<defs>
+								<linearGradient id={`how-hex-${i}`} x1="10%" y1="0%" x2="90%" y2="100%">
+									<stop offset="0%" stop-color={shade(HEX_COLORS[i], 0.55)} />
+									<stop offset="30%" stop-color={shade(HEX_COLORS[i], 0.15)} />
+									<stop offset="60%" stop-color={HEX_COLORS[i]} />
+									<stop offset="100%" stop-color={shade(HEX_COLORS[i], -0.4)} />
+								</linearGradient>
+							</defs>
+							<path d={hexPath} fill={`url(#how-hex-${i})`} />
+						</svg>
+						<div
+							id={`how-hex-text-${i}`}
+							class="absolute inset-0 flex flex-col items-center justify-center gap-1.5 px-11 text-center opacity-0 transition-opacity duration-150"
+						>
+							<span class="-mt-4 font-ibrand text-5xl text-white">0{i + 1}</span>
+							<p data-i18n={`howitworks.step${i}`} class="font-helvetica text-sm leading-snug font-medium text-white">{description}</p>
+						</div>
+					</div>
+				</div>
+			))}
+		</div>
+	</div>
+</section>
+
+<style>
+	@keyframes hex-float {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-14px);
+		}
+	}
+	.animate-hex-float {
+		animation-name: hex-float;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+	}
+</style>
+
+<script is:inline define:vars={{ stepCount: steps.length }}>
+	// Empty gradient hexagons flip like coins to reveal their number + text once the
+	// section is scrolled into view — same two-phase WAAPI flip as the Hero product
+	// cluster (content swap driven by the first half's own .finished promise, not a
+	// setTimeout race, and the stale forwards-filled first half is explicitly cancelled
+	// so it can't resurface once the second half finishes).
+	const section = document.getElementById("how-it-works");
+	if (section) {
+		const SPIN_MS = 650;
+		const STAGGER_MS = 120;
+
+		function playFlips() {
+			for (let i = 0; i < stepCount; i++) {
+				const hex = document.getElementById(`how-hex-flip-${i}`);
+				const text = document.getElementById(`how-hex-text-${i}`);
+				if (!hex || !text) continue;
+
+				const delay = i * STAGGER_MS;
+				const firstHalf = hex.animate(
+					[{ transform: "rotateY(0deg)" }, { transform: "rotateY(90deg)" }],
+					{ duration: SPIN_MS / 2, delay, easing: "ease-in", fill: "forwards" },
+				);
+				firstHalf.finished
+					.then(() => {
+						firstHalf.cancel();
+						text.classList.remove("opacity-0");
+						hex.animate([{ transform: "rotateY(-90deg)" }, { transform: "rotateY(0deg)" }], {
+							duration: SPIN_MS / 2,
+							easing: "ease-out",
+						});
+					})
+					.catch(() => {});
+			}
+		}
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						playFlips();
+						observer.disconnect();
+					}
+				});
+			},
+			{ threshold: 0.3 },
+		);
+		observer.observe(section);
+	}
+</script>

@@ -1,0 +1,58 @@
+---
+// Branding-only hero: unlike the shared ToolHero (side-by-side, image bleeding off-screen),
+// this is a vertical stack — heading, subheading, CTAs, then the branding example image
+// sitting underneath, full width. Branding has no feature-tabs section; the example image
+// here does that job instead.
+import type { Tool } from "../../data/tools";
+import HexBackground from "../HexBackground.astro";
+import { ik } from "../../lib/imagekit";
+
+interface Props {
+	tool: Tool;
+}
+const { tool } = Astro.props;
+---
+
+<section class="relative overflow-hidden px-6 pt-48 pb-24 text-center lg:px-16">
+	<HexBackground cutCorner={false} />
+
+	<div class="relative mx-auto max-w-3xl">
+		<h1 data-i18n={`tool.${tool.slug}.tagline`} class="font-ibrand text-4xl leading-[1.1] text-neutral-900 sm:text-5xl lg:text-6xl dark:text-white">
+			{tool.tagline}
+		</h1>
+		<p data-i18n={`tool.${tool.slug}.paragraph`} class="mt-6 font-helvetica text-base text-neutral-600 sm:text-lg dark:text-neutral-400">
+			{tool.description.paragraph}
+		</p>
+		<div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+			<a
+				href="https://calendly.com/d/cr37-8xm-k5s/drop-arabia-strategy-session"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="group inline-flex items-center gap-3 rounded-full border-[3px] border-primary bg-white py-1.5 pr-1.5 pl-8 font-ibrand text-sm text-neutral-900 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)] dark:bg-neutral-900 dark:text-white"
+			>
+				<span data-i18n="cta.getStarted">Get Started</span>
+				<span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-white transition-transform duration-200 ease-out group-hover:translate-x-0.5">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M5 12h14" />
+						<path d="m12 5 7 7-7 7" />
+					</svg>
+				</span>
+			</a>
+			<a
+				href="/tools"
+				data-i18n="cta.backToTools"
+				class="rounded-full border-[3px] border-neutral-900 bg-white px-11 py-3.5 font-ibrand text-sm text-neutral-900 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-black/5 dark:border-white dark:bg-neutral-900 dark:text-white dark:hover:bg-white/10"
+			>
+				Back to Tools
+			</a>
+		</div>
+	</div>
+
+	<div class="relative mx-auto mt-16 max-w-5xl">
+		<img
+			src={tool.heroImage ?? ik("/Tools/Winning Products.png", "w-1200,q-80")}
+			alt={tool.label}
+			class="w-full rounded-2xl object-contain drop-shadow-[0_15px_35px_-15px_rgba(0,30,255,0.22)]"
+		/>
+	</div>
+</section>

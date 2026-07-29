@@ -1,0 +1,26 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import FAQList from "../components/sections/FAQList.astro";
+import Footer from "../components/Footer.astro";
+import TabAttention from "../components/TabAttention.astro";
+---
+
+<Layout title="FAQ" titleKey="page.faq">
+	<Header />
+
+	<section class="px-6 pt-48 pb-4 text-center lg:px-16">
+		<div class="mx-auto max-w-3xl">
+			<h1 data-i18n="faqpage.heading" class="font-ibrand text-5xl leading-[1.1] text-neutral-900 sm:text-6xl lg:text-7xl dark:text-white">
+				Frequently asked <span class="text-primary">questions</span>
+			</h1>
+			<p data-i18n="faqpage.subtext" class="mt-6 font-helvetica text-base text-neutral-600 sm:text-lg dark:text-neutral-400">
+				Answers to the questions we get most. Can't find what you're looking for? Reach out through Contact.
+			</p>
+		</div>
+	</section>
+
+	<FAQList />
+	<Footer />
+	<TabAttention />
+</Layout>

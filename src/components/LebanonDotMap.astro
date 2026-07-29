@@ -1,0 +1,262 @@
+---
+// Renders a country/region silhouette as a grid of dots, generated at build time from a
+// plain solid mask image (alpha channel only, no interior detail) — computed once during
+// the build, not in the browser, so this ships as a plain static SVG. Originally built for
+// Lebanon (/public/lebanon.webp) but takes any mask via `src` so the same component/effect
+// can be reused for other shapes (e.g. the GCC/MENA region).
+import sharp from "sharp";
+import path from "node:path";
+
+interface RegionColor {
+	// The source mask's actual fill color for this region (sampled from the PNG/webp), used
+	// to classify each grid cell — not what gets rendered.
+	source: [number, number, number];
+	// The color the matching dots are actually rendered in.
+	output: string;
+}
+
+interface Props {
+	src?: string;
+	cols?: number;
+	dotRadius?: number;
+	class?: string;
+	// Plays a one-time "assemble" animation on load: every dot scatters to a random spot and
+	// shrinks away, then all of them snap back into their real position with a little
+	// overshoot, rippling outward from the center of the shape — like iron filings pulled
+	// into place by a magnet.
+	animate?: boolean;
+	// If set, the assemble animation waits for this event name (dispatched on `window`)
+	// instead of starting immediately on page load — lets a parent orchestrate multiple
+	// maps/scenes in sequence.
+	startTrigger?: string;
+	// When the mask has multiple differently-colored regions (e.g. individual countries),
+	// each grid cell's average source color is matched to the nearest entry here and
+	// rendered in that entry's `output` color instead of inheriting `fill` from a CSS class.
+	regionColors?: RegionColor[];
+}
+const {
+	src = "/lebanon.webp",
+	cols = 55,
+	dotRadius = 0.34,
+	class: className = "",
+	animate = false,
+	startTrigger,
+	regionColors,
+} = Astro.props;
+
+const ALPHA_THRESHOLD = 100;
+const maskPath = path.join(process.cwd(), "public", src.replace(/^\//, ""));
+const { data, info } = await sharp(maskPath).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+const { width, height, channels } = info;
+const alphaAt = (x: number, y: number) => data[(y * width + x) * channels + 3];
+function colorMatch(avg: [number, number, number]): string | undefined {
+	if (!regionColors?.length) return undefined;
+	let best = regionColors[0];
+	let bestDist = Infinity;
+	for (const region of regionColors) {
+		const d = Math.abs(avg[0] - region.source[0]) + Math.abs(avg[1] - region.source[1]) + Math.abs(avg[2] - region.source[2]);
+		if (d < bestDist) {
+			bestDist = d;
+			best = region;
+		}
+	}
+	return best.output;
+}
+
+// Flood-fill "outside" from the image border, through anything below the alpha threshold —
+// anything the fill can't reach counts as inside the silhouette. The source art is solid
+// with no interior holes, but this keeps the fill correct even against edge anti-aliasing.
+const outside = new Uint8Array(width * height);
+const queue: number[] = [];
+function enqueue(x: number, y: number) {
+	if (x < 0 || y < 0 || x >= width || y >= height) return;
+	const idx = y * width + x;
+	if (outside[idx] || alphaAt(x, y) > ALPHA_THRESHOLD) return;
+	outside[idx] = 1;
+	queue.push(idx);
+}
+for (let x = 0; x < width; x++) {
+	enqueue(x, 0);
+	enqueue(x, height - 1);
+}
+for (let y = 0; y < height; y++) {
+	enqueue(0, y);
+	enqueue(width - 1, y);
+}
+while (queue.length) {
+	const idx = queue.pop()!;
+	const x = idx % width;
+	const y = (idx - x) / width;
+	enqueue(x + 1, y);
+	enqueue(x - 1, y);
+	enqueue(x, y + 1);
+	enqueue(x, y - 1);
+}
+
+const rows = Math.round(cols * (height / width));
+const blockW = width / cols;
+const blockH = height / rows;
+const points: [number, number, string | undefined][] = [];
+for (let gy = 0; gy < rows; gy++) {
+	for (let gx = 0; gx < cols; gx++) {
+		const x0 = Math.floor(gx * blockW);
+		const x1 = Math.max(x0 + 1, Math.floor((gx + 1) * blockW));
+		const y0 = Math.floor(gy * blockH);
+		const y1 = Math.max(y0 + 1, Math.floor((gy + 1) * blockH));
+		let insideCount = 0;
+		let total = 0;
+		let sr = 0;
+		let sg = 0;
+		let sb = 0;
+		for (let y = y0; y < y1; y++) {
+			for (let x = x0; x < x1; x++) {
+				total++;
+				if (!outside[y * width + x]) {
+					insideCount++;
+					const idx = (y * width + x) * channels;
+					sr += data[idx];
+					sg += data[idx + 1];
+					sb += data[idx + 2];
+				}
+			}
+		}
+		if (insideCount / total > 0.4) {
+			const color = colorMatch([sr / insideCount, sg / insideCount, sb / insideCount]);
+			points.push([gx, gy, color]);
+		}
+	}
+}
+---
+
+<div
+	class={`relative ${className}`}
+	style={{ aspectRatio: `${cols} / ${rows}` }}
+	data-lebanon-map={animate ? "animate" : undefined}
+	data-start-trigger={startTrigger}
+>
+	<svg
+		viewBox={`0 0 ${cols} ${rows}`}
+		class="absolute inset-0 h-full w-full"
+		preserveAspectRatio="xMidYMid meet"
+		style={animate ? { opacity: 0 } : undefined}
+	>
+		{points.map(([x, y, color]) => <circle cx={x + 0.5} cy={y + 0.5} r={dotRadius} fill={color} />)}
+	</svg>
+
+	{animate && <canvas class="pointer-events-none absolute inset-0 h-full w-full" />}
+</div>
+
+{
+	animate && (
+		<script>
+			import gsap from "gsap";
+
+			// Animating ~1000+ individual SVG <circle> elements' styles every frame (even
+			// batched into fewer tweens) still means that many DOM writes + repaints per tick.
+			// Driving a single canvas draw from ONE tween's onUpdate instead means the browser
+			// does one paint per frame no matter how many dots there are — far cheaper at this
+			// element count. The static SVG underneath just gets revealed once it's done.
+			document.querySelectorAll<HTMLElement>('[data-lebanon-map="animate"]').forEach((root) => {
+				const svg = root.querySelector("svg");
+				const canvas = root.querySelector("canvas");
+				if (!svg || !canvas) return;
+				const circles = Array.from(svg.querySelectorAll<SVGCircleElement>("circle"));
+				if (!circles.length) return;
+
+				const viewBox = svg.viewBox.baseVal;
+				const dotRadius = parseFloat(circles[0].getAttribute("r") ?? "0.34");
+				// Per-dot fill: an explicit `fill` attribute (region coloring) wins; otherwise
+				// every dot shares the color inherited from the CSS class on the SVG (e.g.
+				// `fill-primary`), same as before region coloring existed.
+				const inheritedColor = getComputedStyle(svg).fill || "#2745ff";
+
+				const dots = circles.map((c) => ({
+					cx: parseFloat(c.getAttribute("cx") ?? "0"),
+					cy: parseFloat(c.getAttribute("cy") ?? "0"),
+					color: c.getAttribute("fill") || inheritedColor,
+					angle: Math.random() * Math.PI * 2,
+					scatter: 30 + Math.random() * 40,
+					dist: 0,
+				}));
+
+				// Ripple order is based on distance from the shape's own centroid, not index
+				// order, so the assemble reads as radiating outward from the middle of the map.
+				const centroid = dots.reduce(
+					(acc, d) => ({ x: acc.x + d.cx / dots.length, y: acc.y + d.cy / dots.length }),
+					{ x: 0, y: 0 },
+				);
+				dots.forEach((d) => {
+					d.dist = Math.hypot(d.cx - centroid.x, d.cy - centroid.y);
+				});
+				const maxDist = Math.max(...dots.map((d) => d.dist)) || 1;
+
+				const BASE_DELAY = 0.15;
+				const DELAY_SPAN = 0.6;
+				const DOT_DURATION = 0.7;
+				const TOTAL = BASE_DELAY + DELAY_SPAN + DOT_DURATION;
+				const ease = gsap.parseEase("back.out(1.8)");
+
+				const ctx = canvas.getContext("2d")!;
+				let scaleX = 1;
+				let scaleY = 1;
+
+				function resize() {
+					const rect = root.getBoundingClientRect();
+					const dpr = Math.min(window.devicePixelRatio || 1, 2);
+					canvas!.width = rect.width * dpr;
+					canvas!.height = rect.height * dpr;
+					scaleX = canvas!.width / viewBox.width;
+					scaleY = canvas!.height / viewBox.height;
+				}
+				resize();
+				window.addEventListener("resize", resize);
+
+				function draw(progress: number) {
+					ctx.clearRect(0, 0, canvas!.width, canvas!.height);
+					const globalT = progress * TOTAL;
+					for (const d of dots) {
+						const delay = BASE_DELAY + (d.dist / maxDist) * DELAY_SPAN;
+						const local = Math.max(0, Math.min(1, (globalT - delay) / DOT_DURATION));
+						const eased = ease(local);
+						const startX = d.cx + Math.cos(d.angle) * d.scatter;
+						const startY = d.cy + Math.sin(d.angle) * d.scatter;
+						const x = startX + (d.cx - startX) * eased;
+						const y = startY + (d.cy - startY) * eased;
+						const alpha = Math.max(0, Math.min(1, eased));
+						if (alpha <= 0) continue;
+						ctx.globalAlpha = alpha;
+						ctx.fillStyle = d.color;
+						ctx.beginPath();
+						ctx.arc(x * scaleX, y * scaleY, Math.max(0, dotRadius * eased) * Math.min(scaleX, scaleY), 0, Math.PI * 2);
+						ctx.fill();
+					}
+					ctx.globalAlpha = 1;
+				}
+
+				function startAssemble() {
+					const state = { p: 0 };
+					gsap.to(state, {
+						p: 1,
+						duration: TOTAL,
+						ease: "none",
+						onUpdate: () => draw(state.p),
+						onComplete: () => {
+							canvas!.style.display = "none";
+							svg!.style.opacity = "1";
+							// Lets a parent section (e.g. AboutHero's text) key its own entrance animation
+							// off this one finishing, instead of guessing the map's duration with a fixed delay.
+							root.dispatchEvent(new CustomEvent("lebanon-map:done", { bubbles: true }));
+						},
+					});
+				}
+
+				const trigger = root.dataset.startTrigger;
+				if (trigger) {
+					window.addEventListener(trigger, startAssemble, { once: true });
+				} else {
+					startAssemble();
+				}
+			});
+		</script>
+	)
+}

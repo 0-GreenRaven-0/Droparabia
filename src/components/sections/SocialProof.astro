@@ -1,0 +1,159 @@
+---
+// Sits right after the Hero, no background of its own. Each stat's big number counts up
+// from 0 when it scrolls into view (IntersectionObserver + a simple eased rAF loop),
+// separated by thick blue-gradient vertical rules (dedicated separator elements, not the
+// divide-x utility — a solid gradient line reads much clearer than a bordered one here).
+const stats = [
+	{
+		prefix: "$",
+		from: 300,
+		to: 400,
+		suffix: "K",
+		range: true,
+		label: "generated in revenue by all sellers",
+	},
+	{
+		prefix: "$",
+		from: 600,
+		to: 700,
+		suffix: "",
+		range: true,
+		label: "average store monthly revenue",
+	},
+	{
+		prefix: "+",
+		from: 0,
+		to: 700,
+		suffix: "",
+		range: false,
+		label: "sellers and brands owners",
+	},
+	{
+		static: true,
+		text: "Certified Shopify Partner",
+	},
+];
+---
+
+<section class="px-6 py-8 sm:py-11 lg:px-16 lg:py-14">
+	<div class="mx-auto max-w-6xl">
+		<div class="flex flex-col items-center gap-10 lg:flex-row lg:items-stretch lg:justify-between lg:gap-0">
+			{stats.map((stat, i) => (
+				<>
+					{i > 0 && (
+						<div class="hidden w-1 shrink-0 self-stretch rounded-full bg-[linear-gradient(to_bottom,transparent,#2745ff_25%,#001eff_75%,transparent)] lg:block" />
+					)}
+					<div class="stat-item flex flex-1 flex-col items-center gap-2 px-4 text-center" style={{ transitionDelay: `${i * 100}ms` }}>
+						{stat.static ? (
+							<span data-i18n={`social.stat${i}`} class="font-ibrand text-3xl leading-none text-neutral-900 sm:text-4xl dark:text-white">
+								{stat.text}
+							</span>
+						) : (
+							<>
+								<span class="font-ibrand text-4xl leading-none text-neutral-900 sm:text-5xl dark:text-white">
+									{stat.prefix}
+									<span
+										class="stat-number tabular-nums"
+										data-from={stat.from}
+										data-to={stat.to}
+										data-range={stat.range ? "true" : "false"}
+										data-prefix={stat.prefix}
+										data-suffix={stat.suffix}
+									>
+										{stat.range ? `${stat.from}${stat.suffix}-${stat.prefix}${stat.to}` : stat.from}
+									</span>
+									{stat.suffix}
+								</span>
+								<p data-i18n={`social.stat${i}`} class="font-nunito text-sm text-neutral-600 sm:text-base dark:text-neutral-400">{stat.label}</p>
+							</>
+						)}
+					</div>
+				</>
+			))}
+		</div>
+	</div>
+</section>
+
+<style>
+	.stat-item {
+		opacity: 0;
+		transform: translateY(28px);
+		transition-property: opacity, transform;
+		transition-duration: 700ms;
+		transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.stat-item.is-revealed {
+		opacity: 1;
+		transform: translateY(0);
+	}
+</style>
+
+<script>
+	function animateNumber(el: HTMLElement) {
+		const from = Number(el.dataset.from);
+		const to = Number(el.dataset.to);
+		const isRange = el.dataset.range === "true";
+		const prefix = el.dataset.prefix ?? "";
+		const suffix = el.dataset.suffix ?? "";
+		const duration = 1400;
+
+		// Digit count grows as the count-up climbs from 0 (e.g. "0" -> "300"), which
+		// changes this span's rendered width and pushes the flex columns/separators
+		// around it. Lock the *wrapping* element (prefix + number + suffix, e.g. the
+		// whole "$300K-$400K") to its final width up front so only the digits visibly
+		// change, not the surrounding layout. Locking just this inner number span
+		// instead would turn it into its own atomic inline-block box and introduce a
+		// new line-break opportunity between it and the adjacent suffix text — which is
+		// exactly what made "K" wrap onto its own line.
+		const wrap = el.parentElement;
+		const finalText = isRange ? `${to}${suffix}-${prefix}${to}` : String(to);
+		if (wrap) {
+			const startText = el.textContent;
+			el.textContent = finalText;
+			wrap.style.display = "inline-block";
+			wrap.style.textAlign = "center";
+			wrap.style.minWidth = `${wrap.getBoundingClientRect().width}px`;
+			el.textContent = startText;
+		}
+
+		const start = performance.now();
+
+		function tick(now: number) {
+			const t = Math.min(1, (now - start) / duration);
+			const eased = 1 - Math.pow(1 - t, 3);
+			if (isRange) {
+				// Both ends of the range count up together from 0, so it lands on the
+				// real "from-to" span instead of the "from" side sliding into "to".
+				const currentFrom = Math.round(from * eased);
+				const currentTo = Math.round(to * eased);
+				el.textContent = `${currentFrom}${suffix}-${prefix}${currentTo}`;
+			} else {
+				const current = Math.round(from + (to - from) * eased);
+				el.textContent = String(current);
+			}
+			if (t < 1) requestAnimationFrame(tick);
+		}
+		requestAnimationFrame(tick);
+	}
+
+	// One observer per stat item (not per number) — this is also what triggers the fade-up
+	// reveal, so both animations start together the moment each stat scrolls into view.
+	const items = document.querySelectorAll<HTMLElement>(".stat-item");
+	if (items.length) {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						const item = entry.target as HTMLElement;
+						item.classList.add("is-revealed");
+						const number = item.querySelector<HTMLElement>(".stat-number");
+						if (number) animateNumber(number);
+						observer.unobserve(item);
+					}
+				});
+			},
+			{ threshold: 0.5 },
+		);
+		items.forEach((el) => observer.observe(el));
+	}
+</script>

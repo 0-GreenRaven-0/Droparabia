@@ -1,0 +1,104 @@
+---
+import "../styles/global.css";
+import ExternalRedirect from "../components/ExternalRedirect.astro";
+import { ik } from "../lib/imagekit";
+
+interface Props {
+	title?: string;
+	titleKey?: string;
+	description?: string;
+}
+const {
+	title = "Droparabia",
+	titleKey,
+	description = "Droparabia is Lebanon's first dropshipping platform, helping you build and grow an e-commerce store without owning inventory or the upfront risk of traditional e-commerce.",
+} = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/webp" href={ik("/Droparabia.webp", "w-64,q-90")} />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<title id="page-title" data-title-key={titleKey}>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalURL} />
+		<link rel="preconnect" href="https://ik.imagekit.io" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" />
+		<!-- Arabic body/heading font — swapped in for the whole page whenever the language
+			 toggle sets dir="rtl" (see global.css's [dir="rtl"] font-family override). -->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Droparabia" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:image" content={ik("/Droparabia.webp", "w-512,q-80")} />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<script is:inline>
+			const theme = localStorage.getItem("theme");
+			if (theme === "dark") {
+				document.documentElement.classList.add("dark");
+			}
+			const lang = localStorage.getItem("lang");
+			if (lang === "ar") {
+				document.documentElement.lang = "ar";
+				document.documentElement.dir = "rtl";
+			}
+		</script>
+	</head>
+	<body class="bg-background font-helvetica dark:bg-neutral-950">
+		<slot />
+		<ExternalRedirect />
+	</body>
+</html>
+
+<script>
+	// Applies to every [data-i18n] element on the page (any component can opt a text node in
+	// by giving it a data-i18n="key" attribute matching an entry in src/lib/i18n.ts) — runs
+	// once on load, and again whenever Header.astro's language toggle fires the
+	// "droparabia:lang-changed" event, so it stays in sync no matter which page it's on.
+	import { translations } from "../lib/i18n";
+
+	function currentLang(): "en" | "ar" {
+		return localStorage.getItem("lang") === "ar" ? "ar" : "en";
+	}
+
+	function applyTranslations() {
+		const lang = currentLang();
+		document.querySelectorAll<HTMLElement>("[data-i18n]").forEach((el) => {
+			const entry = translations[el.dataset.i18n ?? ""];
+			if (!entry) return;
+			// Some tagged elements (headings with an inline colored word, etc.) have real child
+			// markup, not just plain text — cache that original English HTML once, so switching
+			// back to "en" restores it exactly instead of flattening it to plain text forever
+			// the first time this element gets translated.
+			if (el.dataset.i18nOriginal === undefined) el.dataset.i18nOriginal = el.innerHTML;
+			el.innerHTML = lang === "en" ? el.dataset.i18nOriginal : entry.ar;
+		});
+
+		// Same idea for form placeholder text, which isn't part of the DOM tree the innerHTML
+		// swap above touches.
+		document.querySelectorAll<HTMLInputElement>("[data-i18n-placeholder]").forEach((el) => {
+			const entry = translations[el.dataset.i18nPlaceholder ?? ""];
+			if (entry) el.placeholder = entry[lang];
+		});
+
+		// The browser tab title isn't part of the visible DOM tree the [data-i18n] scan above
+		// covers, so it's translated separately here off the same titleKey prop from Layout.astro.
+		const titleEl = document.getElementById("page-title");
+		const titleKey = titleEl?.dataset.titleKey;
+		if (titleEl && titleKey && translations[titleKey]) {
+			document.title = translations[titleKey][lang];
+		}
+	}
+
+	applyTranslations();
+	window.addEventListener("droparabia:lang-changed", applyTranslations);
+</script>

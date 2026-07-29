@@ -1,0 +1,36 @@
+---
+// Shared template for every tool's detail page — clicking any tool in Header.astro's
+// nav (or Tools.astro) lands here at /tools/[slug]. Static site (no SSR adapter), so
+// every tool page is pre-rendered at build time via getStaticPaths.
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import ToolHero from "../../components/sections/ToolHero.astro";
+import BrandingHero from "../../components/sections/BrandingHero.astro";
+import ToolFeatures from "../../components/sections/ToolFeatures.astro";
+import ToolExample from "../../components/sections/ToolExample.astro";
+import ToolPerks from "../../components/sections/ToolPerks.astro";
+import Footer from "../../components/Footer.astro";
+import TabAttention from "../../components/TabAttention.astro";
+import { tools } from "../../data/tools";
+
+export function getStaticPaths() {
+	return tools.map((tool) => ({
+		params: { slug: tool.slug },
+		props: { tool },
+	}));
+}
+
+const { tool } = Astro.props;
+---
+
+<Layout title={tool.label} titleKey={`tool.${tool.slug}.label`}>
+	<Header />
+	{tool.slug === "branding" ? <BrandingHero tool={tool} /> : <ToolHero tool={tool} />}
+	{
+		tool.slug !== "branding" &&
+			(tool.exampleImage ? <ToolExample tool={tool} /> : <ToolFeatures tool={tool} />)
+	}
+	<ToolPerks tool={tool} />
+	<Footer />
+	<TabAttention />
+</Layout>

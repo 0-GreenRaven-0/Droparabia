@@ -1,0 +1,118 @@
+---
+// Heading on top, a staircase list of bonuses below — each row steps further right the
+// higher it sits (matching the sketch). The diagonal slash stays put; only the text
+// slides in from the right as the row scrolls into view.
+// Compound words use a non-breaking hyphen (U+2011, looks identical to "-") instead of a
+// plain one — a plain "-" is a valid line-break point per the Unicode line-breaking rules,
+// which is what was splitting "6-Figures" into "6-" / "Figures" on narrow screens.
+const bonuses = [
+	{
+		title: "+20 hours of FREE courses and recorded tutorials",
+		subtitle: "Learn store setup, marketing, and scaling at your own pace",
+	},
+	{
+		title: "2 Weekly coaching calls with experienced advisors",
+		subtitle: "Live guidance to keep your store on track every week",
+	},
+	{
+		title: "One‑on‑One mentorship with a 6‑Figures brand builder",
+		subtitle: "Personalized advice from someone who's done it before",
+	},
+	{
+		title: "WhatsApp group for support whenever you need it",
+		subtitle: "A direct line to the team and other sellers, 24/7",
+	},
+];
+const STAIR_STEP = 3.5; // rem indent added per row, going up the list
+---
+
+<section id="bonuses" class="px-4 py-20 sm:px-6 lg:px-16">
+	<div class="mx-auto max-w-6xl">
+		<h2 data-i18n="bonuses.heading" class="text-center font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-5xl dark:text-white">
+			Droparabia <span class="text-primary">exclusive bonuses</span>
+		</h2>
+
+		<!-- Same row layout/sizing at every breakpoint — the staircase indent (the only
+			 desktop-specific part) is applied via a CSS var so it only takes effect at lg+;
+			 below that every row sits flush at the same right edge, no stagger. -->
+		<div class="mx-auto mt-12 flex max-w-4xl flex-col items-start gap-10 sm:mt-16 sm:gap-16 lg:items-end">
+			{
+				bonuses.map((bonus, i) => (
+					<div
+						class="flex flex-row-reverse items-center gap-0.5 sm:gap-5 lg:mr-(--stair-margin) lg:flex-row"
+						style={{ "--stair-margin": `${i * STAIR_STEP}rem` }}
+						data-index={i}
+					>
+						<div class="bonus-text flex flex-col gap-1 text-left lg:text-right" style={{ transitionDelay: `${i * 100}ms` }}>
+							<p data-i18n={`bonuses.title${i}`} class="font-helvetica text-base font-semibold text-neutral-900 sm:text-3xl dark:text-white">
+								{bonus.title}
+							</p>
+							<p data-i18n={`bonuses.subtitle${i}`} class="font-nunito text-xs text-neutral-600 sm:text-base dark:text-neutral-400">
+								{bonus.subtitle}
+							</p>
+						</div>
+						{/* Two separate SVGs (not one shared viewBox) so the mobile version can crop
+						tightly around its own polygon's bounding box — trimming the dead space the
+						shared 0 0 54 92 viewBox left on each side, bringing the slash visually closer
+						to the text without altering the polygon's own points/slope. */}
+						<svg viewBox="8 4 36 84" width="36" height="84" class="shrink-0 sm:hidden">
+							<defs>
+								<linearGradient id={`bonus-slash-mobile-${i}`} x1="100%" y1="0%" x2="0%" y2="100%">
+									<stop offset="0%" stop-color="#2745ff" />
+									<stop offset="50%" stop-color="#001eff" />
+									<stop offset="100%" stop-color="#000c66" />
+								</linearGradient>
+							</defs>
+							<polygon points="42,6 18,86 10,86 34,6" fill={`url(#bonus-slash-mobile-${i})`} />
+						</svg>
+						<svg viewBox="0 0 54 92" width="54" height="92" class="hidden shrink-0 sm:block">
+							<defs>
+								<linearGradient id={`bonus-slash-${i}`} x1="100%" y1="0%" x2="0%" y2="100%">
+									<stop offset="0%" stop-color="#2745ff" />
+									<stop offset="50%" stop-color="#001eff" />
+									<stop offset="100%" stop-color="#000c66" />
+								</linearGradient>
+							</defs>
+							{/* A filled parallelogram (not a stroked line) — stroke-linecap only cuts
+							perpendicular to the line's own angle, which still looks slanted on a
+							diagonal. Horizontal top/bottom edges here give a truly flat cut. */}
+							<polygon points="50,6 18,86 2,86 34,6" fill={`url(#bonus-slash-${i})`} />
+						</svg>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.bonus-text {
+		opacity: 0;
+		transform: translateX(4rem);
+		transition-property: opacity, transform;
+		transition-duration: 700ms;
+		transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.bonus-text.is-revealed {
+		opacity: 1;
+		transform: translateX(0);
+	}
+</style>
+
+<script>
+	const texts = document.querySelectorAll<HTMLElement>(".bonus-text");
+	if (texts.length) {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add("is-revealed");
+						observer.unobserve(entry.target);
+					}
+				});
+			},
+			{ threshold: 0.4 },
+		);
+		texts.forEach((text) => observer.observe(text));
+	}
+</script>

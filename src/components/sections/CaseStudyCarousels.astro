@@ -1,0 +1,108 @@
+---
+// Ported from droparabia-landing's MAIN/index page (not the testimonials page) — the two
+// "Social proof" carousel sections that sit before/after the About section: same images,
+// same autoplay/loop Swiper config, same green/blue arrow-flanked headings.
+const carousels = [
+	{
+		id: "cs-swiper-1",
+		heading: "Latest case studies",
+		arrowFrom: "#4ade80",
+		arrowTo: "#16a34a",
+		slides: [
+			"https://ik.imagekit.io/greenraven/MJ/Case%20Studies/4.png?tr=w-900,q-70,f-webp",
+			"https://ik.imagekit.io/greenraven/MJ/Case%20Studies/5.png?tr=w-900,q-70,f-webp",
+			"https://ik.imagekit.io/greenraven/MJ/Case%20Studies/2.png?tr=w-900,q-70,f-webp",
+			"https://ik.imagekit.io/greenraven/MJ/Case%20Studies/6.png?tr=w-900,q-70,f-webp",
+			"https://ik.imagekit.io/greenraven/MJ/Case%20Studies/1.png?tr=w-900,q-70,f-webp",
+			"https://ik.imagekit.io/greenraven/MJ/Case%20Studies/2.png?tr=w-900,q-70,f-webp",
+			"https://ik.imagekit.io/greenraven/MJ/Case%20Studies/3.png?tr=w-900,q-70,f-webp",
+			"https://ik.imagekit.io/greenraven/MJ/Testimonials/Testo.png?tr=w-900,q-70,f-webp",
+			"https://ik.imagekit.io/greenraven/MJ/Testimonials/Testo%20(1).png?tr=w-900,q-70,f-webp",
+		],
+	},
+];
+---
+
+{
+	carousels.map((carousel, i) => (
+		<section class:list={["case-carousel px-6 py-16 lg:px-16", { "bg-black/[0.03] dark:bg-white/[0.03]": i % 2 === 1 }]}>
+			<div class="mx-auto max-w-6xl">
+				<h2 data-i18n="casestudy.heading" class="text-center font-ibrand text-2xl text-neutral-900 sm:text-3xl dark:text-white">
+					{carousel.heading}
+				</h2>
+
+				<div class="relative mt-10">
+					<div class="swiper" id={carousel.id}>
+						<div class="swiper-wrapper">
+							{carousel.slides.map((src) => (
+								<div class="swiper-slide overflow-hidden rounded-2xl shadow-[0_8px_18px_-10px_rgba(0,0,0,0.16)]">
+									<img src={src} alt="Testimonial" loading="lazy" class="block w-full" />
+								</div>
+							))}
+						</div>
+					</div>
+
+					<button
+						type="button"
+						class="case-carousel-nav case-carousel-prev absolute top-1/2 left-0 z-10 flex h-9 w-9 sm:h-11 sm:w-11 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-[linear-gradient(135deg,#2745ff,#001eff_45%,#000c66)] text-white shadow-[0_6px_16px_-6px_rgba(0,30,255,0.35)] transition-transform duration-150 ease-out hover:scale-110"
+						aria-label="Previous"
+					>
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+						</svg>
+					</button>
+					<button
+						type="button"
+						class="case-carousel-nav case-carousel-next absolute top-1/2 right-0 z-10 flex h-9 w-9 sm:h-11 sm:w-11 translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-[linear-gradient(135deg,#2745ff,#001eff_45%,#000c66)] text-white shadow-[0_6px_16px_-6px_rgba(0,30,255,0.35)] transition-transform duration-150 ease-out hover:scale-110"
+						aria-label="Next"
+					>
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+						</svg>
+					</button>
+				</div>
+			</div>
+		</section>
+	))
+}
+
+<style>
+	.case-carousel :global(.swiper) {
+		overflow: hidden;
+	}
+</style>
+
+<script>
+	import Swiper from "swiper";
+	import { Navigation, Autoplay } from "swiper/modules";
+	import "swiper/css";
+	import "swiper/css/navigation";
+
+	const swiperIds = ["cs-swiper-1"];
+
+	swiperIds.forEach((id) => {
+		const el = document.getElementById(id);
+		if (!el) return;
+		const section = el.closest("section");
+		new Swiper(el, {
+			modules: [Navigation, Autoplay],
+			slidesPerView: 1,
+			spaceBetween: 16,
+			breakpoints: {
+				600: { slidesPerView: 2, spaceBetween: 20 },
+				1024: { slidesPerView: 3, spaceBetween: 24 },
+			},
+			loop: true,
+			autoplay: {
+				delay: 3500,
+				disableOnInteraction: false,
+				pauseOnMouseEnter: true,
+			},
+			navigation: {
+				nextEl: section?.querySelector(".case-carousel-next") as HTMLElement,
+				prevEl: section?.querySelector(".case-carousel-prev") as HTMLElement,
+			},
+			pagination: false,
+		});
+	});
+</script>

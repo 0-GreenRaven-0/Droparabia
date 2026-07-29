@@ -1,0 +1,566 @@
+---
+import HexBackground from "../HexBackground.astro";
+import { ik } from "../../lib/imagekit";
+import { translations } from "../../lib/i18n";
+// Axial hex-grid coordinates (flat-top hexagons) for a tightly interlocked
+// diagonal cluster, bottom-left to top-right — matches the reference hive image.
+// Colors are a linear interpolation between the brand primary and secondary,
+// ordered along the same diagonal so the cluster reads as one smooth gradient.
+// Pointy-top hexagons (point at top/bottom, flat edges on the sides) — matches /ref.png.
+const HEX_W = 170; // flat-to-flat width
+const HEX_SIZE = HEX_W / Math.sqrt(3); // circumradius
+const HEX_H = HEX_SIZE * 2; // vertex-to-vertex height
+// Spreads the hex centers out further than a tight tessellation would, so a visible
+// gap opens up between neighbors instead of them sharing an edge.
+const SPACING_FACTOR = 1.16;
+// Product image, perfectly centered in each hex.
+const ICON_SCALE = (HEX_W * 0.66) / 24;
+const ICON_X = HEX_W / 2 - (24 * ICON_SCALE) / 2;
+const ICON_Y = HEX_H / 2 - (24 * ICON_SCALE) / 2;
+// SVGs clip to their viewBox by default, and the hex's top/bottom vertices sit right on
+// that edge, so half the outline's stroke width was getting cut off at the tips. Padding
+// the SVG canvas (and shifting the viewBox origin negative) gives the stroke room to
+// breathe without moving the hex path's own coordinates.
+const STROKE_PAD = 4;
+const SVG_W = HEX_W + STROKE_PAD * 2;
+const SVG_H = HEX_H + STROKE_PAD * 2;
+
+// Niches the toggle next to the hex cluster cycles through — each folder under
+// /public/products holds 8 numbered images, one per hex. The toggle is a diagonal
+// line (bottom-left to top-right) with an arrow button at each end.
+const niches = ["Kitchen", "Health and beauty", "Electronic", "Car Care", "Pets", "Sporting Goods"];
+const nicheProducts = niches.map((niche) =>
+	Array.from({ length: 8 }, (_, i) => ik(`/products/${niche}/${i + 1}.png`, "w-300,q-80")),
+);
+// Display labels only — folder names above (used for image paths) stay in English regardless
+// of language, since they're just disk paths, not user-facing text.
+const nicheLabels = niches.map((_, i) => translations[`hero.niche${i}`]);
+
+// A proper rectangular honeycomb — 4 hexes across the top row, 4 across the bottom row,
+// the bottom row offset half a hex right (and down) by the axial (q + r/2) term so they
+// interlock tightly, matching the reference image.
+const axial = [
+	{ q: 0, r: 0, color: "#2745ff" },
+	{ q: 1, r: 0, color: "#213de9" },
+	{ q: 2, r: 0, color: "#1c35d3" },
+	{ q: 3, r: 0, color: "#162dbd" },
+	{ q: 0, r: 1, color: "#1124a8" },
+	{ q: 1, r: 1, color: "#0b1c92" },
+	{ q: 2, r: 1, color: "#06147c" },
+	{ q: 3, r: 1, color: "#000c66" },
+];
+// Blends a hex color toward white (t > 0) or black (t < 0) to build a highlight/shadow
+// pair for a glossy sheen, instead of one flat stroke color per hexagon.
+function shade(hex: string, t: number): string {
+	const n = parseInt(hex.slice(1), 16);
+	const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+	const mix = (c: number) => Math.round(c + ((t > 0 ? 255 : 0) - c) * Math.abs(t));
+	return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+}
+const rawHexes = axial.map((h) => ({
+	x: HEX_SIZE * Math.sqrt(3) * (h.q + h.r / 2) * SPACING_FACTOR,
+	y: HEX_SIZE * 1.5 * h.r * SPACING_FACTOR,
+	color: h.color,
+	light: shade(h.color, 0.55),
+	dark: shade(h.color, -0.35),
+}));
+const minX = Math.min(...rawHexes.map((h) => h.x));
+const minY = Math.min(...rawHexes.map((h) => h.y));
+const hexes = rawHexes.map((h) => ({ x: h.x - minX, y: h.y - minY, color: h.color, light: h.light, dark: h.dark }));
+const clusterWidth = Math.max(...hexes.map((h) => h.x)) + HEX_W;
+const clusterHeight = Math.max(...hexes.map((h) => h.y)) + HEX_H;
+
+// clip-path can't round polygon corners, so every hex is drawn as an SVG path instead —
+// each vertex is rounded by trimming back along its two edges and joining with a curve.
+const CORNER_RADIUS = 10;
+const hexPoints: [number, number][] = [
+	[HEX_W / 2, 0],
+	[HEX_W, HEX_H * 0.25],
+	[HEX_W, HEX_H * 0.75],
+	[HEX_W / 2, HEX_H],
+	[0, HEX_H * 0.75],
+	[0, HEX_H * 0.25],
+];
+function roundedHexPath(points: [number, number][], radius: number): string {
+	const n = points.length;
+	const lerp = (a: [number, number], b: [number, number], t: number): [number, number] => [
+		a[0] + (b[0] - a[0]) * t,
+		a[1] + (b[1] - a[1]) * t,
+	];
+	const approach: [number, number][] = [];
+	const leave: [number, number][] = [];
+	for (let i = 0; i < n; i++) {
+		const curr = points[i];
+		const prev = points[(i - 1 + n) % n];
+		const next = points[(i + 1) % n];
+		const distPrev = Math.hypot(curr[0] - prev[0], curr[1] - prev[1]);
+		const distNext = Math.hypot(next[0] - curr[0], next[1] - curr[1]);
+		approach.push(lerp(curr, prev, Math.min(radius / distPrev, 0.5)));
+		leave.push(lerp(curr, next, Math.min(radius / distNext, 0.5)));
+	}
+	let d = `M ${leave[n - 1][0]} ${leave[n - 1][1]} `;
+	for (let i = 0; i < n; i++) {
+		d += `L ${approach[i][0]} ${approach[i][1]} Q ${points[i][0]} ${points[i][1]} ${leave[i][0]} ${leave[i][1]} `;
+	}
+	return d + "Z";
+}
+const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
+
+---
+
+<section id="hero" class="relative flex flex-col items-center px-6 pt-12 pb-10 text-center sm:pt-28 sm:pb-16 lg:pb-24">
+	<HexBackground id="hex-bg-canvas" />
+
+	<div class="relative mt-16 flex max-w-5xl flex-col items-center">
+		<h1 data-i18n="hero.headline" class="max-w-5xl font-ibrand text-3xl leading-[1.15] text-neutral-900 sm:text-5xl md:text-6xl dark:text-white">
+			Build a successful e-com store without gambling your budget
+		</h1>
+		<p data-i18n="hero.subheadline" class="mt-6 max-w-2xl font-helvetica text-xs text-neutral-900 sm:text-lg dark:text-white">
+			Let Droparabia find you in-demand winning products &amp; deliver them to your customer's doorstep while you
+			focus on marketing &amp; advertising!
+		</p>
+		<div class="mt-8 flex w-full max-w-xs flex-col items-stretch gap-4 sm:w-auto sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
+			<a
+				href="/tools"
+				class="group inline-flex items-center justify-center gap-2 rounded-full border-[3px] border-primary bg-white py-1 pr-1 pl-5 font-ibrand text-xs text-neutral-900 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)] sm:gap-3 sm:py-1.5 sm:pr-1.5 sm:pl-8 sm:text-sm dark:bg-neutral-900 dark:text-white"
+			>
+				<span data-i18n="cta.getStarted">Get Started</span>
+				<span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-white transition-transform duration-200 ease-out group-hover:translate-x-0.5 sm:h-9 sm:w-9">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M5 12h14" />
+						<path d="m12 5 7 7-7 7" />
+					</svg>
+				</span>
+			</a>
+			<a
+				href="https://calendly.com/d/cr37-8xm-k5s/drop-arabia-strategy-session"
+				target="_blank"
+				rel="noopener noreferrer"
+				data-i18n="cta.talkToUs"
+				class="rounded-full border-[3px] border-neutral-900 bg-white px-5 py-2.5 text-center font-ibrand text-xs text-neutral-900 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-black/5 sm:px-11 sm:py-3.5 sm:text-sm dark:border-white dark:bg-neutral-900 dark:text-white dark:hover:bg-white/10"
+			>
+				Talk to Us
+			</a>
+		</div>
+	</div>
+
+	<!-- The hex cluster's coordinates are all fixed pixels sized for desktop, so on smaller
+		 screens it's scaled down via CSS transform on an inner wrapper rather than rebuilt —
+		 the outer wrapper's own box shrinks to match (via the same --cluster-scale var in a
+		 calc()), so it reserves only the visually-scaled footprint, not the full-size one. -->
+	<div
+		class="pointer-events-none relative mt-10 [--cluster-scale:0.36] sm:[--cluster-scale:0.6] lg:mt-16 lg:[--cluster-scale:1]"
+		style={{ width: `calc(${clusterWidth}px * var(--cluster-scale))`, height: `calc(${clusterHeight}px * var(--cluster-scale))` }}
+		aria-hidden="true"
+	>
+		<div
+			class="absolute top-0 left-0 origin-top-left"
+			style={{ width: `${clusterWidth}px`, height: `${clusterHeight}px`, transform: "scale(var(--cluster-scale))", perspective: "900px" }}
+		>
+		{
+			hexes.map((hex, i) => {
+				const productSrc = nicheProducts[0][i];
+				return (
+					<div
+						class="absolute animate-hex-float"
+						style={{
+							left: `${hex.x - STROKE_PAD}px`,
+							top: `${hex.y - STROKE_PAD}px`,
+							animationDelay: `${(i % 4) * 0.5}s`,
+							animationDuration: `${4 + (i % 3) * 0.6}s`,
+						}}
+					>
+						<svg
+							id={`hex-${i}`}
+							width={SVG_W}
+							height={SVG_H}
+							viewBox={`-${STROKE_PAD} -${STROKE_PAD} ${SVG_W} ${SVG_H}`}
+							style={{ backfaceVisibility: "hidden", willChange: "transform" }}
+						>
+							<defs>
+								<linearGradient id={`hex-shine-${i}`} x1="15%" y1="0%" x2="85%" y2="100%">
+									<stop offset="0%" stop-color={hex.light} />
+									<stop offset="35%" stop-color={hex.color} />
+									<stop offset="65%" stop-color={hex.dark} />
+									<stop offset="100%" stop-color={hex.light} />
+								</linearGradient>
+							</defs>
+							<path d={hexPath} fill="white" class="dark:fill-neutral-900" stroke={`url(#hex-shine-${i})`} stroke-width="6" />
+							<image
+								id={`hex-img-${i}`}
+								href={productSrc}
+								x={ICON_X}
+								y={ICON_Y}
+								width={24 * ICON_SCALE}
+								height={24 * ICON_SCALE}
+								preserveAspectRatio="xMidYMid meet"
+							/>
+						</svg>
+					</div>
+				);
+			})
+		}
+		</div>
+	</div>
+
+	<div id="niche-toggle" class="pointer-events-auto relative mt-6 flex items-center gap-3 sm:gap-4 lg:mt-10 lg:gap-6">
+		<button
+			id="niche-prev"
+			type="button"
+			aria-label="Previous niche"
+			class="flex h-8 w-8 cursor-pointer items-center justify-center transition-transform duration-150 ease-out hover:scale-110 sm:h-10 sm:w-10 lg:h-12 lg:w-12"
+		>
+			<svg width="40" height="40" viewBox="0 0 24 24" style={{ transform: "rotate(225deg)" }}>
+				<defs>
+					<linearGradient id="nav-arrow-grad-prev" x1="0%" y1="0%" x2="100%" y2="100%">
+						<stop offset="0%" stop-color="#2745ff" />
+						<stop offset="100%" stop-color="#000c66" />
+					</linearGradient>
+				</defs>
+				<path d="M3 11l19-9-9 19-2-8-8-2z" fill="url(#nav-arrow-grad-prev)" />
+			</svg>
+		</button>
+		<span id="niche-label" class="font-ibrand w-40 text-center text-xl whitespace-nowrap text-neutral-900 dark:text-white">
+			{nicheLabels[0].en}
+		</span>
+		<button
+			id="niche-next"
+			type="button"
+			aria-label="Next niche"
+			class="flex h-8 w-8 cursor-pointer items-center justify-center transition-transform duration-150 ease-out hover:scale-110 sm:h-10 sm:w-10 lg:h-12 lg:w-12"
+		>
+			<svg width="40" height="40" viewBox="0 0 24 24" style={{ transform: "rotate(45deg)" }}>
+				<defs>
+					<linearGradient id="nav-arrow-grad-next" x1="0%" y1="0%" x2="100%" y2="100%">
+						<stop offset="0%" stop-color="#2745ff" />
+						<stop offset="100%" stop-color="#000c66" />
+					</linearGradient>
+				</defs>
+				<path d="M3 11l19-9-9 19-2-8-8-2z" fill="url(#nav-arrow-grad-next)" />
+			</svg>
+		</button>
+	</div>
+</section>
+
+<style>
+	@keyframes hex-float {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-14px);
+		}
+	}
+	.animate-hex-float {
+		animation-name: hex-float;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+	}
+
+
+</style>
+
+<script is:inline define:vars={{ niches, nicheProducts, nicheLabels }}>
+	// Warm the image cache for every niche up front, so the mid-flip href swap never
+	// stalls on a network fetch/decode — that stall is what reads as "lag" mid-spin.
+	nicheProducts.flat().forEach((src) => {
+		const preload = new Image();
+		preload.src = src;
+	});
+
+	const label = document.getElementById("niche-label");
+	const prevBtn = document.getElementById("niche-prev");
+	const nextBtn = document.getElementById("niche-next");
+	let index = 0;
+	let animating = false;
+
+	function currentLang() {
+		return localStorage.getItem("lang") === "ar" ? "ar" : "en";
+	}
+	// Re-label the current niche in place (no re-spin) whenever the language toggle fires —
+	// the folder-name lookups in render() below are unaffected since they key off `niches`,
+	// not this display label.
+	window.addEventListener("droparabia:lang-changed", () => {
+		if (label) label.textContent = nicheLabels[index][currentLang()];
+	});
+
+	const SPIN_MS = 550;
+	const STAGGER_MS = 55;
+
+	function setButtonsDisabled(disabled) {
+		[prevBtn, nextBtn].forEach((btn) => {
+			if (!btn) return;
+			btn.disabled = disabled;
+			btn.classList.toggle("opacity-40", disabled);
+			btn.classList.toggle("pointer-events-none", disabled);
+		});
+	}
+
+	function render() {
+		if (animating) return;
+		animating = true;
+		setButtonsDisabled(true);
+
+		if (label) {
+			label.textContent = nicheLabels[index][currentLang()];
+			label.getAnimations().forEach((a) => a.cancel());
+			label.animate(
+				[
+					{ opacity: 0, transform: "translateY(8px) scale(0.92)" },
+					{ opacity: 1, transform: "translateY(0) scale(1)" },
+				],
+				{ duration: 350, easing: "ease-out" },
+			);
+		}
+
+		const items = nicheProducts[index];
+		items.forEach((src, i) => {
+			const hex = document.getElementById(`hex-${i}`);
+			if (!hex) return;
+			const delay = i * STAGGER_MS;
+			hex.getAnimations().forEach((a) => a.cancel());
+
+			// Two chained halves instead of one 3-keyframe animation + a separate setTimeout:
+			// the image swap is driven by the first half's own `finished` promise, so it
+			// lands exactly when that half visually completes — never early, never late.
+			const firstHalf = hex.animate(
+				[{ transform: "rotateY(0deg) scale(1)" }, { transform: "rotateY(180deg) scale(1.06)" }],
+				{ duration: SPIN_MS / 2, delay, easing: "ease-in", fill: "forwards" },
+			);
+			firstHalf.finished
+				.then(() => {
+					// Remove the held (fill: forwards) first half before starting the second —
+					// otherwise it lingers in the animation stack and, once the second half's
+					// own effect ends, the browser falls back to this stale 180deg state,
+					// which backface-visibility hides forever.
+					firstHalf.cancel();
+					const img = document.getElementById(`hex-img-${i}`);
+					if (img) img.setAttribute("href", src);
+					hex.animate(
+						[{ transform: "rotateY(180deg) scale(1.06)" }, { transform: "rotateY(360deg) scale(1)" }],
+						{ duration: SPIN_MS / 2, easing: "ease-out" },
+					);
+				})
+				.catch(() => {});
+		});
+
+		const totalMs = (items.length - 1) * STAGGER_MS + SPIN_MS;
+		setTimeout(() => {
+			animating = false;
+			setButtonsDisabled(false);
+		}, totalMs);
+	}
+
+	prevBtn?.addEventListener("click", () => {
+		index = (index - 1 + niches.length) % niches.length;
+		render();
+	});
+	nextBtn?.addEventListener("click", () => {
+		index = (index + 1) % niches.length;
+		render();
+	});
+</script>
+
+<script>
+	// Faint hexagon-tile grid rendered with Three.js, scoped to the hero section only.
+	// A single InstancedMesh keeps this to one draw call. An orthographic camera (instead of
+	// a perspective one) maps world units 1:1 to screen pixels, so the grid sits flat and
+	// evenly across the section exactly like the plain CSS pattern it replaced — no tilt,
+	// no perspective skew. Hexes are colored to match the page background so the grid reads
+	// as a subtle tonal texture rather than a foreground object.
+	import * as THREE from "three";
+
+	const section = document.getElementById("hero");
+	const canvas = document.getElementById("hex-bg-canvas");
+	if (section && canvas instanceof HTMLCanvasElement) {
+		const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+		renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+		const scene = new THREE.Scene();
+		const camera = new THREE.OrthographicCamera(0, 0, 0, 0, 0.1, 100);
+		camera.position.set(0, 0, 50);
+		camera.lookAt(0, 0, 0);
+
+		// Hex radius in CSS pixels — world units are mapped 1:1 to pixels via the ortho camera.
+		// Smaller on narrow screens so the tiling reads at roughly the same visual density
+		// as on desktop, instead of a few oversized hexes dominating a small viewport.
+		const HEX_R = window.innerWidth < 640 ? 46 : window.innerWidth < 1024 ? 60 : 78;
+		const GAP = 1.0; // edges nearly touching — just enough seam to read as tiled hexes
+		// Same vertex-trim-and-quadratic-curve technique used for the product cluster hexes:
+		// each corner is trimmed back along its two edges, then joined with a curve instead
+		// of a sharp point.
+		const points: [number, number][] = Array.from({ length: 6 }, (_, i) => {
+			const angle = (Math.PI / 180) * (60 * i - 30);
+			return [HEX_R * 0.98 * Math.cos(angle), HEX_R * 0.98 * Math.sin(angle)];
+		});
+		const CORNER_RADIUS = HEX_R * 0.16;
+		const lerp = (a: [number, number], b: [number, number], t: number): [number, number] => [
+			a[0] + (b[0] - a[0]) * t,
+			a[1] + (b[1] - a[1]) * t,
+		];
+		const shape = new THREE.Shape();
+		for (let i = 0; i < 6; i++) {
+			const curr = points[i];
+			const prev = points[(i - 1 + 6) % 6];
+			const next = points[(i + 1) % 6];
+			const distPrev = Math.hypot(curr[0] - prev[0], curr[1] - prev[1]);
+			const distNext = Math.hypot(next[0] - curr[0], next[1] - curr[1]);
+			const approach = lerp(curr, prev, Math.min(CORNER_RADIUS / distPrev, 0.5));
+			const leave = lerp(curr, next, Math.min(CORNER_RADIUS / distNext, 0.5));
+			if (i === 0) shape.moveTo(approach[0], approach[1]);
+			else shape.lineTo(approach[0], approach[1]);
+			shape.quadraticCurveTo(curr[0], curr[1], leave[0], leave[1]);
+		}
+		shape.closePath();
+		const geometry = new THREE.ShapeGeometry(shape);
+
+		// A diagonal two-stop gradient (from the provided swatch: #E7E7E7 at 41%, #CDCDCD
+		// at 60%, flat before/after) baked into each hex's own vertex colors — every hex
+		// gets the identical gradient across its own face, not one gradient spread across
+		// the whole grid.
+		const GRADIENT_STOPS: [number, string][] = [
+			[0.41, "#d0d0d0"],
+			[0.6, "#c0c0c0"],
+		];
+		function hexToRGB(hex: string): [number, number, number] {
+			const n = parseInt(hex.slice(1), 16);
+			return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+		}
+		function gradientColor(t: number): [number, number, number] {
+			const clamped = Math.min(1, Math.max(0, t));
+			const [t0, c0] = GRADIENT_STOPS[0];
+			const [t1, c1] = GRADIENT_STOPS[1];
+			if (clamped <= t0) return hexToRGB(c0);
+			if (clamped >= t1) return hexToRGB(c1);
+			const localT = (clamped - t0) / (t1 - t0);
+			const [r0, g0, b0] = hexToRGB(c0);
+			const [r1, g1, b1] = hexToRGB(c1);
+			return [r0 + (r1 - r0) * localT, g0 + (g1 - g0) * localT, b0 + (b1 - b0) * localT];
+		}
+		geometry.computeBoundingBox();
+		const hexBBox = geometry.boundingBox!;
+		const hexBBoxW = hexBBox.max.x - hexBBox.min.x;
+		const hexBBoxH = hexBBox.max.y - hexBBox.min.y;
+		const posAttr = geometry.attributes.position;
+		const colorArray = new Float32Array(posAttr.count * 3);
+		for (let v = 0; v < posAttr.count; v++) {
+			// Same top-left -> bottom-right diagonal as the swatch, normalized over this
+			// hex's own bounding box.
+			const nx = (posAttr.getX(v) - hexBBox.min.x) / hexBBoxW;
+			const nyFromTop = (hexBBox.max.y - posAttr.getY(v)) / hexBBoxH;
+			const [r, g, b] = gradientColor((nx + nyFromTop) / 2);
+			colorArray[v * 3] = r;
+			colorArray[v * 3 + 1] = g;
+			colorArray[v * 3 + 2] = b;
+		}
+		geometry.setAttribute("color", new THREE.BufferAttribute(colorArray, 3));
+
+		// The baked gradient is already the light-mode tone — material.color is just a
+		// tint multiplier on top of it, white (no-op) in light mode, dark in dark mode.
+		const HEX_COLOR_DARK = 0x262626;
+		const material = new THREE.MeshBasicMaterial({ vertexColors: true, color: 0xffffff });
+
+		function applyTheme() {
+			material.color.set(document.documentElement.classList.contains("dark") ? HEX_COLOR_DARK : 0xffffff);
+		}
+
+		// Sync to whatever theme is already active before the first render — see the same
+		// fix (and full explanation) in HexBackground.astro's identical setup.
+		applyTheme();
+
+		// The toggle in Header.astro flips the "dark" class on <html> — watch for that
+		// instead of re-reading it on every frame, and swap the tint to match.
+		const themeObserver = new MutationObserver(applyTheme);
+		themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
+		// Big enough grid (in world px) to cover any reasonably wide hero without rebuilding
+		// on resize — the orthographic camera just crops its viewport to the section's size.
+		const GRID_W = 4200;
+		const GRID_H = 2000;
+		const COLS = Math.ceil(GRID_W / (HEX_R * Math.sqrt(3) * GAP)) + 2;
+		const ROWS = Math.ceil(GRID_H / (HEX_R * 1.5 * GAP)) + 2;
+		const count = COLS * ROWS;
+		const mesh = new THREE.InstancedMesh(geometry, material, count);
+		const dummy = new THREE.Object3D();
+
+		// A straight diagonal cut taking a corner off the bottom-left of the grid, like the
+		// old CSS version had — one clean line, not a blob of holes or a ragged edge.
+		const rect0 = section.getBoundingClientRect();
+		const cornerX = -rect0.width / 2;
+		const cornerY = -rect0.height / 2;
+		const cutDistance = Math.max(rect0.width, rect0.height) * 0.42;
+		const cutAngle = Math.PI / 4; // 45deg diagonal
+		const cutNormalX = Math.cos(cutAngle);
+		const cutNormalY = Math.sin(cutAngle);
+		// Also drop the row that would otherwise sit half-cut across the very bottom edge
+		// of the section — a full hex radius of clearance so nothing there gets clipped.
+		const bottomEdge = cornerY + HEX_R * 1.05;
+
+		let i = 0;
+		for (let r = 0; r < ROWS; r++) {
+			for (let c = 0; c < COLS; c++) {
+				const x = (HEX_R * Math.sqrt(3) * (c + (r % 2) / 2) - (COLS * HEX_R * Math.sqrt(3)) / 2) * GAP;
+				const y = (HEX_R * 1.5 * r - (ROWS * HEX_R * 1.5) / 2) * GAP;
+
+				const missing =
+					(x - cornerX) * cutNormalX + (y - cornerY) * cutNormalY < cutDistance || y < bottomEdge;
+
+				dummy.position.set(x, y, 0);
+				dummy.rotation.set(0, 0, 0);
+				dummy.scale.setScalar(missing ? 0 : 1);
+				dummy.updateMatrix();
+				mesh.setMatrixAt(i, dummy.matrix);
+				i++;
+			}
+		}
+		mesh.instanceMatrix.needsUpdate = true;
+		scene.add(mesh);
+
+		function resize() {
+			const rect = section!.getBoundingClientRect();
+			renderer.setSize(rect.width, rect.height, false);
+			camera.left = -rect.width / 2;
+			camera.right = rect.width / 2;
+			camera.top = rect.height / 2;
+			camera.bottom = -rect.height / 2;
+			camera.updateProjectionMatrix();
+		}
+		resize();
+		window.addEventListener("resize", resize);
+
+		let frame = 0;
+		let running = false;
+		function tick() {
+			frame = requestAnimationFrame(tick);
+			renderer.render(scene, camera);
+		}
+		function start() {
+			if (running) return;
+			running = true;
+			tick();
+		}
+		function stop() {
+			running = false;
+			cancelAnimationFrame(frame);
+		}
+		start();
+
+		// This canvas was rendering every frame forever, even scrolled far out of view —
+		// competing for main-thread/GPU time and causing scroll jank everywhere else on
+		// the page. Only run the WebGL loop while the hero section is actually visible.
+		const visibilityObserver = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting) start();
+				else stop();
+			},
+			{ threshold: 0 },
+		);
+		visibilityObserver.observe(section);
+
+		document.addEventListener("visibilitychange", () => {
+			if (document.hidden) stop();
+			else if (section.getBoundingClientRect().bottom > 0) start();
+		});
+	}
+</script>

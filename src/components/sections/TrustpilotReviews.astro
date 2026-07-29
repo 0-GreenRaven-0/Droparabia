@@ -1,0 +1,37 @@
+---
+// Trustpilot TrustBox bootstrap script is still loaded (same business unit/template/token as
+// droparabia-landing's review-us.astro) even though the widget itself isn't rendered here —
+// kept so the Trustpilot button below can link straight to the review flow.
+---
+
+<section class="px-6 py-20 lg:px-16">
+	<div class="mx-auto max-w-xl text-center">
+		<h2 data-i18n="trustpilot.heading" class="font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-5xl dark:text-white">
+			Already a <span class="text-primary">Droparabia</span> seller?
+		</h2>
+
+		<div class="mt-8 flex w-full max-w-xs flex-col items-stretch gap-3 sm:w-auto sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-4">
+			<a
+				href="https://www.trustpilot.com/review/droparabia.com"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="group inline-flex items-center justify-center gap-2 rounded-full border-[3px] border-[#00b67a] bg-white py-1 pr-1 pl-5 font-ibrand text-xs text-neutral-900 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,182,122,0.35)] sm:gap-3 sm:py-1.5 sm:pr-1.5 sm:pl-8 sm:text-sm dark:bg-neutral-900 dark:text-white"
+			>
+				<span data-i18n="trustpilot.reviewUs">Review us on Trustpilot</span>
+				<span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#00b67a] text-white transition-transform duration-200 ease-out group-hover:translate-x-0.5 sm:h-9 sm:w-9">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M5 12h14" />
+						<path d="m12 5 7 7-7 7" />
+					</svg>
+				</span>
+			</a>
+			<a
+				href="/leave-review"
+				data-i18n="trustpilot.writeReview"
+				class="rounded-full border-[3px] border-primary bg-white px-5 py-2.5 text-center font-ibrand text-xs text-neutral-900 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)] sm:px-11 sm:py-3.5 sm:text-sm dark:bg-neutral-900 dark:text-white"
+			>
+				Write us a review
+			</a>
+		</div>
+	</div>
+</section>

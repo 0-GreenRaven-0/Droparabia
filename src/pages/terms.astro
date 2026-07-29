@@ -1,0 +1,76 @@
+---
+// Legal copy ported verbatim from droparabia-landing's terms.astro, restyled to this
+// site's Tailwind/Layout/Header/Footer instead of that page's standalone inline-CSS
+// markup (which also carried GTM tags and its own nav/footer that don't apply here).
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import TabAttention from "../components/TabAttention.astro";
+import { translations } from "../lib/i18n";
+---
+
+<Layout title="Terms & Conditions" titleKey="page.terms">
+	<Header />
+
+	<section class="px-6 pt-48 pb-4 lg:px-16">
+		<div class="mx-auto max-w-3xl">
+			<h1 data-i18n="terms.heading" class="font-ibrand text-4xl leading-[1.1] text-neutral-900 sm:text-6xl dark:text-white">Terms &amp; Conditions</h1>
+			<p data-i18n="terms.intro" class="mt-6 border-l-2 border-primary pl-4 font-helvetica text-base text-neutral-600 sm:text-lg dark:text-neutral-400">
+				By accessing or using droparabia.com, you agree to the following terms and conditions:
+			</p>
+
+			<div class="mt-10 flex flex-col gap-8">
+				<div>
+					<h2 data-i18n="terms.section1.heading" class="font-ibrand text-lg text-neutral-900 dark:text-white">1. Platform Access</h2>
+					<p data-i18n="terms.section1.paragraph" class="mt-2 font-helvetica text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400">
+						Upon successful registration, you will receive access to Droparabia's platform and resources for
+						personal, non-transferable use. Sharing your access credentials or distributing any platform content is
+						strictly prohibited.
+					</p>
+				</div>
+
+				<div>
+					<h2 data-i18n="terms.section2.heading" class="font-ibrand text-lg text-neutral-900 dark:text-white">2. Refund Policy</h2>
+					<p data-i18n="terms.section2.paragraph" class="mt-2 font-helvetica text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400">
+						We stand behind the value of our platform. If you have actively used Droparabia for 90 days and have not
+						seen any results, you are eligible to request a full refund. Refund requests must be submitted within 90
+						days of your subscription date along with proof of platform usage. Refunds will not be granted for
+						unused accounts or without demonstrated effort.
+					</p>
+				</div>
+
+				<div>
+					<h2 data-i18n="terms.section3.heading" class="font-ibrand text-lg text-neutral-900 dark:text-white">3. Intellectual Property</h2>
+					<p data-i18n="terms.section3.paragraph" class="mt-2 font-helvetica text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400">
+						All platform materials on droparabia.com including training resources, guides, and tools are protected
+						by copyright and intellectual property laws. You may not reproduce, republish, resell, or distribute any
+						part of this content. Product listings sourced through Droparabia are provided for selling purposes only
+						and remain the property of their respective suppliers.
+					</p>
+				</div>
+
+				<div>
+					<h2 data-i18n="terms.section4.heading" class="font-ibrand text-lg text-neutral-900 dark:text-white">4. Account Suspension</h2>
+					<p data-i18n="terms.section4.paragraph" class="mt-2 font-helvetica text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400">
+						We reserve the right to suspend or permanently revoke access to the platform, without refund, if any
+						terms are violated — including but not limited to content misuse, inappropriate behavior, or account
+						sharing.
+					</p>
+				</div>
+
+				<div>
+					<p
+						data-i18n="terms.contact"
+						class="font-helvetica text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400"
+						set:html={translations["terms.contact"].en}
+					/>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div class="h-20" />
+
+	<Footer />
+	<TabAttention />
+</Layout>
