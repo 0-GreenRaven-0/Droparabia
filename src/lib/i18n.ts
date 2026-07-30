@@ -9,10 +9,11 @@ export const translations: Record<string, { en: string; ar: string }> = {
 	"nav.reviews": { en: "Reviews", ar: "التقييمات" },
 	"nav.contact": { en: "Contact", ar: "تواصل معنا" },
 	"nav.dropvault": { en: "Dropvault Community", ar: "مجتمع دروب فولت" },
+	"nav.login": { en: "Login", ar: "تسجيل الدخول" },
 
 	"hero.headline": {
-		en: "Build a successful e-com store without gambling your budget",
-		ar: "ابنِ متجر تجارة إلكترونية ناجح دون المجازفة بميزانيتك",
+		en: "Build a successful & high-earning dropshipping business with ease",
+		ar: "ابنِ مشروع دروبشيبينغ ناجحًا وعالي الربح بكل سهولة",
 	},
 	"hero.subheadline": {
 		en: "Let Droparabia find you in-demand winning products & deliver them to your customer's doorstep while you focus on marketing & advertising!",
@@ -119,8 +120,8 @@ export const translations: Record<string, { en: string; ar: string }> = {
 		ar: 'اكتشف أدوات <span class="text-primary">متقدمة وتغيّر قواعد اللعبة</span>',
 	},
 	"tools.subheading": {
-		en: "Which you can leverage to build your own successful & high-earning store without managing all the business yourself!",
-		ar: "استخدمها لبناء متجرك الناجح وعالي الربح دون إدارة كل تفاصيل العمل بنفسك!",
+		en: "Powerful features which you can leverage to build your dropshipping business faster and efficiently",
+		ar: "ميزات قوية يمكنك استخدامها لبناء مشروع الدروبشيبينغ الخاص بك بشكل أسرع وأكثر كفاءة",
 	},
 	"tool.find-products.tagline": { en: "Search a huge catalog of winning products", ar: "ابحث في كتالوج ضخم من المنتجات الرابحة" },
 	"tool.ai-winning-products.tagline": { en: "Let AI surface today's best-selling picks", ar: "دع الذكاء الاصطناعي يبرز الأكثر مبيعًا اليوم" },
@@ -377,32 +378,24 @@ export const translations: Record<string, { en: string; ar: string }> = {
 
 	"blog.heading": { en: "Browse our latest articles", ar: "تصفّح أحدث مقالاتنا" },
 	"blog.post0.title": {
-		en: "9 Best Dropshipping Software Programs (Free & Paid)",
-		ar: "أفضل 9 برامج للدروبشيبينغ (مجانية ومدفوعة)",
+		en: `Dropshipping is "dead"`,
+		ar: `الدروبشيبينغ "ميت"`,
 	},
 	"blog.post0.excerpt": {
-		en: "We break down the best dropshipping software programs you can use for product sourcing and research.",
-		ar: "نستعرض أفضل برامج الدروبشيبينغ التي يمكنك استخدامها لتوريد المنتجات والبحث عنها.",
+		en: "Is dropshipping really dead in 2026, or is that just a myth pushed by failed case studies and course sellers?",
+		ar: "هل الدروبشيبينغ ميت فعلاً في 2026، أم أنها مجرد خرافة يروّجها أصحاب التجارب الفاشلة وبائعو الدورات؟",
 	},
 	"blog.post1.title": {
-		en: "24 Best Dropshipping Suppliers: Buy Low, Sell High!",
-		ar: "أفضل 24 موردًا للدروبشيبينغ: اشترِ بسعر منخفض وبِع بسعر مرتفع!",
+		en: "Why Droparabia exist",
+		ar: "لماذا توجد دروب أرابيا",
 	},
 	"blog.post1.excerpt": {
-		en: "The best suppliers are the ones who understand you're running a dropshipping business — here's who actually supports you.",
-		ar: "أفضل الموردين هم من يفهمون أنك تدير عمل دروبشيبينغ — إليك من يدعمك فعليًا.",
-	},
-	"blog.post2.title": {
-		en: "15 Best Dropshipping Platforms for Running an Online Store",
-		ar: "أفضل 15 منصة دروبشيبينغ لإدارة متجر إلكتروني",
-	},
-	"blog.post2.excerpt": {
-		en: "A hand-picked list of platforms, chosen for ease of use, product range, policies, and shipping times.",
-		ar: "قائمة مختارة بعناية من المنصات، بناءً على سهولة الاستخدام وتنوع المنتجات والسياسات وأوقات الشحن.",
+		en: "The story behind Droparabia — the obstacles that made traditional e-commerce and old dropshipping fail Lebanese sellers.",
+		ar: "القصة وراء دروب أرابيا — العقبات التي جعلت التجارة الإلكترونية التقليدية والدروبشيبينغ القديم يفشلان مع البائعين اللبنانيين.",
 	},
 	"blog.featured.title": {
-		en: "Dropshipping for Dummies: A Beginner's Ultimate Guide",
-		ar: "الدروبشيبينغ للمبتدئين: الدليل الشامل",
+		en: "Dropshipping for newbies: how to start dropshipping in Lebanon?",
+		ar: "الدروبشيبينغ للمبتدئين: كيف تبدأ الدروبشيبينغ في لبنان؟",
 	},
 
 	"reviewform.heading": {
@@ -465,6 +458,8 @@ export const translations: Record<string, { en: string; ar: string }> = {
 	"resources.blog.desc": { en: "Guides and updates from the Droparabia team", ar: "أدلة وتحديثات من فريق دروب أرابيا" },
 	"resources.broadcast.label": { en: "Broadcast channel", ar: "قناة البث" },
 	"resources.broadcast.desc": { en: "Announcements and drops, straight to you", ar: "إعلانات وعروض تصلك مباشرة" },
+	"resources.youtube.label": { en: "YouTube channel", ar: "قناة يوتيوب" },
+	"resources.youtube.desc": { en: "Video guides and behind-the-scenes", ar: "شروحات مصورة ولقطات من الكواليس" },
 	"resources.contact.label": { en: "Contact", ar: "تواصل معنا" },
 	"resources.contact.desc": { en: "Reach the Droparabia support team", ar: "تواصل مع فريق دعم دروب أرابيا" },
 	"resources.about.label": { en: "About Us", ar: "من نحن" },
@@ -500,30 +495,33 @@ export const translations: Record<string, { en: string; ar: string }> = {
 		en: "That's a great question — I'll have a full answer for you once I'm live!",
 		ar: "سؤال رائع — سأقدم لك إجابة كاملة بمجرد أن أصبح متاحًا بشكل كامل!",
 	},
-	"majdgbt.q0": { en: "What is dropshipping?", ar: "ما هو الدروبشيبينغ؟" },
+	"majdgbt.q0": { en: "What dropshipping niches are the most profitable?", ar: "ما هي أكثر مجالات الدروبشيبينغ ربحية؟" },
 	"majdgbt.a0": {
-		en: "Dropshipping is a retail method where you sell products without holding inventory — your supplier ships directly to the customer once an order comes in.",
-		ar: "الدروبشيبينغ هو أسلوب بيع بالتجزئة تبيع فيه المنتجات دون امتلاك مخزون — يقوم موردك بالشحن مباشرة إلى العميل بمجرد ورود الطلب.",
+		en: "Some of the most profitable dropshipping niches right now are health & beauty (skincare tools, pain relief, hair care gadgets), home & kitchen (organizers, cleaning tools, smart gadgets), fitness & wellness (posture correctors, massage tools, home workout gear), baby & kids (educational toys, safety products, organizers), and pets (toys, grooming tools, car seat covers). These niches work well because they solve real problems, have strong emotions behind them, and are easy to show in short videos.",
+		ar: "من أكثر مجالات الدروبشيبينغ ربحية حاليًا: الصحة والجمال (أدوات العناية بالبشرة، تخفيف الألم، أدوات العناية بالشعر)، المنزل والمطبخ (أدوات التنظيم، أدوات التنظيف، الأجهزة الذكية)، اللياقة والعافية (مصححات الوضعية، أدوات التدليك، معدات التمارين المنزلية)، الأطفال والرضع (ألعاب تعليمية، منتجات أمان، أدوات تنظيم)، والحيوانات الأليفة (ألعاب، أدوات عناية، أغطية مقاعد السيارة). تنجح هذه المجالات لأنها تحل مشاكل حقيقية، وترتبط بمشاعر قوية، ويسهل عرضها في فيديوهات قصيرة.",
 	},
-	"majdgbt.q1": { en: "How do I find winning products?", ar: "كيف أجد منتجات رابحة؟" },
+	"majdgbt.q1": { en: "How do I create ads that attract customers?", ar: "كيف أنشئ إعلانات تجذب العملاء؟" },
 	"majdgbt.a1": {
-		en: "Look for products with strong demand, healthy margins, and low competition, then validate them with small test orders before scaling up.",
-		ar: "ابحث عن منتجات ذات طلب قوي وهامش ربح جيد ومنافسة منخفضة، ثم تحقق منها بطلبات تجريبية صغيرة قبل التوسع.",
+		en: "Create simple UGC-style video ads: start with a strong hook in the first 3 seconds, show the problem, then how your product fixes it, add quick social proof, and finish with a clear 'Order Now – Cash on Delivery' call to action. Keep it short (15–25 seconds), show real people using the product, and test 2–3 different hooks to see what gets the most clicks.",
+		ar: "أنشئ إعلانات فيديو بسيطة بأسلوب UGC: ابدأ بجملة جذب قوية في أول 3 ثوانٍ، اعرض المشكلة، ثم كيف يحلها منتجك، أضف دليلًا اجتماعيًا سريعًا، وأنهِ بدعوة واضحة لاتخاذ إجراء مثل 'اطلب الآن – الدفع عند الاستلام'. اجعله قصيرًا (15–25 ثانية)، اعرض أشخاصًا حقيقيين يستخدمون المنتج، وجرّب 2–3 جمل جذب مختلفة لمعرفة أيها يحقق أكثر نقرات.",
 	},
-	"majdgbt.q2": { en: "How much money do I need to start?", ar: "كم من المال أحتاج للبدء؟" },
+	"majdgbt.q2": { en: "Is the dropshipping model actually dead?", ar: "هل نموذج الدروبشيبينغ ميت فعلاً؟" },
 	"majdgbt.a2": {
-		en: "Very little compared to traditional retail — since you only pay your supplier after a customer has already paid you, there's no big upfront inventory cost.",
-		ar: "مبلغ بسيط جدًا مقارنة بالبيع التقليدي — لأنك تدفع لموردك فقط بعد أن يكون العميل قد دفع لك، فلا توجد تكلفة مخزون كبيرة مقدمًا.",
+		en: "No, dropshipping isn't dead — bad products and bad marketing are. The model still works very well when you focus on solving a real problem, fast delivery with reliable suppliers, and strong video creatives with a clear COD offer. People don't care if it's dropshipping — they care if it arrives fast, does what it promises, and feels trustworthy.",
+		ar: "لا، الدروبشيبينغ ليس ميتًا — المنتجات السيئة والتسويق السيئ هما الميتان. لا يزال النموذج يعمل بشكل ممتاز عندما تركز على حل مشكلة حقيقية، وتوصيل سريع مع موردين موثوقين، وفيديوهات إبداعية قوية مع عرض دفع عند الاستلام واضح. لا يهم العملاء إن كان دروبشيبينغ أم لا — ما يهمهم هو أن يصل الطلب بسرعة، وأن يفي بما وعد به، وأن يشعروا بالثقة.",
 	},
-	"majdgbt.q3": { en: "How long does shipping usually take?", ar: "كم من الوقت يستغرق الشحن عادةً؟" },
+	"majdgbt.q3": {
+		en: "What if I didn't find the product I am looking for in Droparabia?",
+		ar: "ماذا لو لم أجد المنتج الذي أبحث عنه في دروب أرابيا؟",
+	},
 	"majdgbt.a3": {
-		en: "It depends on the supplier and destination, but most dropshipping orders arrive within 1-3 weeks depending on the shipping method used.",
-		ar: "يعتمد ذلك على المورد والوجهة، لكن معظم طلبات الدروبشيبينغ تصل خلال 1-3 أسابيع حسب طريقة الشحن المستخدمة.",
+		en: "If you don't find the exact product you're looking for on Droparabia, you can either message the Droparabia team to request it and check if they can source it for you, or use a similar alternative product that solves the same problem and is already available with good stock and shipping times. The goal is speed: sell what's available and proven, instead of waiting weeks for one specific item.",
+		ar: "إذا لم تجد المنتج الذي تبحث عنه بالضبط على دروب أرابيا، يمكنك إما مراسلة فريق دروب أرابيا لطلبه ومعرفة إن كان بإمكانهم توفيره لك، أو استخدام منتج بديل مشابه يحل نفس المشكلة ومتوفر بالفعل بمخزون جيد وأوقات شحن مناسبة. الهدف هو السرعة: بِع ما هو متوفر ومُثبت، بدلاً من الانتظار أسابيع لمنتج واحد محدد.",
 	},
-	"majdgbt.q4": { en: "Do I need to hold inventory?", ar: "هل أحتاج لامتلاك مخزون؟" },
+	"majdgbt.q4": { en: "How do I choose my winning product?", ar: "كيف أختار منتجي الرابح؟" },
 	"majdgbt.a4": {
-		en: "No — that's the core benefit of dropshipping. Your supplier stores and ships the products, so you never touch inventory yourself.",
-		ar: "لا — هذه هي الميزة الأساسية للدروبشيبينغ. يقوم موردك بتخزين وشحن المنتجات، فلا تتعامل مع المخزون بنفسك أبدًا.",
+		en: "Choose a winning product by using clear criteria: it must solve a real pain, have a strong 'wow' factor on video, at least 3–5x profit margin, and already be selling in the market (active ads, viral videos, real reviews). Then shortlist 5–10 products, check which ones have the best mix of demand + profit + simple usage, and start testing with 1 main product and 1–2 backups.",
+		ar: "اختر منتجك الرابح باستخدام معايير واضحة: يجب أن يحل مشكلة حقيقية، وله عامل 'إبهار' قوي على الفيديو، وهامش ربح لا يقل عن 3–5 أضعاف، وأن يكون يُباع بالفعل في السوق (إعلانات نشطة، فيديوهات منتشرة، تقييمات حقيقية). بعد ذلك، رشّح 5–10 منتجات، وتحقق من أيها يجمع أفضل مزيج من الطلب والربح وسهولة الاستخدام، وابدأ الاختبار بمنتج رئيسي واحد و1–2 منتج احتياطي.",
 	},
 
 	// --- Review form dynamic (JS-driven) messages ---

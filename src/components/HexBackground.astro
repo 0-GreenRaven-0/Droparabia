@@ -24,6 +24,12 @@ interface Props {
 	// Same idea as fadeTop, mirrored onto the bottom edge — off by default, since most
 	// sections already drop one partial row at the bottom anyway for edge clearance.
 	fadeBottom?: boolean;
+	// That clearance (~1 hex radius) is dropped so a section's bottom edge never shows a
+	// half-cut hex where it butts against the next section — but for the very last section
+	// on the page (the footer) there's nothing below it to clash with, so the clearance just
+	// reads as a blank gap instead. Set true to shrink it down to almost nothing, letting
+	// hexes run flush to the bottom edge instead.
+	bottomFlush?: boolean;
 }
 const {
 	id = "hex-bg",
@@ -34,6 +40,7 @@ const {
 	fadeTop = false,
 	fadeHeight = 0.6,
 	fadeBottom = false,
+	bottomFlush = false,
 } = Astro.props;
 ---
 
@@ -48,6 +55,7 @@ const {
 	data-fade-top={fadeTop}
 	data-fade-height={fadeHeight}
 	data-fade-bottom={fadeBottom}
+	data-bottom-flush={bottomFlush}
 ></canvas>
 
 <script>
@@ -76,6 +84,7 @@ const {
 		// measured in HEX_R * 1.5 units), not a 0-1 fraction, so it isn't clamped to 1.
 		const fadeHeight = Math.max(0, parseFloat(canvas.dataset.fadeHeight ?? "0.6"));
 		const fadeBottom = canvas.dataset.fadeBottom === "true";
+		const bottomFlush = canvas.dataset.bottomFlush === "true";
 
 		// Hex radius in CSS pixels — world units are mapped 1:1 to pixels via the ortho camera.
 		// Smaller on narrow screens so the tiling reads at roughly the same visual density
@@ -209,8 +218,10 @@ const {
 		// Also drop the row that would otherwise sit half-cut across the very bottom edge
 		// of the section — a full hex radius of clearance so nothing there gets clipped.
 		// fadeBottom extends that same clearance to drop fadeHeight rows' worth instead of
-		// just the one, mirroring fadeTop on the opposite edge.
-		const bottomEdge = cornerY + HEX_R * (fadeBottom ? 1.5 * fadeHeight : 1.05);
+		// just the one, mirroring fadeTop on the opposite edge. bottomFlush shrinks that
+		// clearance to almost nothing instead, for the one section (the footer) with no
+		// section below it to protect against a half-cut hex.
+		const bottomEdge = cornerY + HEX_R * (fadeBottom ? 1.5 * fadeHeight : bottomFlush ? 0.05 : 1.05);
 
 		// Restricting the grid to a fraction of the section's width (e.g. only the left
 		// half) drops whole hexes past the boundary, same as the corner cut — never a

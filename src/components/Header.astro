@@ -37,6 +37,14 @@ const resources = [
 		icon: '<path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/><circle cx="12" cy="12" r="2"/>',
 	},
 	{
+		label: "YouTube channel",
+		description: "Video guides and behind-the-scenes",
+		href: "https://youtube.com/@mj.biznes?si=8YTbolHcrfMIHlpf",
+		key: "youtube",
+		// Youtube
+		icon: '<path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/>',
+	},
+	{
 		label: "Contact",
 		description: "Reach the Droparabia support team",
 		href: "/contact",
@@ -179,7 +187,7 @@ const toolTopRow = tools.slice(0, 3).map((t, i) => ({ ...t, color: TOOL_HEX_COLO
 const toolBottomRow = tools.slice(3, 6).map((t, i) => ({ ...t, color: TOOL_HEX_COLORS[i + 3] }));
 
 const resTopRow = resources.slice(0, 3).map((r, i) => ({ ...r, color: TOOL_HEX_COLORS[i] }));
-const resBottomRow = resources.slice(3, 5).map((r, i) => ({ ...r, color: TOOL_HEX_COLORS[i + 3] }));
+const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HEX_COLORS[i + 3] }));
 ---
 
 <!-- Desktop nav — the floating pill, lg+ only. Mobile/tablet get a separate plain
@@ -441,10 +449,18 @@ const resBottomRow = resources.slice(3, 5).map((r, i) => ({ ...r, color: TOOL_HE
 					id="lang-menu"
 					class="theme-static-blur lang-menu invisible absolute right-0 top-full mt-2 w-32 origin-top-right scale-90 overflow-hidden rounded-2xl border border-black/5 bg-white/90 py-1 font-helvetica text-[13px] opacity-0 shadow-[0_12px_32px_-8px_rgba(0,30,255,0.18)] backdrop-blur-xl transition-[opacity,scale,visibility] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] dark:border-white/10 dark:bg-neutral-900/90"
 				>
-					<button data-lang="en" class="lang-option group relative block w-full cursor-pointer px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">English</button>
-					<button data-lang="ar" class="lang-option group relative block w-full cursor-pointer px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">العربية</button>
+					<button data-lang="en" class="lang-option group relative block w-full cursor-pointer rounded-xl px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">English</button>
+					<button data-lang="ar" class="lang-option group relative block w-full cursor-pointer rounded-xl px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">العربية</button>
 				</div>
 			</div>
+
+			<!-- Login -->
+			<a
+				href="http://user.droparabia.com/"
+				class="ml-1 inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 font-ibrand text-sm text-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)] rtl:mr-1 rtl:ml-0"
+			>
+				<span data-i18n="nav.login">Login</span>
+			</a>
 		</div>
 	</nav>
 </header>
@@ -493,8 +509,8 @@ const resBottomRow = resources.slice(3, 5).map((r, i) => ({ ...r, color: TOOL_HE
 				id="lang-menu-mobile"
 				class="theme-static-blur lang-menu invisible absolute right-0 top-full mt-2 w-32 origin-top-right scale-90 overflow-hidden rounded-2xl border border-black/5 bg-white/95 py-1 font-helvetica text-[13px] opacity-0 shadow-[0_12px_32px_-8px_rgba(0,30,255,0.18)] backdrop-blur-xl transition-[opacity,scale,visibility] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] dark:border-white/10 dark:bg-neutral-900/95"
 			>
-				<button data-lang="en" class="lang-toggle-mobile-option lang-option group relative block w-full cursor-pointer px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">English</button>
-				<button data-lang="ar" class="lang-toggle-mobile-option lang-option group relative block w-full cursor-pointer px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">العربية</button>
+				<button data-lang="en" class="lang-toggle-mobile-option lang-option group relative block w-full cursor-pointer rounded-xl px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">English</button>
+				<button data-lang="ar" class="lang-toggle-mobile-option lang-option group relative block w-full cursor-pointer rounded-xl px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">العربية</button>
 			</div>
 		</div>
 
@@ -522,7 +538,7 @@ const resBottomRow = resources.slice(3, 5).map((r, i) => ({ ...r, color: TOOL_HE
 	 (still scrollable) via the arbitrary [scrollbar-width]/webkit-scrollbar utilities below. -->
 <div
 	id="mobile-menu"
-	class="invisible fixed inset-0 z-40 -translate-y-4 overflow-y-auto overscroll-contain bg-white pt-20 pb-10 opacity-0 [scrollbar-width:none] transition-[opacity,transform,visibility] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden [&::-webkit-scrollbar]:hidden dark:bg-neutral-950"
+	class="invisible fixed inset-0 z-40 -translate-y-6 overflow-y-auto overscroll-contain bg-white pt-20 pb-10 opacity-0 [scrollbar-width:none] transition-[opacity,transform,visibility] duration-500 ease-out lg:hidden [&::-webkit-scrollbar]:hidden dark:bg-neutral-950"
 >
 	<nav class="mx-auto flex w-full max-w-md flex-col gap-2 px-6">
 		<a
@@ -640,6 +656,13 @@ const resBottomRow = resources.slice(3, 5).map((r, i) => ({ ...r, color: TOOL_HE
 			<a href="/reviews" data-i18n="nav.reviews" class="rounded-2xl py-3 font-helvetica text-neutral-900 transition-colors hover:bg-black/[0.07] dark:text-white dark:hover:bg-white/10">Reviews</a>
 			<a href="/contact" data-i18n="nav.contact" class="rounded-2xl py-3 font-helvetica text-neutral-900 transition-colors hover:bg-black/[0.07] dark:text-white dark:hover:bg-white/10">Contact</a>
 		</div>
+
+		<a
+			href="http://user.droparabia.com/"
+			class="mt-2 inline-flex items-center justify-center rounded-full bg-primary py-3.5 font-ibrand text-sm text-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)]"
+		>
+			<span data-i18n="nav.login">Login</span>
+		</a>
 	</nav>
 </div>
 
@@ -850,10 +873,10 @@ const resBottomRow = resources.slice(3, 5).map((r, i) => ({ ...r, color: TOOL_HE
 		// paint a dimming layer on top of it since both sit at the same z-index. Kept in the DOM
 		// at all times (never `hidden`) so the opacity/transform toggle below actually animates.
 		if (open) {
-			mobileMenu?.classList.remove("invisible", "opacity-0", "-translate-y-4");
+			mobileMenu?.classList.remove("invisible", "opacity-0", "-translate-y-6");
 			mobileMenu?.classList.add("opacity-100", "translate-y-0");
 		} else {
-			mobileMenu?.classList.add("invisible", "opacity-0", "-translate-y-4");
+			mobileMenu?.classList.add("invisible", "opacity-0", "-translate-y-6");
 			mobileMenu?.classList.remove("opacity-100", "translate-y-0");
 			setAllAccordions(false);
 		}

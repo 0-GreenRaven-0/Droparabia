@@ -65,10 +65,14 @@ html[dir="rtl"] .font-helvetica {
 	   too wide on mobile (a fixed-size hex cluster, an SVG, a long unbreakable word) pushes
 	   the whole page and shows up as a strip of empty space on the right that's individually
 	   easy to miss and keeps recurring in different sections. Clamping html/body here means
-	   a stray wide element clips instead of ever widening the page again, site-wide. */
+	   a stray wide element clips instead of ever widening the page again, site-wide.
+	   `clip` rather than `hidden` — `overflow-x: hidden` (any non-`visible` overflow, even on
+	   just one axis) makes the element a scroll container per spec, which silently breaks
+	   `position: sticky` for every descendant on the page in Chromium. `clip` blocks the same
+	   overflow without that side effect. */
 	html,
 	body {
-		overflow-x: hidden;
+		overflow-x: clip;
 		max-width: 100vw;
 	}
 

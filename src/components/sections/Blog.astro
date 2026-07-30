@@ -46,33 +46,25 @@ const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 
 const posts = [
 	{
-		date: "January 22, 2026",
-		readTime: "18 min read",
-		title: "9 Best Dropshipping Software Programs (Free & Paid)",
-		excerpt: "We break down the best dropshipping software programs you can use for product sourcing and research.",
-		href: "#",
+		date: "January 30, 2026",
+		readTime: "9 min read",
+		title: `Dropshipping is "dead"`,
+		excerpt: "Is dropshipping really dead in 2026, or is that just a myth pushed by failed case studies and course sellers?",
+		href: "/blog/dropshipping-is-dead",
 	},
 	{
-		date: "January 22, 2026",
-		readTime: "48 min read",
-		title: "24 Best Dropshipping Suppliers: Buy Low, Sell High!",
-		excerpt:
-			"The best suppliers are the ones who understand you're running a dropshipping business — here's who actually supports you.",
-		href: "#",
-	},
-	{
-		date: "January 22, 2026",
-		readTime: "16 min read",
-		title: "15 Best Dropshipping Platforms for Running an Online Store",
-		excerpt: "A hand-picked list of platforms, chosen for ease of use, product range, policies, and shipping times.",
-		href: "#",
+		date: "January 30, 2026",
+		readTime: "10 min read",
+		title: "Why Droparabia exist",
+		excerpt: "The story behind Droparabia — the obstacles that made traditional e-commerce and old dropshipping fail Lebanese sellers.",
+		href: "/blog/why-droparabia-exists",
 	},
 ];
 const featured = {
-	date: "January 22, 2026",
+	date: "January 30, 2026",
 	readTime: "12 min read",
-	title: "Dropshipping for Dummies: A Beginner's Ultimate Guide",
-	href: "#",
+	title: "Dropshipping for newbies: how to start dropshipping in Lebanon?",
+	href: "/blog/dropshipping-for-newbies-lebanon",
 	image: "https://files.cdn.printful.com/o/upload/blog-post-img-upload/c8/c8afefa43f00c6c818d2be7e18fda630_l",
 };
 ---
@@ -83,16 +75,13 @@ const featured = {
 			Browse our latest articles
 		</h2>
 
-		<div class="mt-12 grid gap-6 lg:grid-cols-2 lg:items-start lg:gap-10">
+		<div class="mt-12 grid gap-6 lg:grid-cols-2 lg:items-center lg:gap-10">
 			<div class="flex flex-col gap-2">
 				{posts.map((post, i) => (
 					<a
-						href={post.href}
-						class:list={[
-							"group rounded-3xl p-5 transition-colors",
-							i === 1 ? "bg-neutral-100 dark:bg-neutral-900" : "hover:bg-neutral-100 dark:hover:bg-neutral-900",
-						]}
-					>
+					href={post.href}
+					class="group rounded-3xl p-5 transition-all duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]"
+				>
 						<p class="font-helvetica text-sm text-neutral-500 dark:text-neutral-400">
 							{post.date} &bull; {post.readTime}
 						</p>

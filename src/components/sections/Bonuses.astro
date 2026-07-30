@@ -39,7 +39,7 @@ const STAIR_STEP = 3.5; // rem indent added per row, going up the list
 			{
 				bonuses.map((bonus, i) => (
 					<div
-						class="flex flex-row-reverse items-center gap-0.5 sm:gap-5 lg:mr-(--stair-margin) lg:flex-row"
+						class="flex flex-row-reverse items-center gap-0.5 rtl:flex-row sm:gap-5 lg:mr-(--stair-margin) lg:flex-row rtl:lg:flex-row-reverse"
 						style={{ "--stair-margin": `${i * STAIR_STEP}rem` }}
 						data-index={i}
 					>

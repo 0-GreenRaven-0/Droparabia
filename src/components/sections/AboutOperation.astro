@@ -1,5 +1,11 @@
-<section class="px-6 py-20 lg:px-16">
-	<div class="mx-auto max-w-3xl">
+---
+import HexBackground from "../HexBackground.astro";
+---
+
+<section class="relative overflow-hidden px-6 py-20 lg:px-16">
+	<HexBackground cutCorner={false} fadeTop={true} fadeBottom={true} fadeHeight={1} />
+
+	<div class="relative mx-auto max-w-3xl">
 		<h2 data-i18n="about.operation.heading" class="text-center font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-5xl dark:text-white">
 			How does it <span class="text-primary">operate</span>
 		</h2>

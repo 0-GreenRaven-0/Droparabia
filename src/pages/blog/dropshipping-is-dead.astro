@@ -1,0 +1,137 @@
+---
+import BlogPostLayout from "../../components/BlogPostLayout.astro";
+
+const toc = [
+	{ id: "whats-this-about", label: "What's this article about?" },
+	{ id: "where-did-myth-come-from", label: "Where did this myth come from?" },
+	{ id: "why-hated", label: "Why is dropshipping hated so much?" },
+	{ id: "are-myths-true", label: "Are these myths true?" },
+];
+
+const h2 = "mt-10 scroll-mt-32 font-ibrand text-2xl text-neutral-900 sm:text-3xl dark:text-white";
+const h3 = "mt-6 font-ibrand text-lg text-neutral-900 dark:text-white";
+const p = "mt-3 font-helvetica text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400";
+const ul = "mt-3 flex flex-col gap-1.5";
+const li = "relative pl-5 font-helvetica text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400";
+const bullet = "absolute left-0 font-bold text-primary";
+---
+
+<BlogPostLayout
+	title={`Dropshipping is "dead"`}
+	description="Is dropshipping really dead in 2026, or is that just a myth pushed by failed case studies and course sellers? We break down where the myth comes from and what's actually true."
+	date="January 30, 2026"
+	readTime="9 min read"
+	toc={toc}
+>
+	<Fragment slot="banner">
+		<div
+			class="flex h-full w-full flex-col items-center justify-center gap-2 px-6 text-center"
+			style={{ background: "linear-gradient(135deg, #2745ff 0%, #001eff 45%, #000c66 100%)" }}
+		>
+			<span class="font-ibrand text-6xl leading-none text-white/25 sm:text-8xl">"</span>
+			<p class="-mt-4 font-ibrand text-2xl leading-tight text-white sm:text-4xl">Dropshipping is "dead"?</p>
+		</div>
+	</Fragment>
+
+	<p class="border-l-2 border-primary pl-4 font-helvetica text-base text-neutral-600 sm:text-lg dark:text-neutral-400">
+		If you spend enough time on social media, especially where the algorithm has been feeding you lots of products
+		about businesses and stuff, you probably came across at least one of these topics: "Dropshipping is dead" or
+		"Dropshipping is the worst model you can start this year." Or perhaps you came across a tier list video ranking
+		different business models and dropshipping was rated an F tier.
+	</p>
+
+	<h2 id={toc[0].id} class={h2}>What's this article about?</h2>
+	<p class={p}>But why?</p>
+	<p class={p}>
+		Are they true? Or are they just some excuses creators and course sellers use to justify your need to purchase
+		their coaching programs?
+	</p>
+	<p class={p}>
+		That's exactly what we're going to discuss in this article, so grab your favorite drink, get comfy and let's
+		dive in!
+	</p>
+
+	<h2 id={toc[1].id} class={h2}>Where did this myth come from?</h2>
+	<p class={p}>There are two origins for the "dropshipping is dead" myth.</p>
+
+	<h3 class={h3}>Origin A: Failed Case Studies</h3>
+	<p class={p}>
+		These are the people who were sold luxurious dreams by those influencers showcasing their wealth, their Rolex
+		watches, their multi-thousand sports cars...
+	</p>
+	<p class={p}>
+		And of course it's in our human nature to be attracted to these things and the desire to obtain them, should
+		the method behind them actually exist.
+	</p>
+	<p class={p}>So here's what usually happens:</p>
+	<p class={p}>
+		They purchase a course from the same influencers and gurus who sold them the dream, or learn about dropshipping
+		from free tutorials.
+	</p>
+	<p class={p}>
+		They start their first dropshipping business, pick the product, run the advertisements and lay in their beds,
+		already picturing the amount of sales they're going to make and constantly thinking about what they want to
+		buy first with the money they're going to make.
+	</p>
+	<p class={p}>
+		Only to be surprised the next day that not a single order came, and this so-called "earn your financial
+		freedom" business model didn't deliver on its promise like the influencers said.
+	</p>
+	<p class={p}>
+		This is the part where 80% of them would entirely quit this model and go rant on the internet about how
+		dropshipping is a "scheme" that doesn't work.
+	</p>
+
+	<h3 class={h3}>Origin B: Career Course and Mentorship Sellers</h3>
+	<p class={p}>
+		Whenever someone wants to sell you a course on social media about something you can use to make money online,
+		like e-commerce, affiliate marketing, Amazon FBA, high-ticket sales... dropshipping is always their favorite
+		punching bag.
+	</p>
+	<p class={`${p} italic`}>"Don't do dropshipping, buy my course/mentorship instead"</p>
+	<p class={p}>Let me ask you something, did any of these guys ever:</p>
+	<ul class={ul}>
+		<li class={li}><span class={bullet}>•</span>Explain to you what dropshipping is?</li>
+		<li class={li}><span class={bullet}>•</span>Explain "why" you should avoid this model?</li>
+		<li class={li}><span class={bullet}>•</span>Or at least give you a valid reason to back their claims?</li>
+	</ul>
+	<p class={p}>Of course they didn't.</p>
+	<p class={p}>They're just using the hate directed toward the model to market their own offers, and it works most of the time.</p>
+
+	<h2 id={toc[2].id} class={h2}>Why is dropshipping hated so much?</h2>
+	<p class={p}>There's a valid reason why dropshipping is hated the way it is right now, and there are two people to blame for that:</p>
+	<ul class={ul}>
+		<li class={li}><span class={bullet}>•</span>The gurus who sold this dream as a "get-rich-quick"</li>
+		<li class={li}><span class={bullet}>•</span>And the people who treated it as a scheme rather than a legit business model</li>
+	</ul>
+	<p class={p}>
+		Most of the time, these gurus know nothing about dropshipping, or they somehow got lucky with a few products
+		they sold, then they realized they could make a fortune by selling these courses to people who are desperate
+		to become rich quickly without putting in any effort.
+	</p>
+	<p class={p}>So those who enter the dropshipping world thinking they're about to become rich overnight end up becoming dropshipping's worst case studies ever.</p>
+
+	<h2 id={toc[3].id} class={h2}>Are these myths true?</h2>
+	<p class={p}>Now to finally answer the question we've all been waiting for: is dropshipping dead?</p>
+	<p class={p}>And the answer is... yes and no.</p>
+	<p class={p}>What do I mean by that?</p>
+	<p class={p}>
+		Well, the golden age that made dropshipping explode is long dead, which was during the corona outbreak that
+		prevented people from leaving their homes and forced them to resort to online shopping, which created a great
+		business opportunity for almost everyone.
+	</p>
+	<p class={p}>But that doesn't mean you can no longer make money from dropshipping.</p>
+	<p class={p}>
+		In fact, there are people making 5-figures in revenue per month through dropshipping, but that's because they
+		treat it like a real business model with risks and losses, not a gamble to speedrun their way into wealth.
+	</p>
+	<p class={p}>These are the exact principles we stand by in Droparabia.</p>
+	<p class={p}>
+		We created a platform to help everyone succeed in dropshipping by helping them avoid beginners' mistakes and
+		eliminate as many obstacles as possible.
+	</p>
+	<p class={p}>
+		And we also make perfectly clear to all our users before they sign up with Droparabia, that this is a business
+		model that requires a real amount of effort and a consistent mentality, not a path to quick wealth.
+	</p>
+</BlogPostLayout>

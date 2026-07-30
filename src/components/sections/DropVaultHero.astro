@@ -3,13 +3,18 @@ import HexBackground from "../HexBackground.astro";
 import { ik } from "../../lib/imagekit";
 
 // Real community post screenshots, floated up past the pinned hero as the page scrolls.
+// Cards render up to ~960px wide on desktop, but these were being requested at their full
+// original resolution — decoding and GPU-compositing several full-size screenshots while
+// transform-animating them was a big part of what made this feel laggy on mobile.
+// `?tr=w-900,q-80` asks ImageKit for an already-sized, already-compressed version — still a
+// fraction of the original file size, but sized to stay sharp at typical card widths.
 const posts = [
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d1.png",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d3.png",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d3.png",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d5.png",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d2.png",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d6.png",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d1.png?tr=w-900,q-80",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d3.png?tr=w-900,q-80",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d3.png?tr=w-900,q-80",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d5.png?tr=w-900,q-80",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d2.png?tr=w-900,q-80",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d6.png?tr=w-900,q-80",
 ];
 ---
 
@@ -27,6 +32,7 @@ const posts = [
 					alt=""
 					data-community-card
 					data-index={i}
+					decoding="async"
 					class="community-card absolute rounded-2xl object-contain shadow-[0_12px_28px_-15px_rgba(0,0,0,0.22)]"
 				/>
 			))
@@ -69,6 +75,9 @@ const posts = [
 		for a frame before the script executes. */
 	.community-card {
 		top: 130%;
+		/* Promotes each card to its own GPU layer ahead of time instead of on the first
+		   scroll frame, so the layer-creation cost doesn't land in the middle of the scrub. */
+		will-change: transform;
 	}
 </style>
 
@@ -190,7 +199,7 @@ const posts = [
 			const minCardWidth = Math.min(440, sectionWidth * 0.88);
 			// A single lane spans the full section width, so "fit the lane" alone would make
 			// the card the full width of the screen — cap it a bit narrower instead.
-			const cardWidth = LANES === 1 ? sectionWidth * 0.88 : Math.max(minCardWidth, Math.min(laneWidth, 960));
+			const cardWidth = LANES === 1 ? sectionWidth * 0.92 : Math.max(minCardWidth, Math.min(laneWidth, 960));
 			cards.forEach((card, i) => {
 				const lane = i % LANES;
 				const laneStart = lane * laneWidth;
@@ -202,7 +211,14 @@ const posts = [
 			});
 		}
 		layoutCards();
-		window.addEventListener("resize", layoutCards);
+		window.addEventListener("resize", () => {
+			layoutCards();
+			// The rise distance above is a function of section height, re-read fresh each time
+			// — invalidate clears GSAP's cached value so it actually calls that function again,
+			// and refresh re-measures the pinned scroll distance to match.
+			master.invalidate();
+			ScrollTrigger.refresh();
+		});
 
 		cards.forEach((card, i) => {
 			// The motion itself is a straight vertical line, no horizontal drift or rotation,
@@ -215,13 +231,20 @@ const posts = [
 			// multiple lanes already keep cards visually separated.
 			const riseDistance = LANES === 1 ? 150 : 130 + Math.random() * 60; // how far (in %) this card travels
 			const startTop = LANES === 1 ? 112 : 100 + Math.random() * 20;
-			const endTop = startTop - riseDistance;
 
-			gsap.set(card, { top: `${startTop}%` });
+			// `top` is a layout property — animating it forces the browser to recompute layout
+			// on every single scrub frame, which is what was making this feel "extremely
+			// laggy" on phones (a pinned, scroll-scrubbed animation is already firing on nearly
+			// every frame, so that cost adds up fast on weaker mobile CPUs). `top` is now set
+			// once, as a one-time layout cost, and the actual scroll-driven rise instead
+			// animates `y` (transform: translateY), which the compositor can run entirely on
+			// the GPU without touching layout or paint at all. The distance is a function so it
+			// re-reads the section's current height after a resize (see below).
+			gsap.set(card, { top: `${startTop}%`, y: 0 });
 			master.fromTo(
 				card,
-				{ top: `${startTop}%` },
-				{ top: `${endTop}%`, ease: "none", duration: SLOT },
+				{ y: 0 },
+				{ y: () => -(riseDistance / 100) * section!.clientHeight, ease: "none", duration: SLOT },
 				i * STAGGER,
 			);
 		});

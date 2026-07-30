@@ -1,0 +1,236 @@
+---
+import BlogPostLayout from "../../components/BlogPostLayout.astro";
+
+// Same section headings rendered in the article body below and linked from the sticky
+// "Page Contents" sidebar (desktop only — see BlogPostLayout.astro's scroll-spy script).
+const toc = [
+	{ id: "what-is-dropshipping", label: "What is Dropshipping" },
+	{ id: "why-choose-dropshipping", label: "Why Choose Dropshipping" },
+	{ id: "what-will-you-learn", label: "What will you learn?" },
+	{ id: "deciding-the-niche", label: "Deciding the niche" },
+	{ id: "qualifying-a-product", label: "Qualifying a product" },
+	{ id: "the-old-way", label: "The old way of dropshipping" },
+	{ id: "how-droparabia-changed-dropshipping", label: "How Droparabia permanently changed dropshipping" },
+	{ id: "summary", label: "Summary" },
+];
+
+const h2 = "mt-10 scroll-mt-32 font-ibrand text-2xl text-neutral-900 sm:text-3xl dark:text-white";
+const h3 = "mt-6 font-ibrand text-lg text-neutral-900 dark:text-white";
+const p = "mt-3 font-helvetica text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400";
+const ul = "mt-3 flex flex-col gap-1.5";
+const li = "relative pl-5 font-helvetica text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400";
+const bullet = "absolute left-0 font-bold text-primary";
+---
+
+<BlogPostLayout
+	title="Dropshipping for newbies: how to start dropshipping in Lebanon?"
+	description="A complete beginner's guide to starting a dropshipping business in Lebanon — how to choose a niche, qualify winning products, and avoid the pitfalls of the old dropshipping model."
+	date="January 30, 2026"
+	readTime="12 min read"
+	image="https://files.cdn.printful.com/o/upload/blog-post-img-upload/c8/c8afefa43f00c6c818d2be7e18fda630_l"
+	toc={toc}
+>
+	<p class="border-l-2 border-primary pl-4 font-helvetica text-base text-neutral-600 sm:text-lg dark:text-neutral-400">
+		Dropshipping is one of the best business models beginners in the world of e-commerce can pick up, especially for
+		Lebanese with a very limited budget who want to start their own online hustle regardless of their experience in
+		digital marketing or whether they're currently living in Lebanon or abroad as a student outside the country.
+	</p>
+
+	<h2 id={toc[0].id} class={h2}>What is Dropshipping</h2>
+	<p class={p}>
+		But before we dive into our topic of how Lebanese can successfully start their own dropshipping business, let's
+		address the elephant in the room.
+	</p>
+	<p class={p}>What is dropshipping?</p>
+	<p class={p}>
+		Dropshipping is the process of acting as the middle man between the supplier or the manufacturer of a product
+		and the consumer who purchases the product, meaning you're selling these products without even touching or
+		owning them. You help sell these products, the supplier deducts the cost of their product from a successful
+		sale, and you get to keep the profit. Simple, isn't it?
+	</p>
+
+	<h2 id={toc[1].id} class={h2}>Why Choose Dropshipping</h2>
+	<p class={p}>
+		Unlike e-commerce, where you need a huge budget of at least $3,000 to cover testing and trying different
+		products, purchasing products in bulk uncertain if they'll sell, and keeping you stuck with an inventory,
+		that's not the case with dropshipping:
+	</p>
+	<ul class={ul}>
+		<li class={li}><span class={bullet}>•</span>You need only a small budget to get started</li>
+		<li class={li}><span class={bullet}>•</span>No managing or owning inventory</li>
+		<li class={li}><span class={bullet}>•</span>You focus only on marketing and advertising</li>
+	</ul>
+	<p class={p}>
+		This is the exact model multi billion dollar brands like Gymshark and Wayfair used to build their businesses
+		without owning inventory and risking their budgets in their starting phase!
+	</p>
+
+	<h2 id={toc[2].id} class={h2}>What will you learn?</h2>
+	<p class={p}>In this article, you're going to learn:</p>
+	<ul class={ul}>
+		<li class={li}><span class={bullet}>•</span>How to decide on your store's niche</li>
+		<li class={li}><span class={bullet}>•</span>How to find winning products</li>
+		<li class={li}><span class={bullet}>•</span>Factors that qualify a winning product</li>
+		<li class={li}><span class={bullet}>•</span>Cons of dropshipping</li>
+		<li class={li}><span class={bullet}>•</span>How Droparabia addresses these cons</li>
+	</ul>
+
+	<h2 id={toc[3].id} class={h2}>Deciding the niche</h2>
+	<p class={p}>
+		This is one of the most important steps that usually gets overlooked by almost everyone who wants to start
+		dropshipping.
+	</p>
+	<p class={`${p} italic`}>"Why sell only fitness products when I can also sell beauty products and car products?"</p>
+	<p class={p}>
+		Unless you want to look like a generic dollar store that signals "cheap" and "low quality" and doesn't
+		demonstrate a clear purpose, go ahead, no one is stopping you :)
+	</p>
+	<p class={p}>Here's why choosing a niche is a must:</p>
+	<ul class={ul}>
+		<li class={li}>
+			<span class={bullet}>1.</span>It helps you build a brand that has a clear purpose and demonstrates expertise in
+			a certain niche, which can help you earn the complete trust of a certain audience
+		</li>
+		<li class={li}><span class={bullet}>2.</span>It allows you to position yourself as a problem solver rather than someone who sells "products"</li>
+		<li class={li}>
+			<span class={bullet}>3.</span>It helps you identify your target audience so you can empathize with their problems
+			and pain points and speak directly to them
+		</li>
+	</ul>
+	<p class={p}>The most profitable niches you can choose from are:</p>
+	<ul class={ul}>
+		<li class={li}><span class={bullet}>•</span>Health and beauty</li>
+		<li class={li}><span class={bullet}>•</span>Fitness and wellness</li>
+		<li class={li}><span class={bullet}>•</span>Cars</li>
+		<li class={li}><span class={bullet}>•</span>Pets</li>
+		<li class={li}><span class={bullet}>•</span>Kitchenware</li>
+		<li class={li}><span class={bullet}>•</span>Electronics</li>
+		<li class={li}><span class={bullet}>•</span>And many more niches you can find on Droparabia</li>
+	</ul>
+	<p class={p}>
+		But please, and I'm saying this for your own good, do NOT under any circumstances go for dangerous, hazardous
+		items or contraband like:
+	</p>
+	<ul class={ul}>
+		<li class={li}><span class={bullet}>•</span>Weapons</li>
+		<li class={li}><span class={bullet}>•</span>Adult products</li>
+		<li class={li}><span class={bullet}>•</span>Unknown or unauthorized medicines</li>
+	</ul>
+
+	<h2 id={toc[4].id} class={h2}>Qualifying a product</h2>
+	<p class={p}>So you took my advice and decided on your niche, splendid for you!</p>
+	<p class={p}>Now let's learn about the factors that will allow you to almost instantly identify whether a product is a seller or a loser.</p>
+
+	<h3 class={h3}>1st: Does it solve a real problem?</h3>
+	<p class={p}>
+		This is really important because not everyone is willing to spend their money on some useless junk (unless it
+		has a wow factor, which we will discuss in a moment).
+	</p>
+	<p class={p}>Take, for example, a fidget spinner. What problems does it solve?</p>
+	<p class={p}>...</p>
+	<p class={p}>That's right.</p>
+	<p class={p}>Nothing.</p>
+	<p class={p}>
+		This is a mere distracting toy that became a fad, especially in 2018, specifically during the time when all
+		schools in Lebanon were preparing for their final exams.
+	</p>
+	<p class={p}>How about a lotion that removes wrinkles?</p>
+	<p class={p}>
+		Now this is a real problem-solving product that people, especially women in their 40s, have no choice but to
+		buy.
+	</p>
+	<p class={p}>Always ask yourself this question: Does this product solve a real problem? If yes, then sell it.</p>
+	<p class={p}>
+		If no, either pass on it, or consider selling it if it's part of a very strong ongoing trend that's currently
+		happening, from which you can make good money.
+	</p>
+
+	<h3 class={h3}>2nd: Does it have a good profit margin?</h3>
+	<p class={p}>
+		You want a selling price much higher than the supplier cost, usually a 3x markup or more. A skincare gadget
+		sourced at $8 and sold for $30 works well. A phone charger cable sourced at $4 that only sells for $6 doesn't,
+		since after ad costs you make almost nothing.
+	</p>
+
+	<h3 class={h3}>3rd: Is it lightweight?</h3>
+	<p class={p}>
+		Light products mean cheaper shipping, better margins, and faster delivery. Aim for items under about 1 kg, like
+		jewelry, phone cases, watches, or small beauty tools. Anything heavy, like a 5 kg appliance or a piece of
+		furniture, eats into your profit through shipping and slows delivery.
+	</p>
+
+	<h3 class={h3}>4th: Is it a retainer?</h3>
+	<p class={p}>
+		This doesn't necessarily determine whether a product is a winner or not, but is rather an optional
+		consideration.
+	</p>
+	<p class={p}>
+		A good example of a retainer product is a container of health benefit supplement gummies. Once they finish the
+		container, they're going to order a new one.
+	</p>
+	<p class={p}>An example of a non-retainer product is a shaving machine, which could last a lifetime for them unless they break it or lose it.</p>
+
+	<h2 id={toc[5].id} class={h2}>The old way of dropshipping</h2>
+	<p class={p}>
+		The old and traditional way of dropshipping had many cons that caused almost everyone to label dropshipping as
+		a "dead" or "terrible" business model.
+	</p>
+	<p class={p}>And these cons are:</p>
+	<ul class={ul}>
+		<li class={li}><span class={bullet}>•</span>Having to search for hours for a product to sell</li>
+		<li class={li}><span class={bullet}>•</span>Finding reliable suppliers who hopefully have the product you want to sell</li>
+		<li class={li}><span class={bullet}>•</span>Finding a reliable delivery company to deliver the product to the customer as soon as possible</li>
+		<li class={li}><span class={bullet}>•</span>No control over product quality, which could lead to customers demanding a refund</li>
+	</ul>
+
+	<h2 id={toc[6].id} class={h2}>How Droparabia permanently changed dropshipping</h2>
+	<p class={p}>
+		Because of these major cons left by the old dropshipping model and traditional e-commerce, Droparabia, the
+		first dropshipping platform in Lebanon, was born.
+	</p>
+	<p class={p}>
+		With this platform, you no longer have to search for hours for a product to sell, find or deal with suppliers,
+		or ever worry about delivering the products to your customers' doorsteps.
+	</p>
+	<p class={p}>
+		Droparabia finds and sources for you a wide variety of catalog products consisting only of winning products
+		with real market demand in the Lebanese market!
+	</p>
+	<p class={p}>
+		With its one-of-a-kind and advanced logistics network and infrastructure, you pick the product you want to
+		sell by connecting your Shopify store to Droparabia through its own app extension, and add the product
+		directly to your store with the click of a button.
+	</p>
+	<p class={p}>And Droparabia will handle the packaging and order delivery for you as soon as a customer places an order on your Shopify store!</p>
+	<p class={p}>
+		You don't own or manage inventory, you don't stress over deliveries and order fulfillment, and you only pay
+		for the product's cost while keeping the profit!
+	</p>
+	<p class={p}>
+		On top of all that, if a certain product you wanted to sell is not present on Droparabia, all you have to do
+		is provide a screenshot and details of this product in the "request product" feature on Droparabia, and the
+		platform will find and source it for you!
+	</p>
+
+	<h2 id={toc[7].id} class={h2}>Summary</h2>
+	<p class={p}>How much you can earn from your dropshipping business depends on several factors, such as:</p>
+	<ul class={ul}>
+		<li class={li}><span class={bullet}>•</span>How much effort are you willing to put into this business?</li>
+		<li class={li}><span class={bullet}>•</span>Are you willing to bounce back from trials and errors?</li>
+		<li class={li}><span class={bullet}>•</span>Do you treat dropshipping as a business model or a get-rich-quick scheme?</li>
+	</ul>
+	<p class={p}>But I'm not going to leave you hanging without an answer. Instead, I'll let these guys answer the question for you.</p>
+
+	<a
+		href="/reviews"
+		class="group mt-6 inline-flex items-center justify-center gap-2 rounded-full border-[3px] border-primary bg-white py-1 pr-1 pl-5 font-ibrand text-xs text-neutral-900 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)] sm:gap-3 sm:py-1.5 sm:pr-1.5 sm:pl-8 sm:text-sm dark:bg-neutral-900 dark:text-white"
+	>
+		<span>See what our sellers are saying</span>
+		<span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-white transition-transform duration-200 ease-out group-hover:translate-x-0.5 sm:h-9 sm:w-9">
+			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M5 12h14" />
+				<path d="m12 5 7 7-7 7" />
+			</svg>
+		</span>
+	</a>
+</BlogPostLayout>

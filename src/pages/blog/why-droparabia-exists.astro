@@ -1,0 +1,147 @@
+---
+import BlogPostLayout from "../../components/BlogPostLayout.astro";
+import { ik } from "../../lib/imagekit";
+
+const toc = [
+	{ id: "the-struggle", label: "The struggle" },
+	{ id: "the-solution", label: "The solution" },
+	{ id: "how-it-works", label: "How it works" },
+	{ id: "dropvault-community", label: "Dropvault Community" },
+	{ id: "why-droparabia-beats-traditional", label: "Why Droparabia beats traditional e-commerce and old dropshipping" },
+	{ id: "summary", label: "Summary" },
+];
+
+const h2 = "mt-10 scroll-mt-32 font-ibrand text-2xl text-neutral-900 sm:text-3xl dark:text-white";
+const h3 = "mt-6 font-ibrand text-lg text-neutral-900 dark:text-white";
+const p = "mt-3 font-helvetica text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400";
+const ul = "mt-3 flex flex-col gap-1.5";
+const li = "relative pl-5 font-helvetica text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400";
+const bullet = "absolute left-0 font-bold text-primary";
+---
+
+<BlogPostLayout
+	title="Why Droparabia exist"
+	description="The story behind Droparabia — the obstacles that made traditional e-commerce and old dropshipping fail Lebanese sellers, and how the platform and Dropvault community fix them."
+	date="January 30, 2026"
+	readTime="10 min read"
+	toc={toc}
+>
+	<Fragment slot="banner">
+		<div class="flex h-full w-full items-center justify-center gap-5 bg-white px-6 sm:gap-8">
+			<img src={ik("/Droparabia.webp", "w-400,q-90")} alt="" class="h-24 w-24 shrink-0 sm:h-40 sm:w-40 lg:h-48 lg:w-48" />
+			<span class="font-ibrand text-6xl text-neutral-900 sm:text-8xl lg:text-9xl">Droparabia</span>
+		</div>
+	</Fragment>
+
+	<p class="border-l-2 border-primary pl-4 font-helvetica text-base text-neutral-600 sm:text-lg dark:text-neutral-400">
+		It started from a goal of helping loved ones and redirecting our efforts to where they'd actually pay off. To
+		building an infrastructure that will help everyone enter the dropshipping space without facing the same
+		obstacles that could cause most people to quit from day 1.
+	</p>
+
+	<h2 id={toc[0].id} class={h2}>The struggle</h2>
+	<p class={p}>
+		Our founder Majd faced multiple obstacles while building his own e-commerce and dropshipping businesses,
+		obstacles that came with the traditional ways of these two models:
+	</p>
+	<ul class={ul}>
+		<li class={li}><span class={bullet}>•</span>Ordering products in bulk from China without a guarantee that they'd sell in the Lebanese market</li>
+		<li class={li}><span class={bullet}>•</span>Paying huge fees to ship them to Lebanon</li>
+		<li class={li}><span class={bullet}>•</span>No control over the quality of the products</li>
+		<li class={li}><span class={bullet}>•</span>No payment gateway for customers to pay (since PayPal and Stripe aren't available in Lebanon)</li>
+		<li class={li}><span class={bullet}>•</span>No reliable delivery system to deliver the products to customers safely and on time</li>
+	</ul>
+	<p class={p}>He started to understand why a lot of people who enter the dropshipping and e-commerce space often fail instantly.</p>
+	<p class={p}>And it's not because of a lack of experience or technical skills.</p>
+	<p class={p}>But because of these meaningless yet costly obstacles that shouldn't exist in the first place.</p>
+	<p class={`${p} italic`}>"Why should I purchase products in bulk from China without confirming if they could sell?"</p>
+	<p class={`${p} italic`}>"What if I could test with a few samples to gauge their demand first before ordering a stock?"</p>
+
+	<h2 id={toc[1].id} class={h2}>The solution</h2>
+	<p class={p}>And this is when the idea of Droparabia was born.</p>
+	<p class={p}>A system which both dropshippers and e-commerce owners can use.</p>
+	<p class={p}>
+		Instead of searching for hours for a product to sell, or risking your budget ordering products in bulk only to
+		end up with a stock that didn't sell, you have a platform that can help you find your own winning products
+		across multiple niches and categories and sell them directly to your customers without ever owning inventory.
+	</p>
+	<p class={p}>
+		And the best part is, you don't need to deal with suppliers yourself anymore, because this platform already
+		has its own supplier partners it can trust to source only the best quality products at the best price
+		possible.
+	</p>
+	<p class={p}>Sounds cool right?</p>
+
+	<h2 id={toc[2].id} class={h2}>How it works</h2>
+	<p class={p}>The Droparabia infrastructure covers both the logistical and the technical sides.</p>
+
+	<h3 class={h3}>Droparabia's advanced logistics network</h3>
+	<p class={p}>
+		The platform has its own logistics network located in Deir Qoubel, Mount Lebanon Governorate, along with its
+		own delivery system to make sure each product is packaged and safely delivered to the customer within a
+		period of 5 to 7 days all over Lebanon.
+	</p>
+	<p class={p}>Along with partnerships with both local and Chinese suppliers, which allows Droparabia to supply the products requested by its users.</p>
+
+	<h3 class={h3}>Advanced and game changing tools</h3>
+	<p class={p}>Droparabia offers lots of useful features, especially to absolute newbies to the world of dropshipping and e-commerce, from:</p>
+	<ul class={ul}>
+		<li class={li}><span class={bullet}>•</span>Weekly updated catalog of winning products and their analysis</li>
+		<li class={li}><span class={bullet}>•</span>AI built to assist and analyze products and their buyer avatars</li>
+		<li class={li}><span class={bullet}>•</span>Laser machine to brand and print logos on products to create a unique brand and stand out from the competition</li>
+		<li class={li}><span class={bullet}>•</span>Shopify and Whish Money integration</li>
+		<li class={li}><span class={bullet}>•</span>AI studio for generating video ads</li>
+	</ul>
+	<p class={p}>And more features are added periodically, often requested by the users themselves!</p>
+
+	<h2 id={toc[3].id} class={h2}>Dropvault Community</h2>
+	<p class={p}>Of course, no one will be able to immediately catch up to this platform without the requirement of a guiding hand, right?</p>
+	<p class={p}>That's exactly what the Dropvault community is for.</p>
+	<p class={p}>Inside it, not only will you be guided on how to use the platform, but you're also joining a community of passionate sellers like you.</p>
+	<p class={p}>And a team of experienced advisors with a digital marketing background, ready to help you build a successful and high-earning dropshipping store!</p>
+	<p class={p}>It's the place where you'll get:</p>
+	<ul class={ul}>
+		<li class={li}><span class={bullet}>•</span>Access to +20 hours of FREE courses and recorded tutorials</li>
+		<li class={li}><span class={bullet}>•</span>Weekly coaching calls</li>
+		<li class={li}><span class={bullet}>•</span>Dedicated WhatsApp group to get support whenever you need it</li>
+		<li class={li}><span class={bullet}>•</span>Chance to participate in giveaways and events</li>
+	</ul>
+
+	<h2 id={toc[4].id} class={h2}>Why Droparabia beats traditional e-commerce and old dropshipping</h2>
+	<p class={p}>It is thanks to all the cons left by both traditional e-commerce and old dropshipping that led to the creation of Droparabia.</p>
+
+	<h3 class={h3}>With the traditional e-commerce model:</h3>
+	<ul class={ul}>
+		<li class={li}><span class={bullet}>•</span>You would need at least $3,000 as an upfront investment</li>
+		<li class={li}><span class={bullet}>•</span>Forced to purchase products in bulk because of the Alibaba minimum quantity purchase rule, and pay huge shipping fees</li>
+		<li class={li}><span class={bullet}>•</span>Huge risk of getting stuck with an inventory that didn't sell</li>
+	</ul>
+
+	<h3 class={h3}>With the old dropshipping model:</h3>
+	<ul class={ul}>
+		<li class={li}><span class={bullet}>•</span>You have no control over the quality</li>
+		<li class={li}><span class={bullet}>•</span>You'd find your winning product but never the reliable supplier in most cases</li>
+		<li class={li}><span class={bullet}>•</span>You're selling the same product as everyone else</li>
+	</ul>
+	<p class={p}>As demonstrated earlier, none of that is the case with Droparabia.</p>
+
+	<h2 id={toc[5].id} class={h2}>Summary</h2>
+	<p class={p}>
+		So if you're someone who wants to get into the dropshipping or e-commerce space but you have no experience, or
+		you're afraid to risk your hard earned savings for nothing in return...
+	</p>
+	<p class={p}>Droparabia and the Dropvault community both welcome you.</p>
+
+	<a
+		href="/dropvault"
+		class="group mt-6 inline-flex items-center justify-center gap-2 rounded-full border-[3px] border-primary bg-white py-1 pr-1 pl-5 font-ibrand text-xs text-neutral-900 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)] sm:gap-3 sm:py-1.5 sm:pr-1.5 sm:pl-8 sm:text-sm dark:bg-neutral-900 dark:text-white"
+	>
+		<span>Join the Dropvault community</span>
+		<span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-white transition-transform duration-200 ease-out group-hover:translate-x-0.5 sm:h-9 sm:w-9">
+			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M5 12h14" />
+				<path d="m12 5 7 7-7 7" />
+			</svg>
+		</span>
+	</a>
+</BlogPostLayout>
