@@ -56,6 +56,12 @@ const {
 	// evenly across the section — no tilt, no perspective skew. Hexes are colored to match
 	// the page background so the grid reads as a subtle tonal texture rather than a
 	// foreground object.
+	//
+	// This background is 100% static (nothing about it ever animates frame-to-frame), so
+	// there's no requestAnimationFrame loop here at all — it renders once after setup, and
+	// again only when something that actually changes its pixels happens (a resize, or a
+	// dark/light toggle), instead of redrawing the same unchanged frame 60 times a second
+	// forever.
 	import * as THREE from "three";
 
 	document.querySelectorAll<HTMLCanvasElement>("canvas[data-cut-corner]").forEach((canvas) => {
@@ -70,14 +76,6 @@ const {
 		// measured in HEX_R * 1.5 units), not a 0-1 fraction, so it isn't clamped to 1.
 		const fadeHeight = Math.max(0, parseFloat(canvas.dataset.fadeHeight ?? "0.6"));
 		const fadeBottom = canvas.dataset.fadeBottom === "true";
-
-		const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-		renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-		const scene = new THREE.Scene();
-		const camera = new THREE.OrthographicCamera(0, 0, 0, 0, 0.1, 100);
-		camera.position.set(0, 0, 50);
-		camera.lookAt(0, 0, 0);
 
 		// Hex radius in CSS pixels — world units are mapped 1:1 to pixels via the ortho camera.
 		// Smaller on narrow screens so the tiling reads at roughly the same visual density
@@ -155,27 +153,43 @@ const {
 		const HEX_COLOR_DARK = 0x262626;
 		const material = new THREE.MeshBasicMaterial({ vertexColors: true, color: 0xffffff });
 
-		function applyTheme() {
-			material.color.set(document.documentElement.classList.contains("dark") ? HEX_COLOR_DARK : 0xffffff);
+		const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+		renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+		const scene = new THREE.Scene();
+		const camera = new THREE.OrthographicCamera(0, 0, 0, 0, 0.1, 100);
+		camera.position.set(0, 0, 50);
+		camera.lookAt(0, 0, 0);
+
+		function render() {
+			renderer.render(scene, camera);
 		}
 
-		// Sync to whatever theme is already active — Layout.astro's inline head script may
-		// have already added the "dark" class before this component's script even runs, and
-		// the observer below only reacts to mutations from this point forward, so without
-		// this call a page load that starts in dark mode renders with the light-mode tint
-		// until some later, unrelated toggle happens to fire the observer.
-		applyTheme();
+		// Sync to whatever theme is already active before the first render — Layout.astro's
+		// inline head script may have already added the "dark" class before this component's
+		// script even runs.
+		material.color.set(document.documentElement.classList.contains("dark") ? HEX_COLOR_DARK : 0xffffff);
 
-		// The toggle in Header.astro flips the "dark" class on <html> — watch for that
-		// instead of re-reading it on every frame, and swap the tint to match.
-		const themeObserver = new MutationObserver(applyTheme);
-		themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+		// Header.astro's toggle dispatches this once per actual theme flip (not a raw class
+		// MutationObserver, which also fires for the unrelated "theme-transition-active" class
+		// it toggles around the switch — that was re-rendering every hex instance 3x per click).
+		// Rendered synchronously (not deferred) so it finishes inside the same tick as the
+		// toggle's View Transition callback — the browser snapshots the "after" state right
+		// after that callback returns, so a deferred render would still be showing the old
+		// color when that snapshot is taken and only pop to the new one after the crossfade.
+		window.addEventListener("droparabia:theme-changed", (e) => {
+			const theme = (e as CustomEvent<{ theme: string }>).detail.theme;
+			material.color.set(theme === "dark" ? HEX_COLOR_DARK : 0xffffff);
+			render();
+		});
 
-		// Big enough grid (in world px) to cover any reasonably wide section without
-		// rebuilding on resize — the orthographic camera just crops its viewport to the
-		// section's size.
-		const GRID_W = 4200;
-		const GRID_H = 2000;
+		// Grid sized to this section's own footprint (plus a little headroom for modest
+		// resizes without a rebuild) instead of a single one-size-fits-all constant — a
+		// short section gets a short/cheap grid instead of always paying for enough
+		// instances to cover a 4200x2000 world.
+		const rect0 = section.getBoundingClientRect();
+		const GRID_W = Math.max(rect0.width, window.innerWidth) * 1.3;
+		const GRID_H = rect0.height * 1.3;
 		const COLS = Math.ceil(GRID_W / (HEX_R * Math.sqrt(3) * GAP)) + 2;
 		const ROWS = Math.ceil(GRID_H / (HEX_R * 1.5 * GAP)) + 2;
 		const count = COLS * ROWS;
@@ -185,7 +199,6 @@ const {
 		// A straight diagonal cut taking a corner off the bottom of the grid — one clean
 		// line, not a blob of holes or a ragged edge. Optional per-instance, either bottom
 		// corner.
-		const rect0 = section.getBoundingClientRect();
 		const cornerSign = cutSide === "right" ? 1 : -1;
 		const cornerX = cornerSign * (rect0.width / 2);
 		const cornerY = -rect0.height / 2;
@@ -237,8 +250,6 @@ const {
 		scene.add(mesh);
 
 		function resize() {
-			// Non-null assertion: `section` was already narrowed to HTMLElement above, but
-			// TS doesn't carry that narrowing into nested function closures.
 			const rect = section!.getBoundingClientRect();
 			renderer.setSize(rect.width, rect.height, false);
 			camera.left = -rect.width / 2;
@@ -246,42 +257,9 @@ const {
 			camera.top = rect.height / 2;
 			camera.bottom = -rect.height / 2;
 			camera.updateProjectionMatrix();
+			render();
 		}
 		resize();
 		window.addEventListener("resize", resize);
-
-		let frame = 0;
-		let running = false;
-		function tick() {
-			frame = requestAnimationFrame(tick);
-			renderer.render(scene, camera);
-		}
-		function start() {
-			if (running) return;
-			running = true;
-			tick();
-		}
-		function stop() {
-			running = false;
-			cancelAnimationFrame(frame);
-		}
-		start();
-
-		// Only run the WebGL loop while this section is actually visible — otherwise it
-		// keeps rendering every frame forever, even scrolled far out of view, competing
-		// for main-thread/GPU time and causing scroll jank everywhere else on the page.
-		const visibilityObserver = new IntersectionObserver(
-			(entries) => {
-				if (entries[0].isIntersecting) start();
-				else stop();
-			},
-			{ threshold: 0 },
-		);
-		visibilityObserver.observe(section);
-
-		document.addEventListener("visibilitychange", () => {
-			if (document.hidden) stop();
-			else if (section.getBoundingClientRect().bottom > 0) start();
-		});
 	});
 </script>

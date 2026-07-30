@@ -21,6 +21,14 @@ const resources = [
 		icon: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
 	},
 	{
+		label: "Blog",
+		description: "Guides and updates from the Droparabia team",
+		href: "/#blog",
+		key: "blog",
+		// FileText
+		icon: '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
+	},
+	{
 		label: "Broadcast channel",
 		description: "Announcements and drops, straight to you",
 		href: "https://www.instagram.com/channel/Aba2ifyff8O_0xvs/",
@@ -119,15 +127,6 @@ const TOOL_HEX_H = TOOL_HEX_SIZE * 2;
 const TOOL_HEX_PAD = 3;
 const TOOL_SVG_W = TOOL_HEX_W + TOOL_HEX_PAD * 2;
 const TOOL_SVG_H = TOOL_HEX_H + TOOL_HEX_PAD * 2;
-// Every item is a fixed width in both rows — the honeycomb stagger comes from a fixed
-// margin on row two, not from squeezing that row's items into less space (which is what
-// broke the spacing before: unequal item widths per row = unequal icon-to-icon gaps).
-const TOOL_ITEM_W = 240;
-const TOOL_ITEM_GAP = 24;
-const TOOL_ROW_OFFSET = (TOOL_ITEM_W + TOOL_ITEM_GAP) / 2;
-// Tools still has 6 items split 3-and-3 in an interlocking honeycomb (Resources has since
-// dropped to 4 items and moved to its own plain 2-and-2 split, see RES_PANEL_W below).
-const TOOL_PANEL_W = TOOL_ROW_OFFSET + TOOL_ITEM_W * 3 + TOOL_ITEM_GAP * 2 + 56; // + panel padding
 // Icons are authored on a 24x24 grid; scale the whole group down and re-center it inside
 // the smaller hex instead of hand-editing each icon's coordinates.
 const TOOL_ICON_SCALE = 0.7;
@@ -172,36 +171,31 @@ const toolHexPath = roundedHexPath(toolHexPoints, 8);
 // blank).
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
-// Tools and Resources both have 6 items now — same 3-per-row honeycomb split, same stagger
-// offset on the bottom row, so the two panels line up exactly.
+// Tools (6 items) and Resources (5 items) both split into a top row + a shorter/equal
+// bottom row that's nudged right by the zigzag-offset utility class below — items are
+// content-sized (no fixed width), so the panels and rows just shrink-wrap to whatever
+// they need, in either language.
 const toolTopRow = tools.slice(0, 3).map((t, i) => ({ ...t, color: TOOL_HEX_COLORS[i] }));
 const toolBottomRow = tools.slice(3, 6).map((t, i) => ({ ...t, color: TOOL_HEX_COLORS[i + 3] }));
-const TOOL_BOTTOM_OFFSET = TOOL_ROW_OFFSET;
 
-// Resources dropped to 4 items (down from 6) — same honeycomb idea as Tools, just a 2-and-2
-// split instead of 3-and-3. Both rows have exactly 2 items each, so the half-item stagger
-// offset on the bottom row is symmetric (unlike the old 3-and-1 split, which left a single
-// item stranded on its own half-offset row).
-const resTopRow = resources.slice(0, 2).map((r, i) => ({ ...r, color: TOOL_HEX_COLORS[i] }));
-const resBottomRow = resources.slice(2, 4).map((r, i) => ({ ...r, color: TOOL_HEX_COLORS[i + 2] }));
-const RES_BOTTOM_OFFSET = TOOL_ROW_OFFSET;
-const RES_PANEL_W = TOOL_ROW_OFFSET + TOOL_ITEM_W * 2 + TOOL_ITEM_GAP + 56;
+const resTopRow = resources.slice(0, 3).map((r, i) => ({ ...r, color: TOOL_HEX_COLORS[i] }));
+const resBottomRow = resources.slice(3, 5).map((r, i) => ({ ...r, color: TOOL_HEX_COLORS[i + 3] }));
 ---
 
 <!-- Desktop nav — the floating pill, lg+ only. Mobile/tablet get a separate plain
 	 rectangle bar + full-screen menu below instead (see #mobile-header / #mobile-menu). -->
 <header class="fixed inset-x-0 top-6 z-50 hidden justify-center px-4 lg:flex">
 	<nav
-		class="relative flex w-full max-w-5xl items-center justify-between gap-2 rounded-full border border-black/5 bg-white/70 py-3 pl-5 pr-3 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.15)] backdrop-blur-xl dark:border-white/10 dark:bg-neutral-900/70 dark:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.4)]"
+		class="theme-static-blur relative flex w-full max-w-5xl items-center justify-between gap-2 rounded-full border border-black/5 bg-white/70 py-3 pl-5 pr-3 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.15)] backdrop-blur-xl rtl:flex-row-reverse dark:border-white/10 dark:bg-neutral-900/70 dark:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.4)]"
 	>
 		<!-- Logo -->
-		<a href="/" class="flex shrink-0 items-center gap-2.5 pl-2">
+		<a href="/" class="flex shrink-0 items-center gap-2.5 pl-2 rtl:flex-row-reverse">
 			<img src={ik("/Droparabia.webp", "w-100,q-80")} alt="Droparabia" class="h-9 w-9" />
 			<span class="font-ibrand text-xl leading-none text-neutral-900 dark:text-white">Droparabia</span>
 		</a>
 
 		<!-- Nav links -->
-		<ul class="flex items-center gap-1 font-helvetica text-[15px] text-neutral-900 dark:text-white">
+		<ul class="flex items-center gap-1 font-helvetica text-[15px] text-neutral-900 rtl:flex-row-reverse dark:text-white">
 			{navLinks.map((link) =>
 				link.label === "Tools" || link.label === "Resources" ? (
 					<li class="relative" data-nav-item={link.label === "Tools" ? "tools" : "resources"}>
@@ -235,18 +229,16 @@ const RES_PANEL_W = TOOL_ROW_OFFSET + TOOL_ITEM_W * 2 + TOOL_ITEM_GAP + 56;
 			<div class="relative">
 				<div
 					id="resources-panel"
-					class="absolute left-0 top-0 transition-[transform,opacity,filter] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]"
-					style={{ width: `${RES_PANEL_W}px`, maxWidth: "92vw" }}
+					class="absolute left-0 top-0 w-max max-w-[92vw] transition-[transform,opacity,filter] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]"
 				>
-					<div class="rounded-3xl border border-black/5 bg-white/90 p-7 pb-5 shadow-[0_14px_35px_-12px_rgba(0,30,255,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-neutral-900/90">
-						<div class="flex" style={{ gap: `${TOOL_ITEM_GAP}px` }}>
+					<div class="theme-static-blur rounded-3xl border border-black/5 bg-white/90 p-7 pb-5 shadow-[0_14px_35px_-12px_rgba(0,30,255,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-neutral-900/90">
+						<div class="flex gap-6">
 							{resTopRow.map((item) => (
 								<a
 								href={item.href}
 								target={item.href.startsWith("http") ? "_blank" : undefined}
 								rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-								class="group -mx-2 -my-2 flex shrink-0 cursor-pointer items-center gap-3 rounded-2xl px-2 py-2 transition-all duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]"
-								style={{ width: `${TOOL_ITEM_W}px` }}
+								class="group -mx-2 -my-2 flex w-auto max-w-72 shrink-0 cursor-pointer items-center gap-3 rounded-2xl px-2 py-2 transition-all duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]"
 							>
 									<svg
 										class="shrink-0"
@@ -281,14 +273,13 @@ const RES_PANEL_W = TOOL_ROW_OFFSET + TOOL_ITEM_W * 2 + TOOL_ITEM_GAP + 56;
 								</a>
 							))}
 						</div>
-						<div class="mt-6 flex" style={{ gap: `${TOOL_ITEM_GAP}px`, marginLeft: `${RES_BOTTOM_OFFSET}px` }}>
+						<div class="mt-6 flex gap-6 ml-16 rtl:mr-16 rtl:ml-0">
 							{resBottomRow.map((item) => (
 								<a
 								href={item.href}
 								target={item.href.startsWith("http") ? "_blank" : undefined}
 								rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-								class="group -mx-2 -my-2 flex shrink-0 cursor-pointer items-center gap-3 rounded-2xl px-2 py-2 transition-all duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]"
-								style={{ width: `${TOOL_ITEM_W}px` }}
+								class="group -mx-2 -my-2 flex w-auto max-w-72 shrink-0 cursor-pointer items-center gap-3 rounded-2xl px-2 py-2 transition-all duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]"
 							>
 									<svg
 										class="shrink-0"
@@ -328,13 +319,12 @@ const RES_PANEL_W = TOOL_ROW_OFFSET + TOOL_ITEM_W * 2 + TOOL_ITEM_GAP + 56;
 
 				<div
 					id="tools-panel"
-					class="absolute left-0 top-0 transition-[transform,opacity,filter] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]"
-					style={{ width: `${TOOL_PANEL_W}px`, maxWidth: "92vw" }}
+					class="absolute left-0 top-0 w-max max-w-[92vw] transition-[transform,opacity,filter] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]"
 				>
-					<div class="rounded-3xl border border-black/5 bg-white/90 p-7 pb-5 shadow-[0_14px_35px_-12px_rgba(0,30,255,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-neutral-900/90">
-						<div class="flex" style={{ gap: `${TOOL_ITEM_GAP}px` }}>
+					<div class="theme-static-blur rounded-3xl border border-black/5 bg-white/90 p-7 pb-5 shadow-[0_14px_35px_-12px_rgba(0,30,255,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-neutral-900/90">
+						<div class="flex gap-6">
 							{toolTopRow.map((tool) => (
-								<a href={tool.href} class="group -mx-2 -my-2 flex shrink-0 cursor-pointer items-center gap-3 rounded-2xl px-2 py-2 transition-all duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]" style={{ width: `${TOOL_ITEM_W}px` }}>
+								<a href={tool.href} class="group -mx-2 -my-2 flex w-auto max-w-72 shrink-0 cursor-pointer items-center gap-3 rounded-2xl px-2 py-2 transition-all duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]">
 									<svg
 										class="shrink-0"
 										width={TOOL_SVG_W}
@@ -368,9 +358,9 @@ const RES_PANEL_W = TOOL_ROW_OFFSET + TOOL_ITEM_W * 2 + TOOL_ITEM_GAP + 56;
 								</a>
 							))}
 						</div>
-						<div class="mt-6 flex" style={{ gap: `${TOOL_ITEM_GAP}px`, marginLeft: `${TOOL_BOTTOM_OFFSET}px` }}>
+						<div class="mt-6 flex gap-6 ml-16 rtl:mr-16 rtl:ml-0">
 							{toolBottomRow.map((tool) => (
-								<a href={tool.href} class="group -mx-2 -my-2 flex shrink-0 cursor-pointer items-center gap-3 rounded-2xl px-2 py-2 transition-all duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]" style={{ width: `${TOOL_ITEM_W}px` }}>
+								<a href={tool.href} class="group -mx-2 -my-2 flex w-auto max-w-72 shrink-0 cursor-pointer items-center gap-3 rounded-2xl px-2 py-2 transition-all duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]">
 									<svg
 										class="shrink-0"
 										width={TOOL_SVG_W}
@@ -410,7 +400,7 @@ const RES_PANEL_W = TOOL_ROW_OFFSET + TOOL_ITEM_W * 2 + TOOL_ITEM_GAP + 56;
 		</div>
 
 		<!-- Utility buttons -->
-		<div class="flex shrink-0 items-center gap-1">
+		<div class="flex shrink-0 items-center gap-1 rtl:flex-row-reverse">
 			<!-- Dropvault Community -->
 			<a href="/dropvault" class="group flex cursor-pointer items-center gap-2 rounded-full px-4 py-2.5">
 				<img src={ik("/Dropvault.png", "w-80,q-80")} alt="" class="h-6 w-6 rounded-full backface-hidden transition-transform duration-300 ease-out transform-[translateZ(0)] group-hover:rotate-180" />
@@ -449,7 +439,7 @@ const RES_PANEL_W = TOOL_ROW_OFFSET + TOOL_ITEM_W * 2 + TOOL_ITEM_GAP + 56;
 				</button>
 				<div
 					id="lang-menu"
-					class="lang-menu invisible absolute right-0 top-full mt-2 w-32 origin-top-right scale-90 overflow-hidden rounded-2xl border border-black/5 bg-white/90 py-1 font-helvetica text-[13px] opacity-0 shadow-[0_12px_32px_-8px_rgba(0,30,255,0.18)] backdrop-blur-xl transition-[opacity,scale,visibility] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] dark:border-white/10 dark:bg-neutral-900/90"
+					class="theme-static-blur lang-menu invisible absolute right-0 top-full mt-2 w-32 origin-top-right scale-90 overflow-hidden rounded-2xl border border-black/5 bg-white/90 py-1 font-helvetica text-[13px] opacity-0 shadow-[0_12px_32px_-8px_rgba(0,30,255,0.18)] backdrop-blur-xl transition-[opacity,scale,visibility] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] dark:border-white/10 dark:bg-neutral-900/90"
 				>
 					<button data-lang="en" class="lang-option group relative block w-full cursor-pointer px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">English</button>
 					<button data-lang="ar" class="lang-option group relative block w-full cursor-pointer px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">العربية</button>
@@ -462,15 +452,15 @@ const RES_PANEL_W = TOOL_ROW_OFFSET + TOOL_ITEM_W * 2 + TOOL_ITEM_GAP + 56;
 <!-- Mobile/tablet header — a plain rectangle bar (not the floating pill), sits flush at
 	 the top of the page. Tapping the toggle opens a full-screen menu (below) rather than a
 	 small dropdown panel. -->
-<header id="mobile-header" class="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-black/5 bg-white/90 px-4 py-3 backdrop-blur-xl lg:hidden dark:border-white/10 dark:bg-neutral-950/90">
-	<a href="/" class="flex items-center gap-2">
+<header id="mobile-header" class="theme-static-blur fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-transparent bg-transparent px-4 py-3 transition-colors duration-300 ease-out rtl:flex-row-reverse lg:hidden">
+	<a href="/" class="flex items-center gap-2 rtl:flex-row-reverse">
 		<img src={ik("/Droparabia.webp", "w-100,q-80")} alt="Droparabia" class="h-8 w-8" />
 		<span class="font-ibrand text-lg leading-none text-neutral-900 dark:text-white">Droparabia</span>
 	</a>
 
 	<!-- Dark mode + language live on the bar itself so they're reachable without opening the
 		 full-screen menu at all. -->
-	<div class="flex shrink-0 items-center gap-2">
+	<div class="flex shrink-0 items-center gap-2 rtl:flex-row-reverse">
 		<button
 			id="theme-toggle-mobile"
 			type="button"
@@ -501,7 +491,7 @@ const RES_PANEL_W = TOOL_ROW_OFFSET + TOOL_ITEM_W * 2 + TOOL_ITEM_GAP + 56;
 			</button>
 			<div
 				id="lang-menu-mobile"
-				class="lang-menu invisible absolute right-0 top-full mt-2 w-32 origin-top-right scale-90 overflow-hidden rounded-2xl border border-black/5 bg-white/95 py-1 font-helvetica text-[13px] opacity-0 shadow-[0_12px_32px_-8px_rgba(0,30,255,0.18)] backdrop-blur-xl transition-[opacity,scale,visibility] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] dark:border-white/10 dark:bg-neutral-900/95"
+				class="theme-static-blur lang-menu invisible absolute right-0 top-full mt-2 w-32 origin-top-right scale-90 overflow-hidden rounded-2xl border border-black/5 bg-white/95 py-1 font-helvetica text-[13px] opacity-0 shadow-[0_12px_32px_-8px_rgba(0,30,255,0.18)] backdrop-blur-xl transition-[opacity,scale,visibility] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] dark:border-white/10 dark:bg-neutral-900/95"
 			>
 				<button data-lang="en" class="lang-toggle-mobile-option lang-option group relative block w-full cursor-pointer px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">English</button>
 				<button data-lang="ar" class="lang-toggle-mobile-option lang-option group relative block w-full cursor-pointer px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">العربية</button>
@@ -655,7 +645,7 @@ const RES_PANEL_W = TOOL_ROW_OFFSET + TOOL_ITEM_W * 2 + TOOL_ITEM_GAP + 56;
 
 <div
 	id="nav-overlay"
-	class="fixed inset-0 z-40 bg-black/50 opacity-0 pointer-events-none backdrop-blur-[2px] transition-opacity duration-200 ease-out will-change-opacity"
+	class="theme-static-blur fixed inset-0 z-40 bg-black/50 opacity-0 pointer-events-none backdrop-blur-[2px] transition-opacity duration-200 ease-out will-change-opacity"
 	aria-hidden="true"
 ></div>
 
@@ -667,18 +657,32 @@ const RES_PANEL_W = TOOL_ROW_OFFSET + TOOL_ITEM_W * 2 + TOOL_ITEM_GAP + 56;
 	const applyTheme = (theme: string) => {
 		root.classList.toggle("dark", theme === "dark");
 		localStorage.setItem("theme", theme);
+		window.dispatchEvent(new CustomEvent("droparabia:theme-changed", { detail: { theme } }));
 	};
 
 	let themeTransitionTimer: ReturnType<typeof setTimeout> | undefined;
 	function toggleTheme() {
-		// Force every element's color-related properties onto the exact same transition for
-		// this one moment, so the whole page switches together instead of each element
-		// following whatever transition (if any) its own component happened to declare.
+		const next = root.classList.contains("dark") ? "light" : "dark";
+
+		// Native View Transitions crossfade two GPU-composited screenshots of the page instead
+		// of animating every element's color individually — the whole-DOM recalc the old
+		// `.theme-transition-active *` approach forced was the actual source of the lag no
+		// amount of trimming around its edges (backdrop-blur, WebGL renders, ...) fully fixed.
+		// This reuses the exact same crossfade already defined for page navigation below
+		// (::view-transition-old/new(root) in global.css). Falls back to the old manual
+		// crossfade only for browsers without support (Firefox, older Safari).
+		if ("startViewTransition" in document) {
+			root.classList.add("theme-view-transition");
+			const transition = (
+				document as unknown as { startViewTransition: (cb: () => void) => { finished: Promise<void> } }
+			).startViewTransition(() => applyTheme(next));
+			transition.finished.finally(() => root.classList.remove("theme-view-transition"));
+			return;
+		}
+
 		clearTimeout(themeTransitionTimer);
 		root.classList.add("theme-transition-active");
 		themeTransitionTimer = setTimeout(() => root.classList.remove("theme-transition-active"), 320);
-
-		const next = root.classList.contains("dark") ? "light" : "dark";
 		applyTheme(next);
 	}
 	themeToggle?.addEventListener("click", toggleTheme);
@@ -820,6 +824,26 @@ const RES_PANEL_W = TOOL_ROW_OFFSET + TOOL_ITEM_W * 2 + TOOL_ITEM_GAP + 56;
 	const iconMenuOpen = document.getElementById("icon-menu-open");
 	const iconMenuClose = document.getElementById("icon-menu-close");
 
+	// The mobile bar starts fully transparent (so it blends into the Hero instead of
+	// covering it with a bar-shaped block on load) and regains its background/border/blur
+	// the moment the page scrolls at all — also forced solid while the full-screen menu is
+	// open, so its buttons always sit on a real background instead of floating transparently.
+	const mobileHeader = document.getElementById("mobile-header");
+	const MOBILE_HEADER_SCROLL_THRESHOLD = 8;
+	function updateMobileHeaderBg() {
+		const menuOpen = !(mobileMenu?.classList.contains("invisible") ?? true);
+		const solid = window.scrollY > MOBILE_HEADER_SCROLL_THRESHOLD || menuOpen;
+		mobileHeader?.classList.toggle("bg-white/90", solid);
+		mobileHeader?.classList.toggle("dark:bg-neutral-950/90", solid);
+		mobileHeader?.classList.toggle("bg-transparent", !solid);
+		mobileHeader?.classList.toggle("border-black/5", solid);
+		mobileHeader?.classList.toggle("dark:border-white/10", solid);
+		mobileHeader?.classList.toggle("border-transparent", !solid);
+		mobileHeader?.classList.toggle("backdrop-blur-xl", solid);
+	}
+	updateMobileHeaderBg();
+	window.addEventListener("scroll", updateMobileHeaderBg, { passive: true });
+
 	function setMobileMenu(open: boolean) {
 		// No dark backdrop here — the menu itself is a full-screen opaque panel, not a small
 		// dropdown, so the shared #nav-overlay (used by the desktop hover dropdown) would just
@@ -837,6 +861,7 @@ const RES_PANEL_W = TOOL_ROW_OFFSET + TOOL_ITEM_W * 2 + TOOL_ITEM_GAP + 56;
 		iconMenuClose?.classList.toggle("hidden", !open);
 		mobileMenuToggle?.setAttribute("aria-expanded", String(open));
 		document.body.classList.toggle("overflow-hidden", open);
+		updateMobileHeaderBg();
 	}
 
 	mobileMenuToggle?.addEventListener("click", () => {

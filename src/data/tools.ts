@@ -110,7 +110,7 @@ export const tools: Tool[] = [
 		description: {
 			heading: "Studio-quality creatives, without the studio",
 			paragraph:
-				"Leverage our AI studio to create your own powerful advertisements videos for your products rather than re-using other creator's content and risking yourself with a ban.",
+				"Leverage our AI studio to create your own powerful advertising videos for your products rather than re-using other creators' content and risking yourself with a ban.",
 		},
 		features: [
 			{ title: "Instant ad creatives", description: "Generate ready-to-post ad images and videos in a few clicks." },
@@ -127,7 +127,7 @@ export const tools: Tool[] = [
 	{
 		slug: "branding",
 		label: "Branding",
-		tagline: "Build your own brand identity and standout from competition",
+		tagline: "Build your own brand identity and stand out from the competition",
 		// Tag
 		icon: '<path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/>',
 		color: "#162dbd",

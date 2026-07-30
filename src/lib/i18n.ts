@@ -48,7 +48,7 @@ export const translations: Record<string, { en: string; ar: string }> = {
 		ar: 'كيف يعمل <span class="text-primary">دروب أرابيا</span>',
 	},
 	"howitworks.step0": {
-		en: "Integrate your Shopify into Droparabia, which allows you add & sell any product directly on your website",
+		en: "Integrate your Shopify into Droparabia, which allows you to add & sell any product directly on your website",
 		ar: "اربط متجر Shopify الخاص بك بدروب أرابيا، ليتيح لك إضافة وبيع أي منتج مباشرة على موقعك",
 	},
 	"howitworks.step1": {
@@ -60,8 +60,8 @@ export const translations: Record<string, { en: string; ar: string }> = {
 		ar: "يتولى نظامنا التغليف وتوصيل الطلب في كل مرة يطلب فيها عميل من موقعك",
 	},
 	"howitworks.step3": {
-		en: "Droparabia charges per sold item only so you're not gambling with your money on products that might not sell",
-		ar: "يتقاضى دروب أرابيا رسومًا فقط على كل قطعة تُباع، فلا تجازف بمالك على منتجات قد لا تُباع",
+		en: "Droparabia charges per sold item only so you only ever pay for what actually sells",
+		ar: "يتقاضى دروب أرابيا رسومًا فقط على كل قطعة تُباع، فأنت تدفع فقط مقابل ما يُباع فعليًا",
 	},
 
 	"why.heading": {
@@ -98,7 +98,7 @@ export const translations: Record<string, { en: string; ar: string }> = {
 		ar: "إرشاد مباشر يبقي متجرك على المسار الصحيح كل أسبوع",
 	},
 	"bonuses.title2": {
-		en: "One‑on‑One mentorship with a 6‑Figures brand builder",
+		en: "One‑on‑One mentorship with a 6‑Figure brand builder",
 		ar: "إرشاد فردي من صاحب علامة تجارية بأرباح ست أرقام",
 	},
 	"bonuses.subtitle2": {
@@ -209,7 +209,7 @@ export const translations: Record<string, { en: string; ar: string }> = {
 	"tool.ai-winning-products.perk2": { en: "Time saving decision making", ar: "قرارات أسرع توفّر وقتك" },
 
 	"tool.ai-studio.paragraph": {
-		en: "Leverage our AI studio to create your own powerful advertisements videos for your products rather than re-using other creator's content and risking yourself with a ban.",
+		en: "Leverage our AI studio to create your own powerful advertising videos for your products rather than re-using other creators' content and risking yourself with a ban.",
 		ar: "استخدم استوديو الذكاء الاصطناعي لدينا لإنشاء إعلانات فيديو قوية لمنتجاتك بدلاً من إعادة استخدام محتوى صناع آخرين وتعريض نفسك لخطر الحظر.",
 	},
 	"tool.ai-studio.perksIntro": {
@@ -375,6 +375,36 @@ export const translations: Record<string, { en: string; ar: string }> = {
 
 	"casestudy.heading": { en: "Latest case studies", ar: "أحدث دراسات الحالة" },
 
+	"blog.heading": { en: "Browse our latest articles", ar: "تصفّح أحدث مقالاتنا" },
+	"blog.post0.title": {
+		en: "9 Best Dropshipping Software Programs (Free & Paid)",
+		ar: "أفضل 9 برامج للدروبشيبينغ (مجانية ومدفوعة)",
+	},
+	"blog.post0.excerpt": {
+		en: "We break down the best dropshipping software programs you can use for product sourcing and research.",
+		ar: "نستعرض أفضل برامج الدروبشيبينغ التي يمكنك استخدامها لتوريد المنتجات والبحث عنها.",
+	},
+	"blog.post1.title": {
+		en: "24 Best Dropshipping Suppliers: Buy Low, Sell High!",
+		ar: "أفضل 24 موردًا للدروبشيبينغ: اشترِ بسعر منخفض وبِع بسعر مرتفع!",
+	},
+	"blog.post1.excerpt": {
+		en: "The best suppliers are the ones who understand you're running a dropshipping business — here's who actually supports you.",
+		ar: "أفضل الموردين هم من يفهمون أنك تدير عمل دروبشيبينغ — إليك من يدعمك فعليًا.",
+	},
+	"blog.post2.title": {
+		en: "15 Best Dropshipping Platforms for Running an Online Store",
+		ar: "أفضل 15 منصة دروبشيبينغ لإدارة متجر إلكتروني",
+	},
+	"blog.post2.excerpt": {
+		en: "A hand-picked list of platforms, chosen for ease of use, product range, policies, and shipping times.",
+		ar: "قائمة مختارة بعناية من المنصات، بناءً على سهولة الاستخدام وتنوع المنتجات والسياسات وأوقات الشحن.",
+	},
+	"blog.featured.title": {
+		en: "Dropshipping for Dummies: A Beginner's Ultimate Guide",
+		ar: "الدروبشيبينغ للمبتدئين: الدليل الشامل",
+	},
+
 	"reviewform.heading": {
 		en: 'Leave a <span class="text-primary">review</span>',
 		ar: 'اترك <span class="text-primary">تقييمًا</span>',
@@ -431,6 +461,8 @@ export const translations: Record<string, { en: string; ar: string }> = {
 
 	"resources.faq.label": { en: "FAQ", ar: "الأسئلة الشائعة" },
 	"resources.faq.desc": { en: "Answers to the questions we get most", ar: "إجابات على الأسئلة الأكثر شيوعًا" },
+	"resources.blog.label": { en: "Blog", ar: "المدونة" },
+	"resources.blog.desc": { en: "Guides and updates from the Droparabia team", ar: "أدلة وتحديثات من فريق دروب أرابيا" },
 	"resources.broadcast.label": { en: "Broadcast channel", ar: "قناة البث" },
 	"resources.broadcast.desc": { en: "Announcements and drops, straight to you", ar: "إعلانات وعروض تصلك مباشرة" },
 	"resources.contact.label": { en: "Contact", ar: "تواصل معنا" },

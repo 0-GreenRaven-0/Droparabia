@@ -15,7 +15,7 @@ const bonuses = [
 		subtitle: "Live guidance to keep your store on track every week",
 	},
 	{
-		title: "One‑on‑One mentorship with a 6‑Figures brand builder",
+		title: "One‑on‑One mentorship with a 6‑Figure brand builder",
 		subtitle: "Personalized advice from someone who's done it before",
 	},
 	{
@@ -35,7 +35,7 @@ const STAIR_STEP = 3.5; // rem indent added per row, going up the list
 		<!-- Same row layout/sizing at every breakpoint — the staircase indent (the only
 			 desktop-specific part) is applied via a CSS var so it only takes effect at lg+;
 			 below that every row sits flush at the same right edge, no stagger. -->
-		<div class="mx-auto mt-12 flex max-w-4xl flex-col items-start gap-10 sm:mt-16 sm:gap-16 lg:items-end">
+		<div class="mx-auto mt-12 flex max-w-4xl flex-col items-start gap-10 sm:mt-16 sm:gap-16 lg:items-end rtl:lg:items-start">
 			{
 				bonuses.map((bonus, i) => (
 					<div

@@ -23,7 +23,7 @@ export function getStaticPaths() {
 const { tool } = Astro.props;
 ---
 
-<Layout title={tool.label} titleKey={`tool.${tool.slug}.label`}>
+<Layout title={tool.label} titleKey={`tool.${tool.slug}.label`} description={tool.description.paragraph}>
 	<Header />
 	{tool.slug === "branding" ? <BrandingHero tool={tool} /> : <ToolHero tool={tool} />}
 	{

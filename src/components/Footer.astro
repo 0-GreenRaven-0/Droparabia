@@ -30,7 +30,7 @@ const year = new Date().getFullYear();
 	<HexBackground cutCorner={false} fadeTop={true} />
 
 	<div class="relative z-10 mx-auto max-w-6xl">
-		<a href="/" class="mx-auto flex w-fit items-center gap-4 sm:gap-8">
+		<a href="/" class="mx-auto flex w-fit items-center gap-4 rtl:flex-row-reverse sm:gap-8">
 			<img src={ik("/Droparabia.webp", "w-400,q-80")} alt="Droparabia" class="h-20 w-20 shrink-0 sm:h-32 sm:w-32 lg:h-44 lg:w-44" />
 			<h2 data-i18n="footer.cta.heading" class="font-ibrand text-2xl leading-[1.1] text-neutral-900 sm:text-5xl lg:text-6xl dark:text-white">
 				<span>Kickstart your <span class="whitespace-nowrap">high-earning</span></span>{" "}
@@ -120,7 +120,7 @@ const year = new Date().getFullYear();
 		</div>
 
 		<div
-			class="mt-14 flex flex-col items-center justify-between gap-4 pt-6 font-helvetica text-xs text-neutral-500 sm:flex-row dark:text-neutral-500"
+			class="mt-8 flex flex-col items-center justify-between gap-4 pt-2 font-helvetica text-xs text-neutral-500 sm:flex-row dark:text-neutral-500"
 		>
 			<p>&copy; {year} Droparabia. <span data-i18n="footer.rights">All rights reserved.</span></p>
 			<div class="flex items-center gap-6">

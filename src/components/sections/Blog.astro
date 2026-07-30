@@ -1,0 +1,143 @@
+---
+// Reversed from the reference layout: the article list sits on the left, the featured
+// image card on the right (the reference had the photo on the left).
+
+// Same rounded-hexagon technique used across the site (Hero product cluster, Tools,
+// Header dropdowns): trim each vertex back along its two edges and join with a curve.
+const HEX_W = 320;
+const HEX_SIZE = HEX_W / Math.sqrt(3);
+const HEX_H = HEX_SIZE * 2;
+const STROKE_PAD = 4;
+const SVG_W = HEX_W + STROKE_PAD * 2;
+const SVG_H = HEX_H + STROKE_PAD * 2;
+const CORNER_RADIUS = 20;
+const hexPoints: [number, number][] = [
+	[HEX_W / 2, 0],
+	[HEX_W, HEX_H * 0.25],
+	[HEX_W, HEX_H * 0.75],
+	[HEX_W / 2, HEX_H],
+	[0, HEX_H * 0.75],
+	[0, HEX_H * 0.25],
+];
+function roundedHexPath(points: [number, number][], radius: number): string {
+	const n = points.length;
+	const lerp = (a: [number, number], b: [number, number], t: number): [number, number] => [
+		a[0] + (b[0] - a[0]) * t,
+		a[1] + (b[1] - a[1]) * t,
+	];
+	const approach: [number, number][] = [];
+	const leave: [number, number][] = [];
+	for (let i = 0; i < n; i++) {
+		const curr = points[i];
+		const prev = points[(i - 1 + n) % n];
+		const next = points[(i + 1) % n];
+		const distPrev = Math.hypot(curr[0] - prev[0], curr[1] - prev[1]);
+		const distNext = Math.hypot(next[0] - curr[0], next[1] - curr[1]);
+		approach.push(lerp(curr, prev, Math.min(radius / distPrev, 0.5)));
+		leave.push(lerp(curr, next, Math.min(radius / distNext, 0.5)));
+	}
+	let d = `M ${leave[n - 1][0]} ${leave[n - 1][1]} `;
+	for (let i = 0; i < n; i++) {
+		d += `L ${approach[i][0]} ${approach[i][1]} Q ${points[i][0]} ${points[i][1]} ${leave[i][0]} ${leave[i][1]} `;
+	}
+	return d + "Z";
+}
+const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
+
+const posts = [
+	{
+		date: "January 22, 2026",
+		readTime: "18 min read",
+		title: "9 Best Dropshipping Software Programs (Free & Paid)",
+		excerpt: "We break down the best dropshipping software programs you can use for product sourcing and research.",
+		href: "#",
+	},
+	{
+		date: "January 22, 2026",
+		readTime: "48 min read",
+		title: "24 Best Dropshipping Suppliers: Buy Low, Sell High!",
+		excerpt:
+			"The best suppliers are the ones who understand you're running a dropshipping business — here's who actually supports you.",
+		href: "#",
+	},
+	{
+		date: "January 22, 2026",
+		readTime: "16 min read",
+		title: "15 Best Dropshipping Platforms for Running an Online Store",
+		excerpt: "A hand-picked list of platforms, chosen for ease of use, product range, policies, and shipping times.",
+		href: "#",
+	},
+];
+const featured = {
+	date: "January 22, 2026",
+	readTime: "12 min read",
+	title: "Dropshipping for Dummies: A Beginner's Ultimate Guide",
+	href: "#",
+	image: "https://files.cdn.printful.com/o/upload/blog-post-img-upload/c8/c8afefa43f00c6c818d2be7e18fda630_l",
+};
+---
+
+<section id="blog" class="relative px-6 py-24 lg:px-16">
+	<div class="mx-auto max-w-6xl">
+		<h2 data-i18n="blog.heading" class="font-ibrand text-4xl leading-[1.15] text-neutral-900 sm:text-5xl dark:text-white">
+			Browse our latest articles
+		</h2>
+
+		<div class="mt-12 grid gap-6 lg:grid-cols-2 lg:items-start lg:gap-10">
+			<div class="flex flex-col gap-2">
+				{posts.map((post, i) => (
+					<a
+						href={post.href}
+						class:list={[
+							"group rounded-3xl p-5 transition-colors",
+							i === 1 ? "bg-neutral-100 dark:bg-neutral-900" : "hover:bg-neutral-100 dark:hover:bg-neutral-900",
+						]}
+					>
+						<p class="font-helvetica text-sm text-neutral-500 dark:text-neutral-400">
+							{post.date} &bull; {post.readTime}
+						</p>
+						<h3 data-i18n={`blog.post${i}.title`} class="mt-1 font-helvetica text-xl font-bold text-neutral-900 dark:text-white">{post.title}</h3>
+						<p data-i18n={`blog.post${i}.excerpt`} class="mt-2 font-helvetica text-neutral-600 dark:text-neutral-400">{post.excerpt}</p>
+					</a>
+				))}
+			</div>
+
+			<a href={featured.href} class="group order-first flex flex-col items-center lg:order-0">
+				<svg
+					width={SVG_W}
+					height={SVG_H}
+					viewBox={`-${STROKE_PAD} -${STROKE_PAD} ${SVG_W} ${SVG_H}`}
+					class="h-auto w-full max-w-56 sm:max-w-72 lg:max-w-82"
+					style={{ filter: "drop-shadow(0 24px 40px rgba(0,30,255,0.35))" }}
+				>
+					<defs>
+						<linearGradient id="blog-hex-grad" x1="15%" y1="0%" x2="85%" y2="100%">
+							<stop offset="0%" stop-color="#2745ff" />
+							<stop offset="45%" stop-color="#001eff" />
+							<stop offset="100%" stop-color="#000c66" />
+						</linearGradient>
+						<clipPath id="blog-hex-clip">
+							<path d={hexPath} />
+						</clipPath>
+					</defs>
+					<path d={hexPath} fill="white" stroke="url(#blog-hex-grad)" stroke-width="6" />
+					<image
+						href={featured.image}
+						x={-STROKE_PAD}
+						y={-STROKE_PAD}
+						width={SVG_W}
+						height={SVG_H}
+						preserveAspectRatio="xMidYMid slice"
+						clip-path="url(#blog-hex-clip)"
+					/>
+				</svg>
+				<div class="mt-5 text-center">
+					<p class="font-ibrand text-sm text-neutral-500 dark:text-neutral-400">
+						{featured.date} &bull; {featured.readTime}
+					</p>
+					<p data-i18n="blog.featured.title" class="mt-1 font-ibrand text-2xl text-neutral-900 dark:text-white">{featured.title}</p>
+				</div>
+			</a>
+		</div>
+	</div>
+</section>

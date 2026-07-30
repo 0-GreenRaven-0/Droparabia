@@ -160,7 +160,7 @@ const posts = [
 		// A single lane has no neighboring lane to prevent overlap for, so SLOT/LANES (no
 		// overlap at all) would show exactly one card at a time — tightened here so several
 		// cards are mid-rise (and visible at different heights) together instead.
-		const STAGGER = LANES === 1 ? SLOT * 0.32 : SLOT / LANES;
+		const STAGGER = LANES === 1 ? SLOT * 0.22 : SLOT / LANES;
 		const totalUnits = SLOT + (cards.length - 1) * STAGGER;
 		const VH_PER_UNIT = 90;
 
@@ -170,7 +170,11 @@ const posts = [
 				start: "top top",
 				end: `+=${totalUnits * VH_PER_UNIT}%`,
 				pin: true,
-				scrub: 1,
+				// scrub is a catch-up delay in seconds, not a speed multiplier — at 1 the cards
+				// visibly trail up to a full second behind the actual scroll position, which
+				// reads as the animation lagging rather than smooth. A small amount still
+				// softens fast scroll-wheel jumps without that noticeable disconnect.
+				scrub: 0.3,
 			},
 		});
 
@@ -201,11 +205,16 @@ const posts = [
 		window.addEventListener("resize", layoutCards);
 
 		cards.forEach((card, i) => {
-			// Random rise distance — the motion itself is a straight vertical line, no
-			// horizontal drift or rotation, and no horizontal movement at all (lanes above
-			// already keep each card clear of its neighbors).
-			const riseDistance = 130 + Math.random() * 60; // how far (in %) this card travels
-			const startTop = 100 + Math.random() * 20;
+			// The motion itself is a straight vertical line, no horizontal drift or rotation,
+			// and no horizontal movement at all (lanes above already keep each card clear of
+			// its neighbors). On mobile (a single lane) every card uses the exact same rise
+			// distance and duration, so they all travel at the same speed — with a randomized
+			// distance, the fixed time offset between cards (STAGGER) translated to a different
+			// on-screen gap for every pair, which read as uneven/jittery instead of a smooth
+			// train of evenly spaced cards. Desktop keeps the randomized distance since its
+			// multiple lanes already keep cards visually separated.
+			const riseDistance = LANES === 1 ? 150 : 130 + Math.random() * 60; // how far (in %) this card travels
+			const startTop = LANES === 1 ? 112 : 100 + Math.random() * 20;
 			const endTop = startTop - riseDistance;
 
 			gsap.set(card, { top: `${startTop}%` });

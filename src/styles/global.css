@@ -96,6 +96,20 @@ html[dir="rtl"] .font-helvetica {
 		transition-duration: 300ms !important;
 	}
 
+	/* backdrop-blur layers (the sticky header, its dropdown panels) re-sample whatever's behind
+	   them on every repaint frame — and that keeps happening for the full 300ms regardless of
+	   whether the blur layer's own color is animating, because the content underneath (the
+	   whole rest of the page) is fading color the entire time. Only actually turning the filter
+	   off removes that repeated GPU resample; snapping just the layer's own transition-duration
+	   (tried first) left the real cost untouched and only added an extra attribute-selector
+	   match to every element's recalc, which made things worse. theme-static-blur marks the
+	   handful of elements that use backdrop-blur so this can target them with a plain class
+	   instead of a `[class*=]` scan. */
+	.theme-transition-active .theme-static-blur {
+		backdrop-filter: none !important;
+		-webkit-backdrop-filter: none !important;
+	}
+
 	/* Ibrand is a headings/brand-name font and stays regular weight by default;
 	   utility classes (e.g. group-hover:font-bold) are still allowed to override it */
 	.font-ibrand {
@@ -157,4 +171,31 @@ html[dir="rtl"] .font-helvetica {
 }
 ::view-transition-new(root) {
 	animation: 220ms ease-out both page-fade-in;
+}
+
+/* The theme toggle (Header.astro) reuses this same root view transition for its crossfade,
+   but marks <html> with this class for the duration so it can drop the vertical settle —
+   that motion reads fine as a page navigating in, but looks like the whole page is
+   shifting for what should be a plain color swap. Same durations/easing, opacity only. */
+:root.theme-view-transition::view-transition-old(root) {
+	animation: 180ms ease-out both theme-fade-out;
+}
+:root.theme-view-transition::view-transition-new(root) {
+	animation: 220ms ease-out both theme-fade-in;
+}
+@keyframes theme-fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@keyframes theme-fade-out {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
 }
