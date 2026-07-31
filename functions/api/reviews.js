@@ -109,7 +109,7 @@ export async function onRequestGet({ env }) {
 			.filter((r) => r.name && r.text && Number.isInteger(r.rating) && r.rating >= 1 && r.rating <= 5)
 			.reverse(); // sheet rows are in submission order; newest-first for display
 
-		return json({ reviews }, 200, { "Cache-Control": "public, max-age=300" });
+		return json({ reviews }, 200, { "Cache-Control": "no-store" });
 	} catch (err) {
 		// Logged server-side only — visitors never see stack traces/API error bodies, just a
 		// generic message the display component turns into "Couldn't load reviews right now."
