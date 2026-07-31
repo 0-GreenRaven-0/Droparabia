@@ -60,6 +60,15 @@ html[dir="rtl"] .font-helvetica {
 	font-family: "Noto Sans Arabic", sans-serif;
 }
 
+/* "Droparabia"/"Dropvault" wordmarks stay in English even when the rest of the page is
+   Arabic (brand names aren't translated) — without this, the rule above still swaps them
+   to Noto Sans Arabic since it targets .font-ibrand generally, leaving the brand name in
+   the wrong typeface. Same specificity as the rule above, so it only wins because it's
+   declared after it — keep this block below that one. */
+html[dir="rtl"] .brand-wordmark {
+	font-family: "Ibrand", sans-serif;
+}
+
 @layer base {
 	/* Belt-and-suspenders against horizontal overflow: any element that's ever a few pixels
 	   too wide on mobile (a fixed-size hex cluster, an SVG, a long unbreakable word) pushes

@@ -30,6 +30,7 @@ export const translations: Record<string, { en: string; ar: string }> = {
 	"footer.col.tools": { en: "Tools", ar: "الأدوات" },
 	"footer.col.resources": { en: "Resources", ar: "الموارد" },
 	"footer.col.company": { en: "Company", ar: "الشركة" },
+	"footer.col.askAi": { en: "Ask AI about us", ar: "اسأل الذكاء الاصطناعي عنا" },
 	"footer.privacy": { en: "Privacy Policy", ar: "سياسة الخصوصية" },
 	"footer.terms": { en: "Terms of Service", ar: "الشروط والأحكام" },
 

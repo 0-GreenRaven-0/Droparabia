@@ -199,7 +199,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 		<!-- Logo -->
 		<a href="/" class="flex shrink-0 items-center gap-2.5 pl-2 rtl:flex-row-reverse">
 			<img src={ik("/Droparabia.webp", "w-100,q-80")} alt="Droparabia" class="h-9 w-9" />
-			<span class="font-ibrand text-xl leading-none text-neutral-900 dark:text-white">Droparabia</span>
+			<span class="brand-wordmark font-ibrand text-xl leading-none text-neutral-900 dark:text-white">Droparabia</span>
 		</a>
 
 		<!-- Nav links -->
@@ -471,7 +471,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 <header id="mobile-header" class="theme-static-blur fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-transparent bg-transparent px-4 py-3 transition-colors duration-300 ease-out rtl:flex-row-reverse lg:hidden">
 	<a href="/" class="flex items-center gap-2 rtl:flex-row-reverse">
 		<img src={ik("/Droparabia.webp", "w-100,q-80")} alt="Droparabia" class="h-8 w-8" />
-		<span class="font-ibrand text-lg leading-none text-neutral-900 dark:text-white">Droparabia</span>
+		<span class="brand-wordmark font-ibrand text-lg leading-none text-neutral-900 dark:text-white">Droparabia</span>
 	</a>
 
 	<!-- Dark mode + language live on the bar itself so they're reachable without opening the
@@ -699,7 +699,11 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 			const transition = (
 				document as unknown as { startViewTransition: (cb: () => void) => { finished: Promise<void> } }
 			).startViewTransition(() => applyTheme(next));
-			transition.finished.finally(() => root.classList.remove("theme-view-transition"));
+			// .finished rejects with AbortError whenever the transition gets interrupted (rapid
+			// re-toggling, navigating away mid-transition) — .finally() alone doesn't swallow
+			// that rejection, it just lets it surface as an unhandled promise error, so it needs
+			// its own no-op .catch() here.
+			transition.finished.catch(() => {}).finally(() => root.classList.remove("theme-view-transition"));
 			return;
 		}
 
