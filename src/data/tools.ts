@@ -23,8 +23,13 @@ export interface Tool {
 	};
 	features: { title: string; description: string; image?: string }[];
 	perksIntro: string;
-	perks: { title: string }[];
+	perks: { title: string; description: string }[];
 }
+
+// Placeholder perk descriptions — real copy to be written in later, this is just to fill
+// the new description slot under each perk title.
+const PERK_PLACEHOLDER =
+	"Placeholder description for this perk — real copy coming soon.";
 
 export const tools: Tool[] = [
 	{
@@ -59,9 +64,9 @@ export const tools: Tool[] = [
 		],
 		perksIntro: "Find Products is built to get you to a sellable product fast, without the guesswork.",
 		perks: [
-			{ title: "No searching for hours for a product to sell" },
-			{ title: "No inventory owning and management" },
-			{ title: "Variety of most profitable niches covered" },
+			{ title: "No searching for hours for a product to sell" , description: PERK_PLACEHOLDER },
+			{ title: "No inventory owning and management" , description: PERK_PLACEHOLDER },
+			{ title: "Variety of most profitable niches covered" , description: PERK_PLACEHOLDER },
 		],
 	},
 	{
@@ -93,9 +98,9 @@ export const tools: Tool[] = [
 		],
 		perksIntro: "AI Winning Products does the market research so you don't have to.",
 		perks: [
-			{ title: "Recommendation backed by real data" },
-			{ title: "Target avatar based analysis" },
-			{ title: "Time saving decision making" },
+			{ title: "Recommendation backed by real data" , description: PERK_PLACEHOLDER },
+			{ title: "Target avatar based analysis" , description: PERK_PLACEHOLDER },
+			{ title: "Time saving decision making" , description: PERK_PLACEHOLDER },
 		],
 	},
 	{
@@ -119,9 +124,9 @@ export const tools: Tool[] = [
 		],
 		perksIntro: "AI Studio replaces the design and copywriting work most sellers skip entirely.",
 		perks: [
-			{ title: "No more reusing & or stealing content" },
-			{ title: "Your own generated video advertisements" },
-			{ title: "Adaptability for each product and use case" },
+			{ title: "No more reusing & or stealing content" , description: PERK_PLACEHOLDER },
+			{ title: "Your own generated video advertisements" , description: PERK_PLACEHOLDER },
+			{ title: "Adaptability for each product and use case" , description: PERK_PLACEHOLDER },
 		],
 	},
 	{
@@ -140,9 +145,9 @@ export const tools: Tool[] = [
 		features: [],
 		perksIntro: "Branding handles the identity work that makes buyers trust a store enough to check out.",
 		perks: [
-			{ title: "Create your own unique brand" },
-			{ title: "Get distinguished from your competitors" },
-			{ title: "Print on-demand only per sold product" },
+			{ title: "Create your own unique brand" , description: PERK_PLACEHOLDER },
+			{ title: "Get distinguished from your competitors" , description: PERK_PLACEHOLDER },
+			{ title: "Print on-demand only per sold product" , description: PERK_PLACEHOLDER },
 		],
 	},
 	{
@@ -162,9 +167,9 @@ export const tools: Tool[] = [
 		features: [],
 		perksIntro: "Product Request is there for the moment the catalog doesn't have what you need yet.",
 		perks: [
-			{ title: "No dealing with suppliers yourself" },
-			{ title: "No huge shipment fees or risk of scam" },
-			{ title: "Research and supplying done without extra fees" },
+			{ title: "No dealing with suppliers yourself" , description: PERK_PLACEHOLDER },
+			{ title: "No huge shipment fees or risk of scam" , description: PERK_PLACEHOLDER },
+			{ title: "Research and supplying done without extra fees" , description: PERK_PLACEHOLDER },
 		],
 	},
 	{
@@ -183,9 +188,9 @@ export const tools: Tool[] = [
 		features: [],
 		perksIntro: "The Leader Board turns your store's performance into something visible and worth chasing.",
 		perks: [
-			{ title: "Grow your business alongside other sellers in the community" },
-			{ title: "Participate in events and giveaways" },
-			{ title: "Affiliate program for top best performing users" },
+			{ title: "Grow your business alongside other sellers in the community" , description: PERK_PLACEHOLDER },
+			{ title: "Participate in events and giveaways" , description: PERK_PLACEHOLDER },
+			{ title: "Affiliate program for top best performing users" , description: PERK_PLACEHOLDER },
 		],
 	},
 ];

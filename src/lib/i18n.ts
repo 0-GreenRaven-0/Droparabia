@@ -12,12 +12,12 @@ export const translations: Record<string, { en: string; ar: string }> = {
 	"nav.login": { en: "Login", ar: "تسجيل الدخول" },
 
 	"hero.headline": {
-		en: "Build a successful & high-earning dropshipping business with ease",
-		ar: "ابنِ مشروع دروبشيبينغ ناجحًا وعالي الربح بكل سهولة",
+		en: 'Build a <span class="hero-gradient-text whitespace-nowrap">high-earning</span> dropshipping business with ease',
+		ar: 'ابنِ مشروع دروبشيبينغ <span class="hero-gradient-text whitespace-nowrap">عالي الربح</span> بكل سهولة',
 	},
 	"hero.subheadline": {
-		en: "Let Droparabia find you in-demand winning products & deliver them to your customer's doorstep while you focus on marketing & advertising!",
-		ar: "دع دروب أرابيا يجد لك منتجات رابحة مطلوبة ويوصلها إلى باب عميلك بينما تركز أنت على التسويق والإعلان!",
+		en: "Find winning products from multiple niches and let Droparabia deliver them to your customer's doorstep!",
+		ar: "اعثر على منتجات رابحة من عدة مجالات ودع دروب أرابيا يوصلها إلى باب عميلك!",
 	},
 
 	"cta.getStarted": { en: "Get Started", ar: "ابدأ الآن" },
@@ -477,7 +477,7 @@ export const translations: Record<string, { en: string; ar: string }> = {
 	"page.privacy": { en: "Privacy Policy", ar: "سياسة الخصوصية" },
 	"page.terms": { en: "Terms & Conditions", ar: "الشروط والأحكام" },
 
-	"tabAttention.away": { en: "Where did you go?!?!", ar: "إلى أين ذهبت؟!؟!" },
+	"tabAttention.away": { en: "😭 Where did you go?!?!", ar: "😭 إلى أين ذهبت؟!؟!" },
 
 	"about.founder.name": { en: "Majd Abdulsalam", ar: "مجد عبدالسلام" },
 

@@ -28,7 +28,7 @@ function shade(hex: string, t: number): string {
 }
 // Single-row zigzag: hexes alternate low/high left to right (not a tessellating
 // honeycomb — just evenly spaced horizontally with an alternating vertical offset).
-const HEX_W = 60;
+const HEX_W = 52;
 const HEX_SIZE = HEX_W / Math.sqrt(3);
 const HEX_H = HEX_SIZE * 2;
 const STROKE_PAD = 4;
@@ -84,13 +84,13 @@ function roundedHexPath(points: [number, number][], radius: number): string {
 const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 ---
 
-<section id="tools" class="relative overflow-x-hidden px-6 py-24">
-	<div class="mx-auto flex max-w-3xl flex-col items-center gap-8 text-center">
+<section id="tools" class="relative overflow-x-hidden px-6 py-10 sm:py-12">
+	<div class="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">
 		<div>
-			<h2 data-i18n="tools.heading" class="font-ibrand text-3xl leading-[1.15] text-neutral-900 sm:text-6xl md:text-7xl dark:text-white">
+			<h2 data-i18n="tools.heading" class="font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-3xl md:text-4xl dark:text-white">
 				Access advanced &amp; <span class="text-primary">game changing tools</span>
 			</h2>
-			<p data-i18n="tools.subheading" class="mt-6 font-helvetica text-sm text-neutral-900 sm:text-lg dark:text-white">
+			<p data-i18n="tools.subheading" class="mt-2 font-helvetica text-sm text-neutral-900 sm:text-lg dark:text-white">
 				Powerful features which you can leverage to build your dropshipping business faster and efficiently
 			</p>
 		</div>
@@ -148,7 +148,7 @@ const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 		</div>
 	</div>
 
-	<div id="tools-detail" class="mt-16 hidden max-w-6xl">
+	<div id="tools-detail" class="mt-6 hidden max-w-6xl">
 		{tools.map((tool, i) => (
 			<div data-tool-panel={tool.href} class="tool-panel hidden">
 				<div class="grid items-start gap-14 lg:grid-cols-2">

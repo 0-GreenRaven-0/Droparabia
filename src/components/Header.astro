@@ -203,7 +203,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 		</a>
 
 		<!-- Nav links -->
-		<ul class="flex items-center gap-1 font-helvetica text-[15px] text-neutral-900 rtl:flex-row-reverse dark:text-white">
+		<ul class="flex items-center gap-1 font-ibrand text-[15px] text-neutral-900 rtl:flex-row-reverse dark:text-white">
 			{navLinks.map((link) =>
 				link.label === "Tools" || link.label === "Resources" ? (
 					<li class="relative" data-nav-item={link.label === "Tools" ? "tools" : "resources"}>
@@ -228,18 +228,22 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 			)}
 		</ul>
 
-		<!-- Shared nav dropdown window: Tools/Resources content lives inside as sliding panels so
-			 hovering between the two triggers a horizontal slide instead of opening a second window. -->
+		<!-- Shared nav dropdown window: ONE persistent background card (this stays put — no
+			 resizing/sliding of its own) with Tools/Resources content living inside as sliding
+			 panels, so hovering between the two only moves the icons/text, not the window. -->
 		<div
 			id="nav-menu"
-			class="invisible absolute left-1/2 top-full mt-3 origin-top -translate-x-1/2 scale-75 overflow-hidden opacity-0 transition-[opacity,scale,visibility,width,height] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform"
+			class="invisible absolute left-1/2 top-full mt-3 origin-top -translate-x-1/2 scale-75 opacity-0 transition-[opacity,scale,visibility] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform"
 		>
-			<div class="relative">
-				<div
-					id="resources-panel"
-					class="absolute left-0 top-0 w-max max-w-[92vw] transition-[transform,opacity,filter] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]"
-				>
-					<div class="theme-static-blur rounded-3xl border border-black/5 bg-white/90 p-7 pb-5 shadow-[0_14px_35px_-12px_rgba(0,30,255,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-neutral-900/90">
+			<div
+				id="nav-menu-bg"
+				class="theme-static-blur overflow-hidden rounded-3xl border border-black/5 bg-white/90 p-7 pb-5 shadow-[0_14px_35px_-12px_rgba(0,30,255,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-neutral-900/90"
+			>
+				<div class="relative">
+					<div
+						id="resources-panel"
+						class="absolute left-0 top-0 w-max max-w-[92vw] transition-[transform,opacity,filter] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]"
+					>
 						<div class="flex gap-6">
 							{resTopRow.map((item) => (
 								<a
@@ -323,13 +327,11 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 							))}
 						</div>
 					</div>
-				</div>
 
-				<div
-					id="tools-panel"
-					class="absolute left-0 top-0 w-max max-w-[92vw] transition-[transform,opacity,filter] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]"
-				>
-					<div class="theme-static-blur rounded-3xl border border-black/5 bg-white/90 p-7 pb-5 shadow-[0_14px_35px_-12px_rgba(0,30,255,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-neutral-900/90">
+					<div
+						id="tools-panel"
+						class="absolute left-0 top-0 w-max max-w-[92vw] transition-[transform,opacity,filter] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]"
+					>
 						<div class="flex gap-6">
 							{toolTopRow.map((tool) => (
 								<a href={tool.href} class="group -mx-2 -my-2 flex w-auto max-w-72 shrink-0 cursor-pointer items-center gap-3 rounded-2xl px-2 py-2 transition-all duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]">
@@ -457,7 +459,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 			<!-- Login -->
 			<a
 				href="http://user.droparabia.com/"
-				class="ml-1 inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 font-ibrand text-sm text-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)] rtl:mr-1 rtl:ml-0"
+				class="ml-1 inline-flex items-center justify-center rounded-full bg-gradient-to-br from-[#2745ff] to-[#001a80] px-5 py-2.5 font-ibrand text-sm text-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)] rtl:mr-1 rtl:ml-0"
 			>
 				<span data-i18n="nav.login">Login</span>
 			</a>
@@ -552,7 +554,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 		<div class="border-b border-black/5 dark:border-white/10">
 			<button
 				type="button"
-				class="mobile-accordion-toggle flex w-full cursor-pointer items-center justify-between py-4 font-helvetica text-sm font-semibold text-neutral-900 dark:text-white"
+				class="mobile-accordion-toggle flex w-full cursor-pointer items-center justify-between py-4 font-ibrand text-sm text-neutral-900 dark:text-white"
 				aria-expanded="false"
 				aria-controls="mobile-accordion-tools"
 			>
@@ -601,7 +603,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 		<div class="border-b border-black/5 dark:border-white/10">
 			<button
 				type="button"
-				class="mobile-accordion-toggle flex w-full cursor-pointer items-center justify-between py-4 font-helvetica text-sm font-semibold text-neutral-900 dark:text-white"
+				class="mobile-accordion-toggle flex w-full cursor-pointer items-center justify-between py-4 font-ibrand text-sm text-neutral-900 dark:text-white"
 				aria-expanded="false"
 				aria-controls="mobile-accordion-resources"
 			>
@@ -653,13 +655,13 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 		</div>
 
 		<div class="flex flex-col gap-1 py-2">
-			<a href="/reviews" data-i18n="nav.reviews" class="rounded-2xl py-3 font-helvetica text-neutral-900 transition-colors hover:bg-black/[0.07] dark:text-white dark:hover:bg-white/10">Reviews</a>
-			<a href="/contact" data-i18n="nav.contact" class="rounded-2xl py-3 font-helvetica text-neutral-900 transition-colors hover:bg-black/[0.07] dark:text-white dark:hover:bg-white/10">Contact</a>
+			<a href="/reviews" data-i18n="nav.reviews" class="rounded-2xl py-3 font-ibrand text-neutral-900 transition-colors hover:bg-black/[0.07] dark:text-white dark:hover:bg-white/10">Reviews</a>
+		<a href="/contact" data-i18n="nav.contact" class="rounded-2xl py-3 font-ibrand text-neutral-900 transition-colors hover:bg-black/[0.07] dark:text-white dark:hover:bg-white/10">Contact</a>
 		</div>
 
 		<a
 			href="http://user.droparabia.com/"
-			class="mt-2 inline-flex items-center justify-center rounded-full bg-primary py-3.5 font-ibrand text-sm text-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)]"
+			class="mt-2 inline-flex items-center justify-center rounded-full bg-gradient-to-br from-[#2745ff] to-[#001a80] py-3.5 font-ibrand text-sm text-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)]"
 		>
 			<span data-i18n="nav.login">Login</span>
 		</a>
@@ -719,6 +721,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 	// open slides the old content out and the new content in, instead of opening a second window.
 	const overlay = document.getElementById("nav-overlay");
 	const navMenu = document.getElementById("nav-menu");
+	const navMenuBg = document.getElementById("nav-menu-bg");
 	const menuOrder = ["tools", "resources"];
 	const menuPanels: Record<string, HTMLElement | null> = {
 		tools: document.getElementById("tools-panel"),
@@ -727,11 +730,29 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 	let activeMenu: string | null = null;
 	let closeTimer: ReturnType<typeof setTimeout> | undefined;
 
-	function sizeMenuTo(name: string) {
-		const panel = menuPanels[name];
-		if (!navMenu || !panel) return;
-		navMenu.style.width = `${panel.scrollWidth}px`;
-		navMenu.style.height = `${panel.scrollHeight}px`;
+	// The background window is sized once, to fit whichever panel (Tools/Resources) is
+	// larger in each dimension, and then left alone. Switching between the two while the
+	// menu is open only slides the inner panels (see slidePanelsTo) — the background no
+	// longer resizes/moves on every switch, just the content inside it.
+	function sizeMenuToFitAll() {
+		if (!navMenuBg) return;
+		let maxWidth = 0;
+		let maxHeight = 0;
+		menuOrder.forEach((key) => {
+			const panel = menuPanels[key];
+			if (!panel) return;
+			maxWidth = Math.max(maxWidth, panel.scrollWidth);
+			maxHeight = Math.max(maxHeight, panel.scrollHeight);
+		});
+		// navMenuBg is border-box (Tailwind preflight) and carries the padding the panels
+		// themselves no longer have, so an explicit height/width has to add that padding
+		// back in — otherwise it eats into the box instead of wrapping around it, clipping
+		// the bottom row.
+		const style = getComputedStyle(navMenuBg);
+		const paddingX = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+		const paddingY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+		navMenuBg.style.width = `${maxWidth + paddingX}px`;
+		navMenuBg.style.height = `${maxHeight + paddingY}px`;
 	}
 
 	function slidePanelsTo(name: string) {
@@ -762,19 +783,16 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 		const wasOpen = navMenu?.classList.contains("opacity-100");
 
 		if (!wasOpen) {
-			// Size + position the panels instantly (no transition) before revealing, so the
-			// opening fade/scale never fights a width/height animation.
-			const prevTransition = navMenu?.style.transitionProperty;
-			if (navMenu) navMenu.style.transitionProperty = "none";
+			// Size + position the panels instantly (background has no width/height transition
+			// of its own, so this never fights the opening fade/scale).
 			slidePanelsTo(name);
-			sizeMenuTo(name);
-			void navMenu?.offsetWidth;
-			if (navMenu) navMenu.style.transitionProperty = prevTransition ?? "";
+			sizeMenuToFitAll();
 			navMenu?.classList.remove("invisible", "opacity-0", "scale-75");
 			navMenu?.classList.add("opacity-100", "scale-100");
 		} else if (activeMenu !== name) {
+			// Menu is already open and staying open — only the inner panel content slides,
+			// the background window itself (already sized to fit both) doesn't move.
 			slidePanelsTo(name);
-			sizeMenuTo(name);
 		}
 
 		activeMenu = name;
