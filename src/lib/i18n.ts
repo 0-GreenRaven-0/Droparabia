@@ -43,7 +43,7 @@ export const translations: Record<string, { en: string; ar: string }> = {
 	"social.stat0": { en: "generated in revenue by all sellers", ar: "من الإيرادات حققها كل البائعين" },
 	"social.stat1": { en: "average store monthly revenue", ar: "متوسط الإيراد الشهري للمتجر" },
 	"social.stat2": { en: "sellers and brands owners", ar: "بائع وصاحب علامة تجارية" },
-	"social.stat3": { en: "Certified Shopify Partner", ar: "شريك معتمد لدى Shopify" },
+	"social.stat3": { en: "Official Shopify Partner", ar: "شريك رسمي لدى Shopify" },
 
 	"howitworks.heading": {
 		en: 'How <span class="text-primary">Droparabia</span> works',
@@ -476,8 +476,6 @@ export const translations: Record<string, { en: string; ar: string }> = {
 	"page.reviews": { en: "Reviews", ar: "التقييمات" },
 	"page.privacy": { en: "Privacy Policy", ar: "سياسة الخصوصية" },
 	"page.terms": { en: "Terms & Conditions", ar: "الشروط والأحكام" },
-
-	"tabAttention.away": { en: "😭 Where did you go?!?!", ar: "😭 إلى أين ذهبت؟!؟!" },
 
 	"about.founder.name": { en: "Majd Abdulsalam", ar: "مجد عبدالسلام" },
 

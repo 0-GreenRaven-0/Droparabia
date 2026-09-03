@@ -10,7 +10,6 @@ import ToolFeatures from "../../components/sections/ToolFeatures.astro";
 import ToolExample from "../../components/sections/ToolExample.astro";
 import ToolPerks from "../../components/sections/ToolPerks.astro";
 import Footer from "../../components/Footer.astro";
-import TabAttention from "../../components/TabAttention.astro";
 import { tools } from "../../data/tools";
 
 export function getStaticPaths() {
@@ -32,5 +31,4 @@ const { tool } = Astro.props;
 	}
 	<ToolPerks tool={tool} />
 	<Footer />
-	<TabAttention />
 </Layout>
