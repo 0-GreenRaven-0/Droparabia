@@ -367,6 +367,7 @@ const trustpilotReviews = [
 	import Swiper from "swiper";
 	import { Navigation, Autoplay } from "swiper/modules";
 	import "swiper/css";
+	import { fetchReviews, type Review } from "../../lib/reviewsApi";
 
 	const swiperEl = document.getElementById("sellers-reviews-swiper");
 	const swiper =
@@ -387,16 +388,11 @@ const trustpilotReviews = [
 			},
 		});
 
-	// Appends real user-submitted reviews (from the review form, approved and served via
-	// /api/reviews — see functions/api/reviews.js) after the handful of hardcoded seller
-	// quotes above, so newly written reviews actually show up here instead of only ever
-	// existing in the sheet they're stored in.
-	interface ApiReview {
-		date: string;
-		name: string;
-		rating: number;
-		text: string;
-	}
+	// Appends real user-submitted reviews (written through the review form, approved by hand
+	// in the sheet, served by the Apps Script web app — see apps-script/Code.gs) after the
+	// handful of hardcoded seller quotes above, so newly written reviews actually show up
+	// here instead of only ever existing in the sheet they're stored in.
+	type ApiReview = Review;
 
 	function buildSlide(review: ApiReview): HTMLDivElement {
 		const slide = document.createElement("div");
@@ -436,10 +432,7 @@ const trustpilotReviews = [
 		const wrapper = document.getElementById("sellers-reviews-wrapper");
 		if (!wrapper || !swiper) return;
 		try {
-			const res = await fetch("/api/reviews");
-			if (!res.ok) return;
-			const data = await res.json();
-			const reviews: ApiReview[] = Array.isArray(data.reviews) ? data.reviews : [];
+			const reviews: ApiReview[] = await fetchReviews();
 			if (!reviews.length) return;
 			reviews.forEach((review) => wrapper.append(buildSlide(review)));
 			// New slides were appended straight into the DOM (not through Swiper's own API),

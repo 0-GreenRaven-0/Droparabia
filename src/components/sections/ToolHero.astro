@@ -14,18 +14,23 @@ interface Props {
 const { tool } = Astro.props;
 ---
 
-<section class="relative overflow-hidden px-6 pt-28 pb-24 sm:pt-48 lg:pr-16 lg:pl-3">
+<!-- Layout mirrors the homepage Hero: copy left, screenshot right bleeding off the viewport
+	 edge at lg, collapsing to a single centered column below that. Sizes/spacing are kept in
+	 sync with Hero.astro deliberately — the two heroes should read as the same component. -->
+<section class="relative overflow-hidden px-6 pt-28 pb-20 sm:pt-32 sm:pb-16 lg:pt-36 lg:pb-24">
 	<HexBackground cutCorner={false} />
 
-	<div class="relative grid max-w-6xl items-center gap-14 lg:grid-cols-2">
-		<div class="text-center lg:text-start">
+	<!-- z-10: HexBackground's canvas is absolutely positioned, so static siblings after it
+		 still paint underneath without this. -->
+	<div class="relative z-10 mx-auto grid w-full max-w-[1320px] items-center gap-8 rtl:lg:[direction:ltr] lg:grid-cols-[auto_1fr] lg:gap-6">
+		<div class="flex w-full flex-col items-center justify-center text-center lg:items-start lg:text-left rtl:lg:[direction:rtl] rtl:lg:items-start rtl:lg:text-right">
 			<svg width="56" height="56" viewBox="0 0 24 24" class="mx-auto mb-4 sm:hidden">
 				<g fill="none" stroke={tool.color} stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={tool.icon} />
 			</svg>
-			<h1 data-i18n={`tool.${tool.slug}.tagline`} class="font-ibrand text-3xl leading-[1.1] text-neutral-900 sm:text-5xl lg:text-6xl dark:text-white">
+			<h1 data-i18n={`tool.${tool.slug}.tagline`} class="font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-4xl md:text-[3.3rem] dark:text-white">
 				{tool.tagline}
 			</h1>
-			<p data-i18n={`tool.${tool.slug}.paragraph`} class="mt-6 max-w-lg font-helvetica text-sm text-neutral-600 sm:text-lg dark:text-neutral-400">
+			<p data-i18n={`tool.${tool.slug}.paragraph`} class="mt-5 max-w-[30rem] font-helvetica text-xs font-normal leading-relaxed text-neutral-900 sm:text-base sm:[-webkit-text-stroke:0.3px_currentColor] dark:text-white">
 				{tool.description.paragraph}
 			</p>
 			<div class="mt-8 flex w-full max-w-xs flex-col items-stretch gap-4 sm:w-auto sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center lg:justify-start">
@@ -33,31 +38,34 @@ const { tool } = Astro.props;
 					href="https://calendly.com/d/cr37-8xm-k5s/drop-arabia-strategy-session"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="group inline-flex items-center justify-center gap-2 h-11 rounded-full border-[3px] border-primary bg-white pr-1 pl-5 font-ibrand text-sm text-neutral-900 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)] sm:h-14 sm:gap-3 sm:pr-1.5 sm:pl-8 sm:text-base dark:bg-neutral-900 dark:text-white"
+					class="group inline-flex h-10 items-center justify-center gap-2 rounded-full bg-primary px-6 font-ibrand text-sm text-white shadow-[0_8px_20px_-6px_rgba(0,30,255,0.55)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-8px_rgba(0,30,255,0.7)] sm:h-12 sm:px-8 sm:text-base"
 				>
 					<span data-i18n="cta.getStarted">Get Started</span>
-					<span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-white transition-transform duration-200 ease-out group-hover:translate-x-0.5 sm:h-9 sm:w-9">
-						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-							<path d="M5 12h14" />
-							<path d="m12 5 7 7-7 7" />
-						</svg>
-					</span>
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-0.5"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
 				</a>
 				<a
-					href="/tools"
+					href="https://ig.me/m/mjbusinessofficial"
+					target="_blank"
+					rel="noopener noreferrer"
 					data-i18n="cta.talkToUs"
-					class="inline-flex h-11 items-center justify-center rounded-full border-[3px] border-neutral-900 bg-white px-5 text-center font-ibrand text-sm text-neutral-900 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-black/5 sm:h-14 sm:px-11 sm:text-base dark:border-white dark:bg-neutral-900 dark:text-white dark:hover:bg-white/10"
+					class="inline-flex h-10 items-center justify-center rounded-full bg-[#e5e4e2] px-6 text-center font-ibrand text-sm text-neutral-900 shadow-[0_8px_20px_-8px_rgba(0,0,0,0.4)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#dcdbd9] hover:shadow-[0_14px_30px_-10px_rgba(0,0,0,0.5)] sm:h-12 sm:px-8 sm:text-base"
 				>
 					Talk to Us
 				</a>
 			</div>
 		</div>
 
-		<div class="-mr-6 w-[145%] sm:mr-0 sm:w-full lg:w-[260%]">
+
+		<!-- App screenshot, bleeding off the viewport edge at lg+. Below lg the negative margin
+			 drops away so it sits fully inside its column instead of being clipped.
+			 -me- (margin-inline-end), not -mr-: in RTL the grid mirrors, so the screenshot moves
+			 to the left column and has to bleed off the LEFT edge. A physical -mr- kept pulling it
+			 rightwards there, straight over the Arabic copy. -->
+		<div class="relative lg:-mr-[40vw] lg:w-[64rem] lg:max-w-none">
 			<img
 				src={tool.heroImage ?? ik("/Tools/Winning Products.png", "w-1200,q-80")}
 				alt={tool.label}
-				class="w-full object-contain drop-shadow-[0_15px_35px_-15px_rgba(0,0,0,0.28)]"
+				class="w-full rounded-[0.7rem] object-contain shadow-[0_40px_90px_-30px_rgba(0,0,0,0.3)] sm:rounded-[0.8rem]"
 			/>
 		</div>
 	</div>

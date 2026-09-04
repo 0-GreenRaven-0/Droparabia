@@ -2,82 +2,110 @@
 import HexBackground from "../HexBackground.astro";
 import { ik } from "../../lib/imagekit";
 
-// Real community post screenshots, floated up past the pinned hero as the page scrolls.
-// Cards render up to ~960px wide on desktop, but these were being requested at their full
-// original resolution — decoding and GPU-compositing several full-size screenshots while
-// transform-animating them was a big part of what made this feel laggy on mobile.
-// `?tr=w-900,q-80` asks ImageKit for an already-sized, already-compressed version — still a
-// fraction of the original file size, but sized to stay sharp at typical card widths.
+// Real community post screenshots. `?tr=w-1400,q-85` asks ImageKit for an already-sized,
+// already-compressed version rather than the full original — these render at ~400px wide
+// in the grid below, so the originals were many times larger than needed.
 const posts = [
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d1.png?tr=w-900,q-80",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d3.png?tr=w-900,q-80",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d3.png?tr=w-900,q-80",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d5.png?tr=w-900,q-80",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d2.png?tr=w-900,q-80",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d6.png?tr=w-900,q-80",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d1.png?tr=w-1400,q-85",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d2.png?tr=w-1400,q-85",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d3.png?tr=w-1400,q-85",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d4.png?tr=w-1400,q-85",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d5.png?tr=w-1400,q-85",
+	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d6.png?tr=w-1400,q-85",
 ];
 ---
 
-<section
-	id="dropvault-hero"
-	class="relative flex h-screen flex-col justify-center overflow-hidden px-6 pt-24 pb-24 text-center lg:px-16"
->
+<section id="dropvault-hero" class="relative overflow-hidden px-6 pt-16 pb-24 text-center sm:pt-20 lg:px-16 lg:pt-24">
 	<HexBackground cutCorner={true} cutSide="right" />
 
-	<div class="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden="true">
-		{
-			posts.map((src, i) => (
-				<img
-					src={src}
-					alt=""
-					data-community-card
-					data-index={i}
-					decoding="async"
-					class="community-card absolute rounded-2xl object-contain shadow-[0_12px_28px_-15px_rgba(0,0,0,0.22)]"
-				/>
-			))
-		}
-	</div>
-
-	<div class="relative mx-auto max-w-3xl">
+	<!-- Logo + wordmark + subtext, pinned to the top of the section. -->
+	<div class="relative z-10 mx-auto max-w-3xl">
 		<div class="mx-auto flex w-fit flex-row items-center gap-3 rtl:flex-row-reverse sm:gap-4">
 			<img
 				id="dropvault-logo"
 				src={ik("/Dropvault.png", "w-800,q-80")}
 				alt="Dropvault"
-				class="relative z-10 h-24 w-24 object-contain sm:h-44 sm:w-44 lg:h-80 lg:w-80"
-				style="opacity: 0"
+				width="224"
+				height="224"
+				fetchpriority="high"
+				decoding="async"
+				class="h-24 w-24 object-contain sm:h-40 sm:w-40 lg:h-56 lg:w-56"
 			/>
-			<h1
-				id="dropvault-heading"
-				class="brand-wordmark font-ibrand text-5xl leading-none text-neutral-900 sm:text-7xl lg:text-9xl dark:text-white"
-				style="clip-path: inset(0 100% 0 0)"
-			>
+			<h1 id="dropvault-heading" class="brand-wordmark font-ibrand text-5xl leading-none text-neutral-900 sm:text-7xl lg:text-9xl dark:text-white">
 				Dropvault
 			</h1>
 		</div>
 		<p
 			id="dropvault-subtext"
 			data-i18n="dropvault.subtext"
-			class="mt-8 font-helvetica text-base text-neutral-600 sm:text-lg dark:text-neutral-400"
-			style="opacity: 0"
+			class="mt-2 font-helvetica text-base font-normal text-neutral-900 sm:text-lg dark:text-white"
 		>
-			A community where you can grow, learn and get support whenever you need it!
+			When you get access to Droparabia, you become a member of the Dropvault community, a place where you get to grow alongside ambitious sellers and get support whenever you need it!
 		</p>
+	</div>
+
+	<!-- The message field. A responsive grid handles layout and keeps cards from colliding;
+		 the "random positions" come from a per-card offset applied by the script at runtime,
+		 so the arrangement differs on every load instead of being baked in. -->
+	<div id="dropvault-field" class="relative z-10 mx-auto mt-14 grid max-w-7xl grid-cols-1 gap-x-10 gap-y-14 sm:mt-16 sm:grid-cols-2 lg:gap-x-16 lg:gap-y-20">
+		{
+			posts.map((src) => (
+				<img
+					src={src}
+					alt=""
+					loading="eager"
+					decoding="async"
+					class="community-card w-full rounded-2xl shadow-[0_18px_40px_-20px_rgba(0,0,0,0.3)]"
+				/>
+			))
+		}
 	</div>
 </section>
 
 <style>
-	/* Off-screen by default, before any JS runs — the GSAP setup below only refines this to
-		a precise randomized value. Without this, the images have no `top` at all for the
-		first paint (position: absolute with no top/left falls back to each element's normal
-		in-flow stacking position), which is what was flashing all the cards stacked in view
-		for a frame before the script executes. */
+	/* The header intro is pure CSS on purpose. Driving it from the GSAP script meant it could
+	   only begin once that module had downloaded, parsed and run — which is after the first
+	   paint. On a warm cache that gap is invisible; on a cold navigation it is long enough to
+	   see the hero sit blank and then jump, which is the glitch this replaces. A CSS animation
+	   starts on the very first frame the element is painted, every time, with no JS involved. */
+	@keyframes dropvault-intro {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+	#dropvault-logo,
+	#dropvault-heading,
+	#dropvault-subtext {
+		opacity: 0;
+		animation: dropvault-intro 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	}
+	#dropvault-heading {
+		animation-delay: 0.1s;
+	}
+	#dropvault-subtext {
+		animation-delay: 0.2s;
+	}
+
+	/* Cards stay hidden until the script pops them in; see the note in the script below. */
 	.community-card {
-		top: 130%;
-		/* Promotes each card to its own GPU layer ahead of time instead of on the first
-		   scroll frame, so the layer-creation cost doesn't land in the middle of the scrub. */
-		will-change: transform;
+		opacity: 0;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		#dropvault-logo,
+		#dropvault-heading,
+		#dropvault-subtext {
+			animation: none;
+			opacity: 1;
+		}
+		.community-card {
+			opacity: 1;
+		}
 	}
 </style>
 
@@ -86,164 +114,78 @@ const posts = [
 	import { ScrollTrigger } from "gsap/ScrollTrigger";
 	gsap.registerPlugin(ScrollTrigger);
 
-	// Startup animation: the logo starts dead-center on screen, slides to its resting
-	// spot next to the wordmark, and the wordmark reveals left-to-right (as if it were
-	// hidden behind the logo) as the logo passes over it. Scrolling is locked for the
-	// duration so the user can't scroll past the section mid-animation.
-	const introLogo = document.getElementById("dropvault-logo");
-	const introHeading = document.getElementById("dropvault-heading");
-	const introSubtext = document.getElementById("dropvault-subtext");
-	if (introLogo && introHeading && introSubtext) {
-		// Lock scroll purely by swallowing the input events — no toggling `overflow` on
-		// html/body, which was shifting layout (scrollbar popping in/out) during the intro.
-		const preventScroll = (e: Event) => e.preventDefault();
-		window.addEventListener("wheel", preventScroll, { passive: false });
-		window.addEventListener("touchmove", preventScroll, { passive: false });
-		window.addEventListener("keydown", preventScroll);
+	const cards = Array.from(document.querySelectorAll<HTMLImageElement>(".community-card"));
+	const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-		function unlockScroll() {
-			window.removeEventListener("wheel", preventScroll);
-			window.removeEventListener("touchmove", preventScroll);
-			window.removeEventListener("keydown", preventScroll);
-		}
-
-		// The logo already sits in its final resting position in the DOM/layout — work out
-		// how far that is from dead-center of the viewport, then animate from there back to 0.
-		// Its size never changes — only position and rotation — so it reads the same size
-		// before, during, and after the intro.
-		function playIntro() {
-			const logoRect = introLogo!.getBoundingClientRect();
-			const logoCenterX = logoRect.left + logoRect.width / 2;
-			const deltaX = window.innerWidth / 2 - logoCenterX;
-			// Y is always 0 — the logo starts on the same horizontal line as its final
-			// resting position and only slides in along X, never drifting up/down from
-			// below the viewport (which is what made it look like it rose from the bottom
-			// on mobile, since its resting spot sits above vertical center there).
-			const deltaY = 0;
-
-			// opacity: 1 here (not baked into the initial HTML) is deliberate — the logo stays
-			// invisible via inline `style="opacity: 0"` in the markup until this exact moment,
-			// when it's already positioned dead-center/rotated. Without that, the browser
-			// paints the logo in its final resting position for a frame or two while this
-			// script waits on document.fonts.ready, and the "intro" reads as replaying an
-			// animation that already finished.
-			gsap.set(introLogo, { x: deltaX, y: deltaY, rotation: 180, opacity: 1 });
-			gsap.set(introHeading, { clipPath: "inset(0 100% 0 0)" });
-			gsap.set(introSubtext, { opacity: 0, y: 16 });
-
-			gsap
-				.timeline({ onComplete: unlockScroll })
-				.to(introLogo, { x: 0, y: 0, rotation: 0, duration: 1.1, ease: "power3.inOut" })
-				.to(introHeading, { clipPath: "inset(0 0% 0 0)", duration: 0.9, ease: "power2.out" }, "-=0.7")
-				.to(introSubtext, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, "-=0.2");
-		}
-
-		// Wait for the custom Ibrand font to finish loading before measuring the logo's
-		// resting position — otherwise the wordmark's fallback-font width shifts once the
-		// real font swaps in, and the computed center-of-viewport delta is wrong.
-		if (document.fonts?.ready) {
-			document.fonts.ready.then(playIntro);
-		} else {
-			playIntro();
-		}
+	// The cards are remote CDN images with no intrinsic size in the markup, so until they
+	// decode they occupy no space — ScrollTrigger then measures every one of them as already
+	// on-screen and fires the whole set at once. So wait for them to settle, re-measure, and
+	// only then play. The race() is a guard: one slow or dead image can never hold the pop-in
+	// hostage for more than 2.5s.
+	function imagesSettled(imgs: HTMLImageElement[], timeoutMs = 2500): Promise<unknown> {
+		const waits = imgs.map((img) =>
+			img.complete && img.naturalWidth > 0
+				? Promise.resolve()
+				: new Promise<void>((res) => {
+						img.addEventListener("load", () => res(), { once: true });
+						img.addEventListener("error", () => res(), { once: true });
+					}),
+		);
+		return Promise.race([Promise.all(waits), new Promise((res) => setTimeout(res, timeoutMs))]);
 	}
 
-	const section = document.getElementById("dropvault-hero");
-	const cards = Array.from(document.querySelectorAll<HTMLImageElement>(".community-card"));
-	if (section && cards.length) {
-		// Each card gets its own slot on a shared timeline (with a little overlap so the
-		// motion stays fluid) instead of every card animating across the exact same window —
-		// so they visibly enter one at a time rather than all at once. The pinned scroll
-		// distance is scaled to the number of cards so the section stays pinned for exactly
-		// as long as it takes the last card to finish, however many cards there are.
-		// Only a few lanes (not one per card) so each card can stay big — cards cycle
-		// through the lanes in order, and the stagger below is spaced out enough that two
-		// cards sharing the same lane never have a card on screen at the same time.
-		// Mobile gets a single lane — one card at a time, sliding straight up a single
-		// vertical line, instead of alternating between two side-by-side lanes.
-		const LANES = window.innerWidth < 640 ? 1 : Math.min(2, cards.length);
-		const SLOT = 0.65; // scroll-distance "units" each card's rise takes
-		// A single lane has no neighboring lane to prevent overlap for, so SLOT/LANES (no
-		// overlap at all) would show exactly one card at a time — tightened here so several
-		// cards are mid-rise (and visible at different heights) together instead.
-		const STAGGER = LANES === 1 ? SLOT * 0.22 : SLOT / LANES;
-		const totalUnits = SLOT + (cards.length - 1) * STAGGER;
-		const VH_PER_UNIT = 90;
+	if (reduced) {
+		gsap.set(cards, { opacity: 1 });
+	} else {
+		const rand = (min: number, max: number) => min + Math.random() * (max - min);
 
-		const master = gsap.timeline({
-			scrollTrigger: {
-				trigger: section,
-				start: "top top",
-				end: `+=${totalUnits * VH_PER_UNIT}%`,
-				pin: true,
-				// scrub is a catch-up delay in seconds, not a speed multiplier — at 1 the cards
-				// visibly trail up to a full second behind the actual scroll position, which
-				// reads as the animation lagging rather than smooth. A small amount still
-				// softens fast scroll-wheel jumps without that noticeable disconnect.
-				scrub: 0.3,
-			},
-		});
+		// Each card keeps a permanent offset so the grid reads as scattered rather than a tidy
+		// gallery. No rotation — the cards stay upright. Regenerated per page load.
+		//
+		// Mobile is a single column, where scattering just makes the cards look misaligned —
+		// and the sub-pixel transforms it produces are what was rendering the text soft. So
+		// phones get no offsets at all: a plain stacked row that still fades in.
+		//
+		// On wider screens the offsets are capped at 45% of the grid's own gaps, read from
+		// the live computed style. Two neighbours can drift toward each other, so their
+		// combined travel is 2 x the cap — at 45% that's 90% of the gap, which keeps a sliver
+		// between them and makes a collision impossible at any breakpoint.
+		const scatter = window.innerWidth >= 640;
+		const field = document.getElementById("dropvault-field");
+		const gaps = field && scatter ? getComputedStyle(field) : null;
+		const capX = gaps ? parseFloat(gaps.columnGap || "0") * 0.45 : 0;
+		const capY = gaps ? parseFloat(gaps.rowGap || "0") * 0.45 : 0;
+		// Math.round keeps every card on a whole pixel — fractional translate values blur
+		// rasterized text on some devices.
+		const resting = cards.map(() => ({ x: Math.round(rand(-capX, capX)), y: Math.round(rand(-capY, capY)) }));
 
-		// Size + position each card to fit inside its lane so it can never overlap a
-		// neighboring lane or spill past the left/right edge of the screen. Recomputed on
-		// resize since the section width changes across breakpoints.
-		const INWARD_SHIFT = 24; // nudge each lane a few px toward the center
-		function layoutCards() {
-			const sectionWidth = section!.clientWidth;
-			const laneWidth = sectionWidth / LANES;
-			// The 440px floor assumes a lane wide enough to hold it — on a narrow phone
-			// that's wider than the whole viewport, so scale the floor down with it there.
-			const minCardWidth = Math.min(440, sectionWidth * 0.88);
-			// A single lane spans the full section width, so "fit the lane" alone would make
-			// the card the full width of the screen — cap it a bit narrower instead.
-			const cardWidth = LANES === 1 ? sectionWidth * 0.92 : Math.max(minCardWidth, Math.min(laneWidth, 960));
+		const playCards = () =>
 			cards.forEach((card, i) => {
-				const lane = i % LANES;
-				const laneStart = lane * laneWidth;
-				const maxOffset = Math.max(laneWidth - cardWidth, 0);
-				const laneCenter = laneStart + laneWidth / 2;
-				const shift = Math.sign(sectionWidth / 2 - laneCenter) * INWARD_SHIFT;
-				const leftPx = laneStart + maxOffset / 2 + shift;
-				gsap.set(card, { left: leftPx, width: cardWidth });
-			});
-		}
-		layoutCards();
-		window.addEventListener("resize", () => {
-			layoutCards();
-			// The rise distance above is a function of section height, re-read fresh each time
-			// — invalidate clears GSAP's cached value so it actually calls that function again,
-			// and refresh re-measures the pinned scroll distance to match.
-			master.invalidate();
-			ScrollTrigger.refresh();
+			const rest = resting[i];
+			gsap.fromTo(
+				card,
+				// Starts slightly below its resting spot and small — so it reads as popping into
+				// place rather than sliding in from somewhere.
+				{ opacity: 0, scale: 0.82, x: rest.x, y: rest.y + 36 },
+				{
+					opacity: 1,
+					scale: 1,
+					x: rest.x,
+					y: rest.y,
+					duration: 0.6,
+					// back.out gives the slight overshoot that makes it feel like a pop.
+					ease: "back.out(1.6)",
+					// Randomized delay rather than a uniform stagger, so they appear scattered in
+					// time as well as in space.
+					delay: rand(0, 0.5) + i * 0.09,
+					scrollTrigger: { trigger: card, start: "top 88%", once: true },
+				},
+			);
 		});
 
-		cards.forEach((card, i) => {
-			// The motion itself is a straight vertical line, no horizontal drift or rotation,
-			// and no horizontal movement at all (lanes above already keep each card clear of
-			// its neighbors). On mobile (a single lane) every card uses the exact same rise
-			// distance and duration, so they all travel at the same speed — with a randomized
-			// distance, the fixed time offset between cards (STAGGER) translated to a different
-			// on-screen gap for every pair, which read as uneven/jittery instead of a smooth
-			// train of evenly spaced cards. Desktop keeps the randomized distance since its
-			// multiple lanes already keep cards visually separated.
-			const riseDistance = LANES === 1 ? 150 : 130 + Math.random() * 60; // how far (in %) this card travels
-			const startTop = LANES === 1 ? 112 : 100 + Math.random() * 20;
-
-			// `top` is a layout property — animating it forces the browser to recompute layout
-			// on every single scrub frame, which is what was making this feel "extremely
-			// laggy" on phones (a pinned, scroll-scrubbed animation is already firing on nearly
-			// every frame, so that cost adds up fast on weaker mobile CPUs). `top` is now set
-			// once, as a one-time layout cost, and the actual scroll-driven rise instead
-			// animates `y` (transform: translateY), which the compositor can run entirely on
-			// the GPU without touching layout or paint at all. The distance is a function so it
-			// re-reads the section's current height after a resize (see below).
-			gsap.set(card, { top: `${startTop}%`, y: 0 });
-			master.fromTo(
-				card,
-				{ y: 0 },
-				{ y: () => -(riseDistance / 100) * section!.clientHeight, ease: "none", duration: SLOT },
-				i * STAGGER,
-			);
+		imagesSettled(cards).then(() => {
+			ScrollTrigger.refresh();
+			playCards();
 		});
 	}
 </script>

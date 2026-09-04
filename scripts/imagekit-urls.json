@@ -1,11 +1,19 @@
 [
   {
-    "path": "/Droparabia.webp",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/Droparabia.webp"
+    "path": "/badge-app-store.svg",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/badge-app-store.svg"
   },
   {
-    "path": "/Dropvault.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/Dropvault.png"
+    "path": "/badge-google-play.png",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/badge-google-play.png"
+  },
+  {
+    "path": "/community.webp",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/community.webp"
+  },
+  {
+    "path": "/courses.webp",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/courses.webp"
   },
   {
     "path": "/favicon.svg",
@@ -16,219 +24,31 @@
     "url": "https://ik.imagekit.io/greenraven/droparabia/gcc-mask.png"
   },
   {
+    "path": "/hero-app.webp",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/hero-app.webp"
+  },
+  {
     "path": "/lebanon.webp",
     "url": "https://ik.imagekit.io/greenraven/droparabia/lebanon.webp"
   },
   {
-    "path": "/mj.jpeg",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/mj.jpeg"
+    "path": "/phone-portrait.webp",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/phone-portrait.webp"
   },
   {
-    "path": "/products/Car Care/1.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Car_Care/1.png"
+    "path": "/testimonial-1.png",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/testimonial-1.png"
   },
   {
-    "path": "/products/Car Care/2.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Car_Care/2.png"
+    "path": "/testimonial-2.png",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/testimonial-2.png"
   },
   {
-    "path": "/products/Car Care/3.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Car_Care/3.png"
+    "path": "/testimonial-3.png",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/testimonial-3.png"
   },
   {
-    "path": "/products/Car Care/4.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Car_Care/4.png"
-  },
-  {
-    "path": "/products/Car Care/5.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Car_Care/5.png"
-  },
-  {
-    "path": "/products/Car Care/6.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Car_Care/6.png"
-  },
-  {
-    "path": "/products/Car Care/7.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Car_Care/7.png"
-  },
-  {
-    "path": "/products/Car Care/8.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Car_Care/8.png"
-  },
-  {
-    "path": "/products/Electronic/1.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Electronic/1.png"
-  },
-  {
-    "path": "/products/Electronic/2.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Electronic/2.png"
-  },
-  {
-    "path": "/products/Electronic/3.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Electronic/3.png"
-  },
-  {
-    "path": "/products/Electronic/4.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Electronic/4.png"
-  },
-  {
-    "path": "/products/Electronic/5.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Electronic/5.png"
-  },
-  {
-    "path": "/products/Electronic/6.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Electronic/6.png"
-  },
-  {
-    "path": "/products/Electronic/7.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Electronic/7.png"
-  },
-  {
-    "path": "/products/Electronic/8.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Electronic/8.png"
-  },
-  {
-    "path": "/products/Health and beauty/1.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Health_and_beauty/1.png"
-  },
-  {
-    "path": "/products/Health and beauty/2.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Health_and_beauty/2.png"
-  },
-  {
-    "path": "/products/Health and beauty/3.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Health_and_beauty/3.png"
-  },
-  {
-    "path": "/products/Health and beauty/4.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Health_and_beauty/4.png"
-  },
-  {
-    "path": "/products/Health and beauty/5.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Health_and_beauty/5.png"
-  },
-  {
-    "path": "/products/Health and beauty/6.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Health_and_beauty/6.png"
-  },
-  {
-    "path": "/products/Health and beauty/7.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Health_and_beauty/7.png"
-  },
-  {
-    "path": "/products/Health and beauty/8.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Health_and_beauty/8.png"
-  },
-  {
-    "path": "/products/Kitchen/1.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Kitchen/1.png"
-  },
-  {
-    "path": "/products/Kitchen/2.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Kitchen/2.png"
-  },
-  {
-    "path": "/products/Kitchen/3.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Kitchen/3.png"
-  },
-  {
-    "path": "/products/Kitchen/4.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Kitchen/4.png"
-  },
-  {
-    "path": "/products/Kitchen/5.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Kitchen/5.png"
-  },
-  {
-    "path": "/products/Kitchen/6.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Kitchen/6.png"
-  },
-  {
-    "path": "/products/Kitchen/7.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Kitchen/7.png"
-  },
-  {
-    "path": "/products/Kitchen/8.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Kitchen/8.png"
-  },
-  {
-    "path": "/products/Pets/1.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Pets/1.png"
-  },
-  {
-    "path": "/products/Pets/2.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Pets/2.png"
-  },
-  {
-    "path": "/products/Pets/3.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Pets/3.png"
-  },
-  {
-    "path": "/products/Pets/4.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Pets/4.png"
-  },
-  {
-    "path": "/products/Pets/5.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Pets/5.png"
-  },
-  {
-    "path": "/products/Pets/6.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Pets/6.png"
-  },
-  {
-    "path": "/products/Pets/7.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Pets/7.png"
-  },
-  {
-    "path": "/products/Pets/8.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Pets/8.png"
-  },
-  {
-    "path": "/products/Sporting Goods/1.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Sporting_Goods/1.png"
-  },
-  {
-    "path": "/products/Sporting Goods/2.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Sporting_Goods/2.png"
-  },
-  {
-    "path": "/products/Sporting Goods/3.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Sporting_Goods/3.png"
-  },
-  {
-    "path": "/products/Sporting Goods/4.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Sporting_Goods/4.png"
-  },
-  {
-    "path": "/products/Sporting Goods/5.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Sporting_Goods/5.png"
-  },
-  {
-    "path": "/products/Sporting Goods/6.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Sporting_Goods/6.png"
-  },
-  {
-    "path": "/products/Sporting Goods/7.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Sporting_Goods/7.png"
-  },
-  {
-    "path": "/products/Sporting Goods/8.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/products/Sporting_Goods/8.png"
-  },
-  {
-    "path": "/Tools/Ai winning products.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/Tools/Ai_winning_products.png"
-  },
-  {
-    "path": "/Tools/Winning Products.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/Tools/Winning_Products.png"
-  },
-  {
-    "path": "/trustpilot-logo-white-icon.webp",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/trustpilot-logo-white-icon.webp"
-  },
-  {
-    "path": "/Trustpilot-Logo.png",
-    "url": "https://ik.imagekit.io/greenraven/droparabia/Trustpilot-Logo.png"
+    "path": "/testimonial-4.png",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/testimonial-4.png"
   }
 ]

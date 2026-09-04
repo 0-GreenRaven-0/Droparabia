@@ -7,8 +7,6 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "dev:astro-inner": "astro dev --port 4322",
-    "dev:functions": "wrangler pages dev --port 4321 --proxy 4322 --compatibility-date 2026-07-28",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
@@ -26,7 +24,6 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@types/three": "^0.185.1",
-    "typescript": "^6.0.3",
-    "wrangler": "^4.114.0"
+    "typescript": "^6.0.3"
   }
 }

@@ -1,4 +1,5 @@
 ---
+import { ik } from "../lib/imagekit";
 // Renders a country/region silhouette as a grid of dots, generated at build time from a
 // plain solid mask image (alpha channel only, no interior detail) — computed once during
 // the build, not in the browser, so this ships as a plain static SVG. Originally built for
@@ -6,6 +7,7 @@
 // can be reused for other shapes (e.g. the GCC/MENA region).
 import sharp from "sharp";
 import path from "node:path";
+import { readFile } from "node:fs/promises";
 
 interface RegionColor {
 	// The source mask's actual fill color for this region (sampled from the PNG/webp), used
@@ -35,7 +37,7 @@ interface Props {
 	regionColors?: RegionColor[];
 }
 const {
-	src = "/lebanon.webp",
+	src = ik("/lebanon.webp"),
 	cols = 55,
 	dotRadius = 0.34,
 	class: className = "",
@@ -45,8 +47,20 @@ const {
 } = Astro.props;
 
 const ALPHA_THRESHOLD = 100;
-const maskPath = path.join(process.cwd(), "public", src.replace(/^\//, ""));
-const { data, info } = await sharp(maskPath).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+
+// The masks live on the CDN now rather than in public/, so `src` is usually an absolute URL.
+// sharp only reads the filesystem, so remote masks are fetched into a buffer first. Local
+// paths still work, which keeps the component usable with a mask dropped into public/.
+async function loadMask(source: string): Promise<Buffer> {
+	if (!/^https?:\/\//.test(source)) {
+		return readFile(path.join(process.cwd(), "public", source.replace(/^\//, "")));
+	}
+	const res = await fetch(source);
+	if (!res.ok) throw new Error(`Mask fetch failed (${res.status}): ${source}`);
+	return Buffer.from(await res.arrayBuffer());
+}
+
+const { data, info } = await sharp(await loadMask(src)).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 const { width, height, channels } = info;
 const alphaAt = (x: number, y: number) => data[(y * width + x) * channels + 3];
 function colorMatch(avg: [number, number, number]): string | undefined {

@@ -6,28 +6,73 @@ import Footer from "./Footer.astro";
 interface Props {
 	title: string;
 	description: string;
+	/** Human-readable published date shown on the page, e.g. "January 30, 2026". */
 	date: string;
+	/** ISO 8601 published date, e.g. "2026-01-30". Feeds <time> and Article schema. */
+	datePublished: string;
+	/**
+	 * ISO 8601 date this post was last substantively revised. Bump it whenever you update
+	 * the post — cited pages skew heavily towards recently-updated ones, and the effect comes
+	 * from updating an existing URL rather than publishing a new one. Defaults to the
+	 * published date so an un-revised post is never falsely marked fresh.
+	 */
+	dateModified?: string;
 	readTime: string;
+	// i18n keys for the header text. Optional so a page without translations still renders.
+	titleKey?: string;
+	dateKey?: string;
+	readTimeKey?: string;
 	// Either pass a photo URL here, or provide a `banner` slot (e.g. a branded white card) —
 	// the slot takes priority when both would otherwise apply.
 	image?: string;
 	toc: { id: string; label: string }[];
 }
-const { title, description, date, readTime, image, toc } = Astro.props;
+const { title, description, date, datePublished, dateModified, readTime, image, toc, titleKey, dateKey, readTimeKey } =
+	Astro.props;
 const hasBannerSlot = Astro.slots.has("banner");
+const modified = dateModified ?? datePublished;
+const updated = modified !== datePublished;
+
+const articleSchema = {
+	"@type": "Article",
+	headline: title,
+	description,
+	datePublished,
+	dateModified: modified,
+	author: { "@type": "Person", name: "Majd Abdulsalam" },
+	publisher: { "@id": "https://droparabia.com/#organization" },
+	mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).href,
+	inLanguage: "en",
+};
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} schema={[articleSchema]}>
 	<Header />
 
 	<article class="px-6 pt-40 pb-4 lg:px-16">
 		<div class="mx-auto max-w-6xl">
-			<h1 class="font-ibrand text-4xl leading-[1.1] text-neutral-900 sm:text-6xl dark:text-white">{title}</h1>
+			<h1 data-i18n={titleKey} class="font-ibrand text-4xl leading-[1.1] text-neutral-900 sm:text-6xl dark:text-white">{title}</h1>
 
 			<div class="mt-4 flex flex-wrap items-center gap-2 font-helvetica text-sm text-neutral-500 dark:text-neutral-400">
-				<span>{date}</span>
+				<time datetime={datePublished} data-i18n={dateKey}>{date}</time>
 				<span>&bull;</span>
-				<span>{readTime}</span>
+				<span data-i18n={readTimeKey}>{readTime}</span>
+				{updated && (
+					<>
+						<span>&bull;</span>
+						<span>
+							Updated{" "}
+							<time datetime={modified}>
+								{new Date(modified).toLocaleDateString("en-US", {
+									year: "numeric",
+									month: "long",
+									day: "numeric",
+									timeZone: "UTC",
+								})}
+							</time>
+						</span>
+					</>
+				)}
 			</div>
 
 			{

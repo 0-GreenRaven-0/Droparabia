@@ -1,5 +1,5 @@
 ---
-// Submits to the Pages Function at functions/api/reviews.js (same origin, so no CORS to
+// Submits to the Google Apps Script web app bound to the reviews sheet (apps-script/Code.gs),
 // worry about). Every rule mirrored here is enforced again server-side — this copy only
 // exists to give the user fast feedback before a round trip.
 const NAME_MIN = 2;
@@ -114,11 +114,9 @@ const TEXT_MAX = 1000;
 </section>
 
 <script>
-	import { translations } from "../../lib/i18n";
+	import { currentLang, translations } from "../../lib/i18n";
+	import { submitReview } from "../../lib/reviewsApi";
 
-	function currentLang(): "en" | "ar" {
-		return localStorage.getItem("lang") === "ar" ? "ar" : "en";
-	}
 	function t(key: string, vars: Record<string, string | number> = {}): string {
 		let text = translations[key][currentLang()];
 		for (const [k, v] of Object.entries(vars)) text = text.replace(`{${k}}`, String(v));
@@ -246,25 +244,21 @@ const TEXT_MAX = 1000;
 		// them and just looks broken.
 		const GENERIC_ERROR = t("reviewform.errorGeneric");
 		try {
-			const res = await fetch("/api/reviews", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
+			let data: { ok?: boolean; error?: string };
+			try {
+				data = await submitReview({
 					name: nameInput.value.trim(),
 					rating: Number(ratingInput.value),
 					text: textInput.value.trim(),
 					website: websiteInput?.value ?? "",
-				}),
-			});
-
-			let data: { ok?: boolean; error?: string };
-			try {
-				data = await res.json();
+				});
 			} catch {
+				// Network failure, or a non-JSON response (Apps Script serves an HTML error
+				// page when a deployment is broken) — either way, nothing useful to show.
 				throw new Error(GENERIC_ERROR);
 			}
 
-			if (!res.ok || !data.ok) {
+			if (!data.ok) {
 				throw new Error(typeof data.error === "string" ? data.error : GENERIC_ERROR);
 			}
 

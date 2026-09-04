@@ -1,5 +1,6 @@
 ---
 import BlogPostLayout from "../../components/BlogPostLayout.astro";
+import { ik } from "../../lib/imagekit";
 
 const toc = [
 	{ id: "whats-this-about", label: "What's this article about?" },
@@ -20,17 +21,21 @@ const bullet = "absolute left-0 font-bold text-primary";
 	title={`Dropshipping is "dead"`}
 	description="Is dropshipping really dead in 2026, or is that just a myth pushed by failed case studies and course sellers? We break down where the myth comes from and what's actually true."
 	date="January 30, 2026"
+	datePublished="2026-01-30"
 	readTime="9 min read"
+	titleKey="blog.post0.title"
+	dateKey="blog.post0.date"
+	readTimeKey="blog.post0.readTime"
 	toc={toc}
 >
 	<Fragment slot="banner">
-		<div
-			class="flex h-full w-full flex-col items-center justify-center gap-2 px-6 text-center"
-			style={{ background: "linear-gradient(135deg, #2745ff 0%, #001eff 45%, #000c66 100%)" }}
-		>
-			<span class="font-ibrand text-6xl leading-none text-white/25 sm:text-8xl">"</span>
-			<p class="-mt-4 font-ibrand text-2xl leading-tight text-white sm:text-4xl">Dropshipping is "dead"?</p>
-		</div>
+		<img
+			src={ik("/blog-dropshipping-is-dead.webp")}
+			alt=""
+			width="901"
+			height="508"
+			class="h-full w-full object-cover"
+		/>
 	</Fragment>
 
 	<p class="border-l-2 border-primary pl-4 font-helvetica text-base text-neutral-600 sm:text-lg dark:text-neutral-400">

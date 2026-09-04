@@ -55,7 +55,7 @@ const posts = [
 	{
 		date: "January 30, 2026",
 		readTime: "10 min read",
-		title: "Why Droparabia exist",
+		title: "Why Droparabia exists",
 		excerpt: "The story behind Droparabia — the obstacles that made traditional e-commerce and old dropshipping fail Lebanese sellers.",
 		href: "/blog/why-droparabia-exists",
 	},
@@ -83,7 +83,8 @@ const featured = {
 					class="group rounded-3xl p-5 transition-all duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]"
 				>
 						<p class="font-helvetica text-sm text-neutral-500 dark:text-neutral-400">
-							{post.date} &bull; {post.readTime}
+							<span data-i18n={`blog.post${i}.date`}>{post.date}</span> &bull;{" "}
+							<span data-i18n={`blog.post${i}.readTime`}>{post.readTime}</span>
 						</p>
 						<h3 data-i18n={`blog.post${i}.title`} class="mt-1 font-helvetica text-xl font-bold text-neutral-900 dark:text-white">{post.title}</h3>
 						<p data-i18n={`blog.post${i}.excerpt`} class="mt-2 font-helvetica text-neutral-600 dark:text-neutral-400">{post.excerpt}</p>
@@ -122,7 +123,8 @@ const featured = {
 				</svg>
 				<div class="mt-5 text-center">
 					<p class="font-ibrand text-sm text-neutral-500 dark:text-neutral-400">
-						{featured.date} &bull; {featured.readTime}
+						<span data-i18n="blog.featured.date">{featured.date}</span> &bull;{" "}
+						<span data-i18n="blog.featured.readTime">{featured.readTime}</span>
 					</p>
 					<p data-i18n="blog.featured.title" class="mt-1 font-ibrand text-2xl text-neutral-900 dark:text-white">{featured.title}</p>
 				</div>

@@ -15,8 +15,8 @@
 // alternation and sits dead-center as the "closing" line of the list.
 const points: { text: string; side: "left" | "right" | "center"; offset: number; top: number }[] = [
 	{ text: "Huge upfront investments", side: "left", offset: 0, top: 60 },
-	{ text: "Renting warehouses or owning inventories", side: "right", offset: 40, top: 230 },
-	{ text: "Ordering stocks from China and paying huge shipping fees", side: "left", offset: 70, top: 420 },
+	{ text: "Renting warehouses or owning inventory", side: "right", offset: 40, top: 230 },
+	{ text: "Ordering stock from China and paying huge shipping fees", side: "left", offset: 70, top: 420 },
 	{ text: "Buying products in bulk that might not sell", side: "right", offset: 10, top: 610 },
 	{ text: "Wasting hours searching and qualifying products to sell", side: "left", offset: 30, top: 800 },
 	{ text: "Finding a reliable delivery system", side: "right", offset: 60, top: 980 },
@@ -126,12 +126,12 @@ const points: { text: string; side: "left" | "right" | "center"; offset: number;
 			// cut the inertia so the fill keeps pace with a normal mobile scroll/flick.
 			const isMobile = window.innerWidth < 640;
 
-			// "bottom 40%" on a section this tall (~1300px) ties completion to the section's
-			// height PLUS most of a viewport height of extra scroll — on desktop that pushed
-			// the line to only finish drawing right as the whole section was about to scroll
-			// out of view. Tying the end to the container's own height instead (a fixed scroll
-			// distance from the start point) finishes the line with room to spare.
-			const desktopEnd = `+=${container!.offsetHeight * 0.7}`;
+			// Completion is tied to a fixed scroll distance from the start point (a multiple of
+			// the container's own height) rather than a viewport-relative "bottom X%" — that
+			// used to finish only as the whole section was leaving view. 1.0x lands between the
+			// original 0.7 (the line raced ahead and every pill revealed in the first flick)
+			// and 1.5 (too slow to feel connected to the scroll).
+			const desktopEnd = `+=${container!.offsetHeight * 1.0}`;
 
 			fillTween?.scrollTrigger?.kill();
 			fillTween?.kill();
@@ -141,7 +141,7 @@ const points: { text: string; side: "left" | "right" | "center"; offset: number;
 				scrollTrigger: {
 					trigger: container,
 					start: isMobile ? "top 90%" : "top 80%",
-					end: isMobile ? "bottom 65%" : desktopEnd,
+					end: isMobile ? "bottom 40%" : desktopEnd,
 					scrub: isMobile ? 0.5 : 2,
 				},
 				onUpdate() {

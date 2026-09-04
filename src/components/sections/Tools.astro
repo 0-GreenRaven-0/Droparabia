@@ -87,12 +87,9 @@ const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 <section id="tools" class="relative overflow-x-hidden px-6 py-10 sm:py-12">
 	<div class="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">
 		<div>
-			<h2 data-i18n="tools.heading" class="font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-3xl md:text-4xl dark:text-white">
+			<h2 data-i18n="tools.heading" class="font-ibrand text-3xl leading-[1.15] text-neutral-900 sm:text-5xl md:text-6xl dark:text-white">
 				Access advanced &amp; <span class="text-primary">game changing tools</span>
 			</h2>
-			<p data-i18n="tools.subheading" class="mt-2 font-helvetica text-sm text-neutral-900 sm:text-lg dark:text-white">
-				Powerful features which you can leverage to build your dropshipping business faster and efficiently
-			</p>
 		</div>
 
 		<!-- Fixed-pixel hex row, sized for desktop — scaled down via CSS transform on an inner
@@ -148,45 +145,25 @@ const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 		</div>
 	</div>
 
-	<div id="tools-detail" class="mt-6 hidden max-w-6xl">
-		{tools.map((tool, i) => (
+	<!-- One centered column: the selected tool's tagline and description sit directly under
+		 the section heading, with its screenshot centered below them. (Was a two-column grid
+		 with the screenshot bleeding off the right edge at lg.) -->
+	<div id="tools-detail" class="mx-auto mt-6 hidden max-w-5xl">
+		{tools.map((tool) => (
 			<div data-tool-panel={tool.href} class="tool-panel hidden">
-				<div class="grid items-start gap-14 lg:grid-cols-2">
-					<div class="text-start">
-						<svg width={SVG_W} height={SVG_H} viewBox={`-${STROKE_PAD} -${STROKE_PAD} ${SVG_W} ${SVG_H}`} class="h-24 w-auto sm:h-28">
-							<defs>
-								<linearGradient id={`tools-detail-hex-${tool.href}`} x1="15%" y1="0%" x2="85%" y2="100%">
-									<stop offset="0%" stop-color={shade(TOOL_HEX_COLORS[i], 0.55)} />
-									<stop offset="35%" stop-color={TOOL_HEX_COLORS[i]} />
-									<stop offset="65%" stop-color={shade(TOOL_HEX_COLORS[i], -0.35)} />
-									<stop offset="100%" stop-color={shade(TOOL_HEX_COLORS[i], 0.55)} />
-								</linearGradient>
-							</defs>
-							<path d={hexPath} fill="white" class="dark:fill-neutral-900" stroke={`url(#tools-detail-hex-${tool.href})`} stroke-width="3" />
-							<g
-								transform={`translate(${ICON_X}, ${ICON_Y}) scale(${ICON_SCALE})`}
-								style={{ color: TOOL_HEX_COLORS[i] }}
-								fill="none"
-								stroke={TOOL_HEX_COLORS[i]}
-								stroke-width={1.8 / ICON_SCALE}
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								set:html={tool.icon}
-							/>
-						</svg>
-						<h3 data-i18n={`tool.${tool.slug}.tagline`} class="mt-4 font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-3xl lg:text-4xl dark:text-white">
-							{tool.tagline}
-						</h3>
-						<p data-i18n={`tool.${tool.slug}.paragraph`} class="mt-3 max-w-lg font-helvetica text-sm text-neutral-600 sm:mt-6 sm:text-lg dark:text-neutral-400">
-							{tool.description.paragraph}
-						</p>
-					</div>
+				<div class="flex flex-col items-center text-center">
+					<h3 data-i18n={`tool.${tool.slug}.tagline`} class="mt-4 font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-3xl lg:text-4xl dark:text-white">
+						{tool.tagline}
+					</h3>
+					<p data-i18n={`tool.${tool.slug}.paragraph`} class="mt-3 max-w-2xl font-helvetica text-sm font-normal text-neutral-600 sm:mt-4 sm:text-base dark:text-neutral-400">
+						{tool.description.paragraph}
+					</p>
 
-					<div class="-mr-6 w-[145%] sm:mr-0 sm:w-full lg:w-[260%]">
+					<div class="mt-10 w-full">
 						<img
 							src={tool.heroImage ?? ik("/Tools/Winning Products.png", "w-1200,q-80")}
 							alt={tool.label}
-							class="tool-image w-full object-contain shadow-[0_0_30px_8px_rgba(0,0,0,0.2)] dark:shadow-[0_0_30px_8px_rgba(0,0,0,0.3)]"
+							class="tool-image mx-auto w-full rounded-xl object-contain shadow-[0_0_30px_8px_rgba(0,0,0,0.2)] dark:shadow-[0_0_30px_8px_rgba(0,0,0,0.3)]"
 						/>
 					</div>
 				</div>
@@ -196,15 +173,17 @@ const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 </section>
 
 <style>
+	/* Rises into place instead of sliding in from off-screen right — the screenshot is
+	   centered now, so a horizontal entrance no longer matches where it sits. */
 	.tool-image {
-		transform: translateX(100%);
+		transform: translateY(28px);
 		opacity: 0;
 		transition-property: transform, opacity;
 		transition-duration: 700ms;
 		transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 	}
 	.tool-image.is-shown {
-		transform: translateX(0);
+		transform: translateY(0);
 		opacity: 1;
 	}
 
@@ -241,9 +220,9 @@ const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 			});
 		}
 
-		// Slide the newly-shown panel's screenshot in from off-screen right. Reset first
-		// (no transition) so it replays from outside every time a different tool is
-		// clicked, not just the first time this panel is ever shown.
+		// Replay the screenshot's rise-in every time a different tool is clicked, not just
+		// the first time this panel is ever shown — reset first (no transition) so it
+		// starts from below again.
 		const image = document.querySelector<HTMLElement>(`[data-tool-panel="${href}"] .tool-image`);
 		if (image) {
 			image.classList.remove("is-shown");

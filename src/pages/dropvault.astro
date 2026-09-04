@@ -1,7 +1,9 @@
 ---
+import { ik } from "../lib/imagekit";
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import DropVaultHero from "../components/sections/DropVaultHero.astro";
+import DropVaultShowcase from "../components/sections/DropVaultShowcase.astro";
 import DropVaultBonus from "../components/sections/DropVaultBonus.astro";
 import Footer from "../components/Footer.astro";
 ---
@@ -13,6 +15,28 @@ import Footer from "../components/Footer.astro";
 >
 	<Header />
 	<DropVaultHero />
+	<DropVaultShowcase
+		id="dropvault-courses"
+		image={ik("/courses.webp")}
+		imageAlt="The Dropvault course library"
+		width={1600}
+		height={648}
+		headingKey="dropvault.courses.heading"
+		subheadingKey="dropvault.courses.subheading"
+		heading="Get +20 hours of free courses and recorded tutorials!"
+		subheading="The same ones gurus used to sell you years ago"
+		revealSide="left"
+	/>
+	<DropVaultShowcase
+		id="dropvault-community"
+		image={ik("/community.webp")}
+		imageAlt="The Dropvault community feed"
+		width={1600}
+		height={729}
+		headingKey="dropvault.community.heading"
+		heading="Get support and guidance, engage with other sellers and make new friends along the way"
+		revealSide="right"
+	/>
 	<DropVaultBonus />
 	<Footer />
 </Layout>

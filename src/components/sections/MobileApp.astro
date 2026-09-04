@@ -1,0 +1,101 @@
+---
+import { ik } from "../../lib/imagekit";
+// Mobile app section. On desktop the phone starts centered across the grid, then slides to
+// the left column while the copy fades in on the right — one timeline that plays once when
+// the section scrolls into view. Below lg it's a plain stacked layout with no animation
+// (there's no left/right to slide between in a single column).
+const APP_STORE_URL = "https://apps.apple.com/us/app/droparabia/id6757470742";
+const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.codergize.droparabia";
+---
+
+<section id="mobile-app" class="relative overflow-hidden px-6 py-20 sm:py-24 lg:py-28">
+	<div id="mobile-app-inner" class="mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
+		<!-- Phone. Starts shifted right (centering it across the whole grid) and animates back
+			 to xPercent:0 — its natural column position — as the section scrolls. -->
+		<div id="mobile-app-phone" class="flex justify-center">
+			<img
+				src={ik("/phone-portrait.webp")}
+				width="711"
+				height="1400"
+				alt="The Droparabia mobile app running on a phone"
+				loading="lazy"
+				decoding="async"
+				class="h-auto w-56 max-w-full drop-shadow-[0_35px_60px_-20px_rgba(0,12,102,0.45)] sm:w-72 lg:w-80"
+			/>
+		</div>
+
+		<div id="mobile-app-copy" class="text-center lg:text-start">
+			<h2 data-i18n="mobileapp.heading" class="font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-3xl md:text-4xl dark:text-white">
+				Manage your business with Droparabia anywhere you go!
+			</h2>
+			<p data-i18n="mobileapp.subheading" class="mt-6 max-w-lg font-helvetica text-base font-normal leading-relaxed text-neutral-700 lg:mx-0 mx-auto dark:text-neutral-300">
+				Even if you're not close to your desktop, you can use the Droparabia mobile app to manage your business from any place at any time!
+			</p>
+
+			<!-- Official store badges (Apple's SVG, Google's PNG with its built-in transparent
+				 padding trimmed off) — sized by height so the two line up. -->
+			<div class="mt-8 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
+				<a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" class="transition-transform duration-200 ease-out hover:-translate-y-0.5">
+					<img src={ik("/badge-app-store.svg")} alt="Download on the App Store" width="120" height="40" class="h-12 w-auto" />
+				</a>
+				<a href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer" class="transition-transform duration-200 ease-out hover:-translate-y-0.5">
+					<img src={ik("/badge-google-play.png")} alt="Get it on Google Play" width="564" height="168" class="h-12 w-auto" />
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	import gsap from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+	gsap.registerPlugin(ScrollTrigger);
+
+	const section = document.getElementById("mobile-app");
+	const inner = document.getElementById("mobile-app-inner");
+	const phone = document.getElementById("mobile-app-phone");
+	const copy = document.getElementById("mobile-app-copy");
+
+	let tween: gsap.core.Timeline | null = null;
+
+	function build() {
+		tween?.scrollTrigger?.kill();
+		tween?.kill();
+		tween = null;
+		gsap.set([phone, copy], { clearProps: "all" });
+
+		// Desktop only: below lg the grid is a single stacked column, so there's no left/right
+		// for the phone to slide between. prefers-reduced-motion opts out entirely and just
+		// leaves the final state on screen.
+		const enabled =
+			window.innerWidth >= 1024 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (!section || !inner || !phone || !copy || !enabled) return;
+
+		// The phone sits in the left grid column, whose centre is at 25% of the grid's width.
+		// Shifting it right by half its own column width puts its centre at the grid's centre.
+		gsap.set(phone, { xPercent: 50 });
+		gsap.set(copy, { opacity: 0, x: 48 });
+
+		// Plays once on its own timing when the section comes into view — not tied to scroll
+		// position, so nothing pins and the page never takes over the wheel.
+		tween = gsap.timeline({
+			scrollTrigger: { trigger: section, start: "top 65%", once: true },
+			defaults: { ease: "power3.out" },
+		});
+		tween
+			.to(phone, { xPercent: 0, duration: 1.1 })
+			// Overlaps the tail of the slide so the copy arrives as the phone settles, rather
+			// than waiting for it to finish.
+			.to(copy, { opacity: 1, x: 0, duration: 0.8 }, "-=0.6");
+	}
+
+	build();
+
+	// Rebuild on breakpoint changes so resizing across lg doesn't leave the phone stranded
+	// mid-slide.
+	let resizeTimer: number;
+	window.addEventListener("resize", () => {
+		window.clearTimeout(resizeTimer);
+		resizeTimer = window.setTimeout(build, 200);
+	});
+</script>

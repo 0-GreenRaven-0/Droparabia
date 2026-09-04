@@ -2,13 +2,15 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/sections/Hero.astro";
-import SocialProof from "../components/sections/SocialProof.astro";
+import ProductCatalog from "../components/sections/ProductCatalog.astro";
 import WhyDroparabia from "../components/sections/WhyDroparabia.astro";
+import SocialProof from "../components/sections/SocialProof.astro";
 import Tools from "../components/sections/Tools.astro";
+import TestimonialsWall from "../components/sections/TestimonialsWall.astro";
+import MobileApp from "../components/sections/MobileApp.astro";
 import HowItWorks from "../components/sections/HowItWorks.astro";
 import MajdGBT from "../components/sections/MajdGBT.astro";
 import Blog from "../components/sections/Blog.astro";
-import Bonuses from "../components/sections/Bonuses.astro";
 import Footer from "../components/Footer.astro";
 ---
 
@@ -16,11 +18,13 @@ import Footer from "../components/Footer.astro";
 	<Header />
 	<Hero />
 	<SocialProof />
-	<WhyDroparabia />
-	<Tools />
 	<HowItWorks />
+	<ProductCatalog />
+	<Tools />
+	<MobileApp />
 	<MajdGBT />
 	<Blog />
-	<Bonuses />
-	<Footer />
+	<WhyDroparabia />
+	<TestimonialsWall />
+	<Footer showCta={false} />
 </Layout>

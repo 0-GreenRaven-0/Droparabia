@@ -1,0 +1,91 @@
+---
+// Shared layout for the two Dropvault feature sections (Courses, Community): centered
+// heading and subheading with a single wide screenshot below them. Both sections are
+// identical apart from their copy and image, so they share one component.
+import HexBackground from "../HexBackground.astro";
+
+interface Props {
+	id: string;
+	image: string;
+	imageAlt: string;
+	width: number;
+	height: number;
+	headingKey: string;
+	heading: string;
+	// Optional — a section can run with a heading alone.
+	subheadingKey?: string;
+	subheading?: string;
+	// Alternates which side the hex wash fills, so two stacked sections don't mirror
+	// each other exactly.
+	revealSide?: "left" | "right";
+}
+const { id, image, imageAlt, width, height, headingKey, subheadingKey, heading, subheading, revealSide = "left" } =
+	Astro.props;
+---
+
+<section id={id} class="relative overflow-hidden px-6 py-20 text-center sm:py-24 lg:py-28">
+	<HexBackground cutCorner={false} revealWidth={0.5} revealSide={revealSide} fadeTop={true} fadeHeight={1} />
+
+	<div class="relative z-10 mx-auto max-w-5xl">
+		<h2 data-i18n={headingKey} class="font-ibrand text-xl leading-[1.15] text-neutral-900 sm:text-3xl md:text-4xl dark:text-white">
+			{heading}
+		</h2>
+		{subheading && (
+			<p
+				data-i18n={subheadingKey}
+				class="mx-auto mt-4 max-w-2xl font-helvetica text-base font-normal leading-relaxed text-neutral-900 dark:text-white"
+			>
+				{subheading}
+			</p>
+		)}
+
+		<img
+			src={image}
+			alt={imageAlt}
+			width={width}
+			height={height}
+			loading="lazy"
+			decoding="async"
+			class="dropvault-showcase-img mx-auto mt-12 w-full rounded-2xl shadow-[0_25px_60px_-25px_rgba(0,0,0,0.35)]"
+		/>
+	</div>
+</section>
+
+<style>
+	.dropvault-showcase-img {
+		opacity: 0;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.dropvault-showcase-img {
+			opacity: 1;
+		}
+	}
+</style>
+
+<script>
+	import gsap from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+	gsap.registerPlugin(ScrollTrigger);
+
+	// Runs once per matching image on the page — the component is used twice, but a module
+	// script is only executed once, so this has to query all of them rather than just one.
+	const images = document.querySelectorAll<HTMLImageElement>(".dropvault-showcase-img");
+	if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		gsap.set(images, { opacity: 1 });
+	} else {
+		images.forEach((img) => {
+			gsap.fromTo(
+				img,
+				{ opacity: 0, y: 40, scale: 0.97 },
+				{
+					opacity: 1,
+					y: 0,
+					scale: 1,
+					duration: 0.8,
+					ease: "power3.out",
+					scrollTrigger: { trigger: img, start: "top 85%", once: true },
+				},
+			);
+		});
+	}
+</script>

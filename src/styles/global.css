@@ -212,3 +212,25 @@ html[dir="rtl"] .brand-wordmark {
 		opacity: 0;
 	}
 }
+
+/* Sliding gradient text — background-clip:text paints the gradient into the glyphs
+   themselves, then the background is panned back and forth across a wider-than-box
+   gradient to read as a shimmer instead of a static two-tone fill.
+   
+   Deliberately global rather than scoped inside Hero.astro: the headline is swapped via
+   innerHTML by Layout.astro's applyTranslations(), and the replacement spans don't carry
+   Astro's scoping attribute — so a scoped rule matched the English markup only, and the
+   Arabic/French headlines lost the gradient entirely. */
+.hero-gradient-text {
+	background: linear-gradient(90deg, #06a2d1, #2745ff, #06a2d1);
+	background-size: 200% auto;
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	animation: hero-gradient-pan 4s linear infinite;
+}
+@keyframes hero-gradient-pan {
+	to {
+		background-position: 200% center;
+	}
+}

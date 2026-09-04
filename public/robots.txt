@@ -17,10 +17,12 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
-User-agent: Claude-Web
+# Claude-SearchBot builds the index Claude actually cites from. ClaudeBot is
+# training-only — allowing it does NOT make the site citable. This is the one that does.
+User-agent: Claude-SearchBot
 Allow: /
 
-User-agent: anthropic-ai
+User-agent: Claude-User
 Allow: /
 
 User-agent: PerplexityBot
@@ -29,6 +31,11 @@ Allow: /
 User-agent: Perplexity-User
 Allow: /
 
+User-agent: Googlebot
+Allow: /
+
+# Google-Extended gates Gemini app grounding + training. It does NOT control
+# AI Overviews or AI Mode — those come from the Googlebot index above.
 User-agent: Google-Extended
 Allow: /
 
@@ -60,6 +67,9 @@ User-agent: cohere-ai
 Allow: /
 
 User-agent: Amazonbot
+Allow: /
+
+User-agent: Amzn-SearchBot
 Allow: /
 
 Sitemap: https://droparabia.com/sitemap-index.xml

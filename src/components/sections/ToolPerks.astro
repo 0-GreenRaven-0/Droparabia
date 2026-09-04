@@ -59,20 +59,11 @@ const CHECK_Y = HEX_H / 2 - (24 * CHECK_SCALE) / 2;
 
 <section class="px-6 py-16 lg:px-16">
 	<div class="mx-auto max-w-6xl">
-		<div class="max-w-2xl">
-			<h2 class="font-ibrand text-3xl leading-[1.15] text-neutral-900 sm:text-4xl dark:text-white">
-				Perks of <span class="text-primary">{tool.label}</span>
-			</h2>
-			<p data-i18n={`tool.${tool.slug}.perksIntro`} class="mt-4 font-helvetica text-sm text-neutral-600 sm:text-lg dark:text-neutral-400">
-				{tool.perksIntro}
-			</p>
-		</div>
-
-		<div class="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+		<div class="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
 			{
 				tool.perks.map((perk, i) => (
-					<div>
-						<svg width={SVG_W} height={SVG_H} viewBox={`-${HEX_PAD} -${HEX_PAD} ${SVG_W} ${SVG_H}`} class="h-11 w-auto">
+					<div class="text-center sm:text-left">
+						<svg width={SVG_W} height={SVG_H} viewBox={`-${HEX_PAD} -${HEX_PAD} ${SVG_W} ${SVG_H}`} class="mx-auto h-14 w-auto sm:mx-0 sm:h-11">
 							<path d={hexPath} fill="#2745ff" />
 							<g transform={`translate(${CHECK_X}, ${CHECK_Y}) scale(${CHECK_SCALE})`}>
 								<path d="M4.5 12.5c2 2.5 4.2 4.3 5.7 6.2 3-5.3 6.2-9.8 10-13.4" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />

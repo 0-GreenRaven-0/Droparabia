@@ -1,0 +1,168 @@
+---
+import { ik } from "../../lib/imagekit";
+
+// Testimonial wall: a full-bleed grid of seller screenshots sitting behind a centered
+// heading/paragraph. The columns drift vertically at slightly different rates as the
+// section scrolls, so the wall reads as depth rather than a flat backdrop.
+const IK = "https://ik.imagekit.io/greenraven";
+const TR = "?tr=w-500,q-60,f-webp";
+
+// Five columns, each with its own drift speed and its own vertical head start.
+//
+// The offsets are the important part: with every column starting at the same y, all five
+// top edges line up and read as one hard horizontal cut across the wall — no amount of
+// opacity fading hides that, because it's an alignment problem, not a contrast one.
+// Staggering them (and starting every column well above the section) means no column's
+// first or last edge ever lands inside the visible area.
+//
+// Drift speeds alternate sign so the wall reads as layers rather than one sliding sheet.
+// Values are small on purpose: this is texture, not a carousel.
+const T1 = `${IK}/droparabia/testimonial-1.png`;
+const T2 = `${IK}/droparabia/testimonial-2.png`;
+const T3 = `${IK}/droparabia/testimonial-3.png`;
+const T4 = `${IK}/droparabia/testimonial-4.png`;
+const C = (n: number) => `${IK}/MJ/Case%20Studies/${n}.png`;
+const TESTO = `${IK}/MJ/Testimonials/Testo.png`;
+const TESTO1 = `${IK}/MJ/Testimonials/Testo%20(1).png`;
+
+const columns = [
+	// Offsets are in rem, not %: a percentage margin-top resolves against the containing
+	// block's WIDTH, so on a full-bleed grid it would swing wildly with viewport width.
+	//
+	// Nine images each is deliberate over-supply — every column must run past the bottom of
+	// the masked box, otherwise the last image's edge lands in view as a hard cut.
+	{ speed: -6, offset: "-7rem", images: [T1, C(1), TESTO, C(5), T3, C(2), T4, TESTO1, C(6)] },
+	{ speed: 4, offset: "-2rem", images: [C(2), T2, C(3), TESTO1, T4, C(6), T1, C(4), TESTO] },
+	{ speed: -8, offset: "-11rem", images: [T3, C(4), TESTO1, T1, C(6), T2, C(3), TESTO, C(1)] },
+	{ speed: 5, offset: "-4rem", images: [C(5), T4, C(6), T2, TESTO, C(1), T3, C(3), TESTO1] },
+	{ speed: -5, offset: "-9rem", images: [TESTO, T1, C(2), T4, C(3), TESTO1, C(5), T2, C(4)] },
+];
+---
+
+<section id="testimonials-wall" class="relative isolate overflow-hidden py-24 sm:py-32 lg:py-40">
+	<!-- The wall runs well past the section on both edges (items-start + a tall box + each
+		 column pulled up by its own offset), so every image's top and bottom edge sits
+		 outside the visible area. The mask then softens whatever the section boundary
+		 crosses through. -->
+	<div class="testimonial-wall pointer-events-none absolute inset-x-0 -top-[20%] grid h-[140%] grid-cols-3 items-start gap-3 px-3 sm:gap-4 sm:px-4 lg:grid-cols-5" aria-hidden="true">
+		{columns.map((column, i) => (
+			<div
+				class:list={["testimonial-col flex flex-col gap-3 sm:gap-4", { "hidden lg:flex": i >= 3 }]}
+				data-drift={column.speed}
+				style={{ marginTop: column.offset }}
+			>
+				{column.images.map((src) => (
+					<img
+						src={`${src}${TR}`}
+						alt=""
+						loading="lazy"
+						decoding="async"
+						class="h-auto w-full rounded-xl border border-black/5 opacity-80 dark:border-white/10 dark:opacity-75"
+					/>
+				))}
+			</div>
+		))}
+	</div>
+
+	<!-- Scrim: densest at the centre so the copy always has contrast, whichever screenshot
+		 happens to drift behind it. Tracks the page background in both themes. -->
+	<div class="testimonial-scrim pointer-events-none absolute inset-0" aria-hidden="true"></div>
+
+	<div class="relative z-10 mx-auto max-w-2xl px-6 text-center">
+		<img
+			src={ik("/Droparabia.webp", "w-400,q-80")}
+			alt="Droparabia"
+			width="160"
+			height="160"
+			loading="lazy"
+			decoding="async"
+			class="mx-auto h-28 w-28 sm:h-40 sm:w-40 lg:h-48 lg:w-48"
+		/>
+		<h2 data-i18n="wall.heading" class="mt-4 font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-3xl md:text-4xl dark:text-white">
+			No more burning your budget on friction
+		</h2>
+		<p data-i18n="wall.subheading" class="mx-auto mt-6 max-w-lg font-helvetica text-base font-semibold leading-relaxed text-neutral-700 dark:text-neutral-300">
+			Get access to this powerful system to build the highest earning store alongside +700 sellers
+		</p>
+
+		<div class="mt-8 flex w-full max-w-xs mx-auto flex-col items-stretch gap-4 sm:w-auto sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
+			<a
+				href="https://calendly.com/d/cr37-8xm-k5s/drop-arabia-strategy-session"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="group inline-flex h-10 items-center justify-center gap-2 rounded-full bg-primary px-6 font-ibrand text-sm text-white shadow-[0_8px_20px_-6px_rgba(0,30,255,0.55)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-8px_rgba(0,30,255,0.7)] sm:h-12 sm:px-8 sm:text-base"
+			>
+				<span data-i18n="cta.getStarted">Get Started</span>
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-0.5"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+			</a>
+			<a
+				href="https://ig.me/m/mjbusinessofficial"
+				target="_blank"
+				rel="noopener noreferrer"
+				data-i18n="cta.talkToUs"
+				class="inline-flex h-10 items-center justify-center rounded-full bg-[#e5e4e2] px-6 text-center font-ibrand text-sm text-neutral-900 shadow-[0_8px_20px_-8px_rgba(0,0,0,0.4)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#dcdbd9] hover:shadow-[0_14px_30px_-10px_rgba(0,0,0,0.5)] sm:h-12 sm:px-8 sm:text-base"
+			>
+				Talk to Us
+			</a>
+		</div>
+	</div>
+</section>
+
+<style>
+	/* Fades the wall out at both ends of the section.
+	   The stops are in the wall's own coordinate space, not the section's: the wall spans
+	   -20% to 120% of the section, so section-top sits at 14% of the gradient and
+	   section-bottom at 86%. Both stops are placed on those exact points, so the wall is
+	   fully transparent right where the section begins and ends — no image edge can land on
+	   a boundary. Both properties are needed; Safari still wants the -webkit- form. */
+	.testimonial-wall {
+		-webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 14%, #000 34%, #000 66%, transparent 86%);
+		mask-image: linear-gradient(to bottom, transparent 0%, transparent 14%, #000 34%, #000 66%, transparent 86%);
+	}
+
+	/* #f0f0f0 / #0a0a0a are the light and dark page backgrounds — the scrim dissolves into
+	   the section rather than sitting on it as a visible tint. */
+	.testimonial-scrim {
+		background: radial-gradient(ellipse 62% 58% at 50% 50%, rgba(240, 240, 240, 0.92) 0%, rgba(240, 240, 240, 0.7) 45%, rgba(240, 240, 240, 0.15) 100%);
+	}
+	:global(.dark) .testimonial-scrim {
+		background: radial-gradient(ellipse 62% 58% at 50% 50%, rgba(10, 10, 10, 0.92) 0%, rgba(10, 10, 10, 0.7) 45%, rgba(10, 10, 10, 0.15) 100%);
+	}
+</style>
+
+<script>
+	import gsap from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+	gsap.registerPlugin(ScrollTrigger);
+
+	const section = document.getElementById("testimonials-wall");
+	const columns = document.querySelectorAll<HTMLElement>("#testimonials-wall .testimonial-col");
+
+	// Respect the OS setting — a drifting background is exactly the kind of motion this is
+	// meant to suppress.
+	const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+	if (section && columns.length > 0 && !reduced) {
+		columns.forEach((column) => {
+			const drift = Number(column.dataset.drift ?? "0");
+			gsap.fromTo(
+				column,
+				{ yPercent: -drift },
+				{
+					yPercent: drift,
+					ease: "none",
+					scrollTrigger: {
+						trigger: section,
+						// Runs across the whole time the section is in view, so the drift is spread
+						// thin rather than racing through in the first flick.
+						start: "top bottom",
+						end: "bottom top",
+						// A little scrub lag lets the columns ease rather than snapping 1:1 to the
+						// wheel, which is what makes it read as parallax instead of jitter.
+						scrub: 1,
+					},
+				},
+			);
+		});
+	}
+</script>

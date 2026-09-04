@@ -43,7 +43,7 @@ const { tool } = Astro.props;
 	<div class="mx-auto mt-10 max-w-6xl">
 		{tool.features.length > 1 ? (
 			tool.features.map((feature, i) => (
-				<div data-feature-panel={i} class="hidden">
+				<div data-feature-panel={i} class="feature-panel hidden">
 					<p data-i18n={`tool.${tool.slug}.feature${i}.description`} class="text-center font-helvetica text-xs text-neutral-700 sm:text-lg dark:text-neutral-300">
 						{feature.description}
 					</p>
@@ -88,6 +88,31 @@ const { tool } = Astro.props;
 	:global(.dark) .tab-indicator {
 		background: #262626;
 	}
+
+	/* Panels crossfade on tab switch. .hidden is display:none, which kills transitions
+	   outright — so the script removes .hidden first, forces a reflow, then adds
+	   .is-shown on the next frame to make the transition actually run. */
+	.feature-panel {
+		opacity: 0;
+		transform: translateY(16px);
+		transition:
+			opacity 280ms cubic-bezier(0.16, 1, 0.3, 1),
+			transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.feature-panel.is-shown {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.feature-panel,
+		.tab-indicator {
+			transition: none;
+		}
+		.feature-panel {
+			transform: none;
+		}
+	}
 </style>
 
 <script>
@@ -114,11 +139,35 @@ const { tool } = Astro.props;
 		indicator.style.width = `${right - left}px`;
 	}
 
+	// Long enough for the outgoing panel to finish fading before the incoming one swaps in.
+	// Kept under the CSS transition duration so the two overlap slightly rather than
+	// leaving a visible blank beat between them.
+	const FADE_MS = 180;
+
+	function showPanel(index: string) {
+		panels.forEach((panel) => panel.classList.toggle("hidden", panel.dataset.featurePanel !== index));
+		const next = Array.from(panels).find((panel) => panel.dataset.featurePanel === index);
+		if (!next) return;
+		next.classList.remove("is-shown");
+		void next.offsetWidth; // force reflow so the reset above applies before the transition
+		requestAnimationFrame(() => next.classList.add("is-shown"));
+	}
+
 	function selectFeature(index: string) {
 		tabs.forEach((tab) => tab.classList.toggle("is-active", tab.dataset.featureTab === index));
-		panels.forEach((panel) => panel.classList.toggle("hidden", panel.dataset.featurePanel !== index));
 		activeTab = Array.from(tabs).find((tab) => tab.dataset.featureTab === index) ?? null;
 		moveIndicator();
+
+		// Fade the outgoing panel first, then swap. A true crossfade would need both panels
+		// absolutely stacked, but features have different content heights, so the container
+		// would jump mid-fade.
+		const current = Array.from(panels).find((panel) => !panel.classList.contains("hidden"));
+		if (current && current.dataset.featurePanel !== index) {
+			current.classList.remove("is-shown");
+			setTimeout(() => showPanel(index), FADE_MS);
+		} else {
+			showPanel(index);
+		}
 	}
 
 	tabs.forEach((tab) => {

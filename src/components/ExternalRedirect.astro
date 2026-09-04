@@ -1,37 +1,23 @@
 ---
-// Global "you're leaving the site" confirmation for outbound links that jump to another
-// app/service — every /contact link (→ WhatsApp) and the Broadcast channel link (→
-// Instagram). Included once in Layout.astro so every page gets it automatically instead
-// of each link needing its own handler.
-const WHATSAPP_NUMBER = "96178835482";
-const WHATSAPP_DISPLAY = "+961 78 835 482";
+// Global "you're leaving the site" confirmation for the Broadcast channel link (→ Instagram).
+// Included once in Layout.astro so every page gets it automatically instead of each link
+// needing its own handler.
+//
+// Contact links used to be intercepted here too (→ WhatsApp), but they now point straight at
+// the Instagram DM (https://ig.me/m/mjbusinessofficial) and open directly, so that branch —
+// and the WhatsApp number/icon/copy that went with it — has been removed.
 const INSTAGRAM_URL = "https://www.instagram.com/channel/Aba2ifyff8O_0xvs/";
 ---
 
 <div
 	id="external-redirect-modal"
-	data-whatsapp-url={`https://wa.me/${WHATSAPP_NUMBER}`}
-	data-whatsapp-message={`You're about to be redirected to WhatsApp to chat with us at ${WHATSAPP_DISPLAY}.`}
 	data-instagram-url={INSTAGRAM_URL}
 	data-instagram-message="You're about to be redirected to Instagram to join our broadcast channel."
 	class="fixed inset-0 z-100 hidden items-center justify-center bg-black/50 px-6 backdrop-blur-sm"
 >
 	<div class="w-full max-w-sm rounded-3xl bg-white p-5 text-center shadow-[0_15px_35px_-15px_rgba(0,0,0,0.35)] sm:p-8 dark:bg-neutral-900">
-		<div id="external-redirect-icon" class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366]/10">
-			<svg
-				id="external-redirect-icon-whatsapp"
-				width="26"
-				height="26"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="#25D366"
-				stroke-width="2"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			>
-				<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
-			</svg>
-			<svg id="external-redirect-icon-instagram" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
+		<div id="external-redirect-icon" class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#e1306c]/10">
+			<svg id="external-redirect-icon-instagram" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 				<rect x="2" y="2" width="20" height="20" rx="5" />
 				<path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
 				<path d="M17.5 6.5h.01" />
@@ -61,30 +47,17 @@ const INSTAGRAM_URL = "https://www.instagram.com/channel/Aba2ifyff8O_0xvs/";
 </div>
 
 <script>
-	import { translations } from "../lib/i18n";
+	import { currentLang, translations } from "../lib/i18n";
 
 	const modal = document.getElementById("external-redirect-modal");
 	const cancelBtn = document.getElementById("external-redirect-cancel");
 	const continueBtn = document.getElementById("external-redirect-continue");
 	const messageEl = document.getElementById("external-redirect-message");
-	const whatsappIcon = document.getElementById("external-redirect-icon-whatsapp");
-	const instagramIcon = document.getElementById("external-redirect-icon-instagram");
-	const iconWrap = document.getElementById("external-redirect-icon");
 
-	const whatsappUrl = modal?.dataset.whatsappUrl ?? "";
 	const instagramUrl = modal?.dataset.instagramUrl ?? "";
 
-	let pendingUrl = "";
-
-	function openModal(kind: "whatsapp" | "instagram") {
-		pendingUrl = kind === "whatsapp" ? whatsappUrl : instagramUrl;
-		const lang = localStorage.getItem("lang") === "ar" ? "ar" : "en";
-		const key = kind === "whatsapp" ? "external.whatsappMessage" : "external.instagramMessage";
-		if (messageEl) messageEl.textContent = translations[key][lang];
-		whatsappIcon?.classList.toggle("hidden", kind !== "whatsapp");
-		instagramIcon?.classList.toggle("hidden", kind !== "instagram");
-		iconWrap?.classList.toggle("bg-[#25D366]/10", kind === "whatsapp");
-		iconWrap?.classList.toggle("bg-[#e1306c]/10", kind === "instagram");
+	function openModal() {
+		if (messageEl) messageEl.textContent = translations["external.instagramMessage"][currentLang()];
 		modal?.classList.remove("hidden");
 		modal?.classList.add("flex");
 	}
@@ -97,16 +70,10 @@ const INSTAGRAM_URL = "https://www.instagram.com/channel/Aba2ifyff8O_0xvs/";
 	// script runs (e.g. the homepage Tools detail panels swapped in via their own script).
 	document.addEventListener("click", (e) => {
 		const target = e.target as HTMLElement;
-		const contactLink = target.closest<HTMLAnchorElement>("a[href='/contact']");
-		if (contactLink) {
-			e.preventDefault();
-			openModal("whatsapp");
-			return;
-		}
 		const instagramLink = target.closest<HTMLAnchorElement>(`a[href='${instagramUrl}']`);
 		if (instagramLink) {
 			e.preventDefault();
-			openModal("instagram");
+			openModal();
 		}
 	});
 
@@ -115,7 +82,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/channel/Aba2ifyff8O_0xvs/";
 		if (e.target === modal) closeModal();
 	});
 	continueBtn?.addEventListener("click", () => {
-		if (pendingUrl) window.open(pendingUrl, "_blank", "noopener,noreferrer");
+		if (instagramUrl) window.open(instagramUrl, "_blank", "noopener,noreferrer");
 		closeModal();
 	});
 	document.addEventListener("keydown", (e) => {

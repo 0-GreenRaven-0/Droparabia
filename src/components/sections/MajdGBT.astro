@@ -21,7 +21,7 @@ const qa = [
 		a: "No, dropshipping isn't dead — bad products and bad marketing are. The model still works very well when you focus on solving a real problem, fast delivery with reliable suppliers, and strong video creatives with a clear COD offer. People don't care if it's dropshipping — they care if it arrives fast, does what it promises, and feels trustworthy.",
 	},
 	{
-		q: "What if I didn't find the product I am looking for in Droparabia?",
+		q: "What if I can't find the product I'm looking for on Droparabia?",
 		a: "If you don't find the exact product you're looking for on Droparabia, you can either message the Droparabia team to request it and check if they can source it for you, or use a similar alternative product that solves the same problem and is already available with good stock and shipping times. The goal is speed: sell what's available and proven, instead of waiting weeks for one specific item.",
 	},
 	{
@@ -93,13 +93,17 @@ const qa = [
 					</div>
 
 					<div class="flex items-center gap-2">
+						<!-- readonly, not disabled: a disabled input can't receive focus, and focus is
+							 what opens the suggestion list. This way the bar still acts as the trigger
+							 for the canned questions, it just can't be typed into. -->
 						<input
 							id="majd-input"
 							type="text"
+							readonly
 							placeholder="Ask MajdGBT anything..."
 							autocomplete="off"
 							data-i18n-placeholder="majdgbt.inputPlaceholder"
-							class="flex-1 rounded-full bg-neutral-900/5 px-4 py-2.5 font-helvetica text-sm text-neutral-900 outline-none placeholder:text-neutral-400 dark:bg-white/10 dark:text-white"
+							class="flex-1 cursor-pointer rounded-full bg-neutral-900/5 px-4 py-2.5 font-helvetica text-sm text-neutral-900 caret-transparent outline-none placeholder:text-neutral-400 dark:bg-white/10 dark:text-white"
 						/>
 						<button
 							id="majd-send"
@@ -120,13 +124,9 @@ const qa = [
 </section>
 
 <script>
-	import { translations } from "../../lib/i18n";
+	import { currentLang, translations } from "../../lib/i18n";
 
 	const QA_COUNT = document.querySelectorAll("#majd-suggestions button").length;
-
-	function currentLang(): "en" | "ar" {
-		return localStorage.getItem("lang") === "ar" ? "ar" : "en";
-	}
 
 	const section = document.getElementById("majdgbt");
 	const heading = document.getElementById("majd-heading");
@@ -284,24 +284,17 @@ const qa = [
 		});
 	});
 
-	function submitInput() {
-		if (!input) return;
-		respond(input.value);
-		input.value = "";
-	}
-
 	input?.addEventListener("focus", openSuggestions);
 	input?.addEventListener("blur", () => {
 		// Delay so a click on a suggestion registers before the list disappears.
 		setTimeout(closeSuggestions, 150);
 	});
 
-	sendBtn?.addEventListener("click", submitInput);
-	input?.addEventListener("keydown", (e) => {
-		if (e.key === "Enter") {
-			e.preventDefault();
-			submitInput();
-		}
+	// The input is readonly, so there's never anything to submit — send just surfaces the
+	// canned questions, which are the only way to ask anything now.
+	sendBtn?.addEventListener("click", () => {
+		openSuggestions();
+		input?.focus();
 	});
 </script>
 

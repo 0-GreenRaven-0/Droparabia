@@ -3,12 +3,28 @@ import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import FAQList from "../components/sections/FAQList.astro";
 import Footer from "../components/Footer.astro";
+import { faqs } from "../data/faqs";
+
+// FAQPage structured data, built from the same array the accordion below renders. This is
+// the format answer engines quote most directly — a question paired with a self-contained
+// answer — so it is worth emitting even though schema alone ranks nothing.
+const faqSchema = [
+	{
+		"@type": "FAQPage",
+		mainEntity: faqs.map((faq) => ({
+			"@type": "Question",
+			name: faq.question,
+			acceptedAnswer: { "@type": "Answer", text: faq.answer },
+		})),
+	},
+];
 ---
 
 <Layout
 	title="FAQ"
 	titleKey="page.faq"
 	description="Answers to the most common questions about Droparabia — how it works, who it's for, pricing, and our refund policy."
+	schema={faqSchema}
 >
 	<Header />
 

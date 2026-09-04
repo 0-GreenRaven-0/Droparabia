@@ -5,7 +5,7 @@ const navLinks = [
 	{ label: "Tools", href: "/tools" },
 	{ label: "Resources", href: "/resources" },
 	{ label: "Reviews", href: "/reviews" },
-	{ label: "Contact", href: "/contact" },
+	{ label: "Contact", href: "https://ig.me/m/mjbusinessofficial" },
 ];
 
 // Resources dropdown — rendered with the exact same hexagon-outline style as the Tools menu.
@@ -47,7 +47,7 @@ const resources = [
 	{
 		label: "Contact",
 		description: "Reach the Droparabia support team",
-		href: "/contact",
+		href: "https://ig.me/m/mjbusinessofficial",
 		key: "contact",
 		// Mail
 		icon: '<path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/>',
@@ -218,6 +218,8 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 					<li class="relative">
 						<a
 							href={link.href}
+							target={link.href.startsWith("http") ? "_blank" : undefined}
+							rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
 							data-i18n={`nav.${link.label.toLowerCase()}`}
 							class="inline-block cursor-pointer rounded-full px-4 py-2.5 transition-all duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]"
 						>
@@ -453,6 +455,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 				>
 					<button data-lang="en" class="lang-option group relative block w-full cursor-pointer rounded-xl px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">English</button>
 					<button data-lang="ar" class="lang-option group relative block w-full cursor-pointer rounded-xl px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">العربية</button>
+					<button data-lang="fr" class="lang-option group relative block w-full cursor-pointer rounded-xl px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">Français</button>
 				</div>
 			</div>
 
@@ -513,6 +516,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 			>
 				<button data-lang="en" class="lang-toggle-mobile-option lang-option group relative block w-full cursor-pointer rounded-xl px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">English</button>
 				<button data-lang="ar" class="lang-toggle-mobile-option lang-option group relative block w-full cursor-pointer rounded-xl px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">العربية</button>
+				<button data-lang="fr" class="lang-toggle-mobile-option lang-option group relative block w-full cursor-pointer rounded-xl px-4 py-2 text-left text-neutral-900 transition-all duration-150 ease-out hover:translate-x-1 hover:bg-primary/10 hover:text-primary dark:text-white dark:hover:bg-primary/20 dark:hover:text-primary">Français</button>
 			</div>
 		</div>
 
@@ -656,7 +660,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 
 		<div class="flex flex-col gap-1 py-2">
 			<a href="/reviews" data-i18n="nav.reviews" class="rounded-2xl py-3 font-ibrand text-neutral-900 transition-colors hover:bg-black/[0.07] dark:text-white dark:hover:bg-white/10">Reviews</a>
-		<a href="/contact" data-i18n="nav.contact" class="rounded-2xl py-3 font-ibrand text-neutral-900 transition-colors hover:bg-black/[0.07] dark:text-white dark:hover:bg-white/10">Contact</a>
+		<a href="https://ig.me/m/mjbusinessofficial" target="_blank" rel="noopener noreferrer" data-i18n="nav.contact" class="rounded-2xl py-3 font-ibrand text-neutral-900 transition-colors hover:bg-black/[0.07] dark:text-white dark:hover:bg-white/10">Contact</a>
 		</div>
 
 		<a
@@ -825,6 +829,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 	function setLang(lang: string) {
 		localStorage.setItem("lang", lang);
 		document.documentElement.lang = lang;
+		// Arabic is the only RTL language offered — English and French both stay LTR.
 		document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
 		// Layout.astro's applyTranslations() listens for this to re-run on every [data-i18n]
 		// element on the page, whichever page that happens to be.

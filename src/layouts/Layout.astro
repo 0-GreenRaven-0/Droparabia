@@ -7,13 +7,63 @@ interface Props {
 	title?: string;
 	titleKey?: string;
 	description?: string;
+	/** Extra JSON-LD for this page (Article, FAQPage, …). Merged into the @graph below. */
+	schema?: Record<string, unknown>[];
 }
 const {
 	title = "Build your successful & high-earning dropshipping business in Lebanon!",
 	titleKey,
 	description = "Let Droparabia find you the winning product and deliver it to your customer's doorstep with ease.",
+	schema = [],
 } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// Entity definition for answer engines. This does not "rank" anything — Google states
+// plainly that schema is not required for its AI features. What it does is pin down who
+// Droparabia is, where it operates and who runs it, so a model resolving the name has an
+// unambiguous machine-readable answer instead of inferring one.
+// Keep every fact here true and in sync with the site copy.
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@graph": [
+		{
+			"@type": "Organization",
+			"@id": "https://droparabia.com/#organization",
+			name: "Droparabia",
+			url: "https://droparabia.com",
+			logo: ik("/Droparabia.webp", "w-512,q-90"),
+			description:
+				"Dropshipping platform built for Lebanon and the MENA market: a catalog of vetted products, an owned delivery fleet, and payouts to the seller's wallet within 24 hours of delivery.",
+			founder: {
+				"@type": "Person",
+				name: "Majd Abdulsalam",
+				jobTitle: "Founder",
+			},
+			areaServed: {
+				"@type": "Country",
+				name: "Lebanon",
+			},
+			// sameAs is how an engine confirms these profiles and this domain are one entity.
+			// Canonical URLs only — tracking params would make them look like different pages.
+			sameAs: [
+				"https://www.instagram.com/mjbusinessofficial",
+				"https://www.youtube.com/@mj.biznes",
+				"https://www.trustpilot.com/review/droparabia.com",
+				"https://apps.apple.com/us/app/droparabia/id6757470742",
+				"https://play.google.com/store/apps/details?id=com.codergize.droparabia",
+			],
+		},
+		{
+			"@type": "WebSite",
+			"@id": "https://droparabia.com/#website",
+			url: "https://droparabia.com",
+			name: "Droparabia",
+			publisher: { "@id": "https://droparabia.com/#organization" },
+			inLanguage: "en",
+		},
+		...schema,
+	],
+};
 ---
 
 <html lang="en">
@@ -41,15 +91,19 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
+		<!-- is:inline keeps Astro from treating this as a module to process/bundle — it is data,
+			 not code. -->
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
 		<script is:inline>
 			const theme = localStorage.getItem("theme");
 			if (theme === "dark") {
 				document.documentElement.classList.add("dark");
 			}
 			const lang = localStorage.getItem("lang");
-			if (lang === "ar") {
-				document.documentElement.lang = "ar";
-				document.documentElement.dir = "rtl";
+			if (lang === "ar" || lang === "fr") {
+				document.documentElement.lang = lang;
+				// Arabic is the only RTL language on offer — French stays LTR like English.
+				document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
 			}
 		</script>
 	</head>
@@ -64,11 +118,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 	// by giving it a data-i18n="key" attribute matching an entry in src/lib/i18n.ts) — runs
 	// once on load, and again whenever Header.astro's language toggle fires the
 	// "droparabia:lang-changed" event, so it stays in sync no matter which page it's on.
-	import { translations } from "../lib/i18n";
-
-	function currentLang(): "en" | "ar" {
-		return localStorage.getItem("lang") === "ar" ? "ar" : "en";
-	}
+	import { currentLang, translations } from "../lib/i18n";
 
 	function applyTranslations() {
 		const lang = currentLang();
@@ -80,7 +130,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 			// back to "en" restores it exactly instead of flattening it to plain text forever
 			// the first time this element gets translated.
 			if (el.dataset.i18nOriginal === undefined) el.dataset.i18nOriginal = el.innerHTML;
-			el.innerHTML = lang === "en" ? el.dataset.i18nOriginal : entry.ar;
+			el.innerHTML = lang === "en" ? el.dataset.i18nOriginal : entry[lang];
 		});
 
 		// Same idea for form placeholder text, which isn't part of the DOM tree the innerHTML

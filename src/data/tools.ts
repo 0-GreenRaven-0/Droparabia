@@ -26,11 +26,6 @@ export interface Tool {
 	perks: { title: string; description: string }[];
 }
 
-// Placeholder perk descriptions — real copy to be written in later, this is just to fill
-// the new description slot under each perk title.
-const PERK_PLACEHOLDER =
-	"Placeholder description for this perk — real copy coming soon.";
-
 export const tools: Tool[] = [
 	{
 		slug: "find-products",
@@ -43,7 +38,7 @@ export const tools: Tool[] = [
 		description: {
 			heading: "Discover products that actually sell",
 			paragraph:
-				"Instead of searching for hours on Ali-baba or Ali-express to find a product to sell, Droparabia sources you a huge variety of products that has great demand that actually sells!",
+				"Instead of searching for hours on Ali-baba or Ali-express to find a product to sell, Droparabia sources a huge variety of products for you that are in great demand and actually sell!",
 		},
 		features: [
 			{
@@ -64,9 +59,9 @@ export const tools: Tool[] = [
 		],
 		perksIntro: "Find Products is built to get you to a sellable product fast, without the guesswork.",
 		perks: [
-			{ title: "No searching for hours for a product to sell" , description: PERK_PLACEHOLDER },
-			{ title: "No inventory owning and management" , description: PERK_PLACEHOLDER },
-			{ title: "Variety of most profitable niches covered" , description: PERK_PLACEHOLDER },
+			{ title: "No searching for hours for a product to sell", description: "Droparabia already sources the highest selling catalog so you don't have to spend hours finding and qualifying a product" },
+			{ title: "No inventory owning and management", description: "You choose your product and sell it directly on your own website without owning a single product using our Shopify integration system" },
+			{ title: "Variety of most profitable niches covered", description: "Droparabia has a catalog of winning products across all niches" },
 		],
 	},
 	{
@@ -80,7 +75,7 @@ export const tools: Tool[] = [
 		description: {
 			heading: "Your AI-powered product scout",
 			paragraph:
-				"Explore a library of best selling and handpicked products by AI backed by real data and analysis.",
+				"Explore a library of best-selling products, handpicked by AI and backed by real data and analysis.",
 		},
 		features: [
 			{
@@ -98,9 +93,9 @@ export const tools: Tool[] = [
 		],
 		perksIntro: "AI Winning Products does the market research so you don't have to.",
 		perks: [
-			{ title: "Recommendation backed by real data" , description: PERK_PLACEHOLDER },
-			{ title: "Target avatar based analysis" , description: PERK_PLACEHOLDER },
-			{ title: "Time saving decision making" , description: PERK_PLACEHOLDER },
+			{ title: "Recommendation backed by real data", description: "Our AI gives you data backed recommendations of what to sell, with full analysis behind its recommendation" },
+			{ title: "Target avatar based analysis", description: "It gives you full analysis on each product's ideal target audience so you have a clear idea how to market this product to that person" },
+			{ title: "Time saving decision making", description: "You don't have to scratch your head for hours to decide, or hop on ChatGPT or Claude to get their recommendation!" },
 		],
 	},
 	{
@@ -115,7 +110,7 @@ export const tools: Tool[] = [
 		description: {
 			heading: "Studio-quality creatives, without the studio",
 			paragraph:
-				"Leverage our AI studio to create your own powerful advertising videos for your products rather than re-using other creators' content and risking yourself with a ban.",
+				"Leverage our AI studio to create your own powerful advertising videos for your products rather than re-using other creators' content and risking a ban.",
 		},
 		features: [
 			{ title: "Instant ad creatives", description: "Generate ready-to-post ad images and videos in a few clicks." },
@@ -124,9 +119,9 @@ export const tools: Tool[] = [
 		],
 		perksIntro: "AI Studio replaces the design and copywriting work most sellers skip entirely.",
 		perks: [
-			{ title: "No more reusing & or stealing content" , description: PERK_PLACEHOLDER },
-			{ title: "Your own generated video advertisements" , description: PERK_PLACEHOLDER },
-			{ title: "Adaptability for each product and use case" , description: PERK_PLACEHOLDER },
+			{ title: "No more reusing or stealing content", description: "You no longer have to steal content from other platforms and risk getting banned for running ads on them!" },
+			{ title: "Your own generated video advertisements", description: "Get your very own video advertisements generated through your own prompts and instructions" },
+			{ title: "Adaptability for each product and use case", description: "This AI already has a clear understanding of each product and how it is used — just explain how you want to market it and you're good to go!" },
 		],
 	},
 	{
@@ -145,9 +140,9 @@ export const tools: Tool[] = [
 		features: [],
 		perksIntro: "Branding handles the identity work that makes buyers trust a store enough to check out.",
 		perks: [
-			{ title: "Create your own unique brand" , description: PERK_PLACEHOLDER },
-			{ title: "Get distinguished from your competitors" , description: PERK_PLACEHOLDER },
-			{ title: "Print on-demand only per sold product" , description: PERK_PLACEHOLDER },
+			{ title: "Create your own unique brand", description: "Create your own brand identity instead of looking like a cheap dropshipping store" },
+			{ title: "Get distinguished from your competitors", description: "Stand out from the competition and become a recognizable brand right on the spot" },
+			{ title: "Print on-demand only per sold product", description: "No more burning hundreds on private labeling lots of products at once — only print on each product before you send it to your customers" },
 		],
 	},
 	{
@@ -167,9 +162,9 @@ export const tools: Tool[] = [
 		features: [],
 		perksIntro: "Product Request is there for the moment the catalog doesn't have what you need yet.",
 		perks: [
-			{ title: "No dealing with suppliers yourself" , description: PERK_PLACEHOLDER },
-			{ title: "No huge shipment fees or risk of scam" , description: PERK_PLACEHOLDER },
-			{ title: "Research and supplying done without extra fees" , description: PERK_PLACEHOLDER },
+			{ title: "No dealing with suppliers yourself", description: "Just give us a screenshot of the product you want to ship and let Droparabia handle the rest" },
+			{ title: "No huge shipment fees or risk of scam", description: "Free yourself from shipping fees and the risk of getting scammed" },
+			{ title: "Research and supplying done without extra fees", description: "Droparabia will source these products for you without any additional fees" },
 		],
 	},
 	{
@@ -188,9 +183,9 @@ export const tools: Tool[] = [
 		features: [],
 		perksIntro: "The Leader Board turns your store's performance into something visible and worth chasing.",
 		perks: [
-			{ title: "Grow your business alongside other sellers in the community" , description: PERK_PLACEHOLDER },
-			{ title: "Participate in events and giveaways" , description: PERK_PLACEHOLDER },
-			{ title: "Affiliate program for top best performing users" , description: PERK_PLACEHOLDER },
+			{ title: "Grow your business alongside other sellers in the community", description: "The best way to grow your business is to do it alongside ambitious people who want the same thing as you" },
+			{ title: "Participate in events and giveaways", description: "Which will allow you to gain more knowledge and earn interesting rewards" },
+			{ title: "Affiliate program for top performing users", description: "The top 5% highest sellers will have a chance of joining the affiliate program to assist in growing the community" },
 		],
 	},
 ];

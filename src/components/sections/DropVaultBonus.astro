@@ -2,10 +2,10 @@
 // Same staircase-list treatment as the homepage's Bonuses.astro, restyled with Dropvault's
 // own perks instead of the platform-wide bonuses.
 const bonuses = [
-	{ title: "Join a community of passionate sellers and brand builders" },
-	{ title: "Get access to +20 hours of FREE courses and recorded tutorials" },
-	{ title: "A place to get support and guidance whenever you need it" },
-	{ title: "Occasional & high‑rewarding events inside the community" },
+	{ title: "Participate in occasional giveaways to gain more experience and earn some rewards" },
+	{ title: "Weekly coaching calls with advisors to keep track of your progress" },
+	{ title: "Stay updated on exciting events and upcoming features" },
+	{ title: "Dedicated WhatsApp group for each member to get support whenever you need it" },
 ];
 const STAIR_STEP = 3.5; // rem indent added per row, going up the list
 ---
@@ -13,14 +13,14 @@ const STAIR_STEP = 3.5; // rem indent added per row, going up the list
 <section id="dropvault-bonuses" class="px-4 py-20 sm:px-6 lg:px-16">
 	<div class="mx-auto max-w-6xl">
 		<h2 data-i18n="dropvault.bonuses.heading" class="text-center font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-5xl dark:text-white">
-			Dropvault <span class="text-primary">member benefits</span>
+			And that's not all!
 		</h2>
 
 		<div class="mx-auto mt-12 flex max-w-4xl flex-col items-start gap-10 sm:mt-16 sm:gap-16 lg:items-end">
 			{
 				bonuses.map((bonus, i) => (
 					<div
-						class="flex flex-row-reverse items-center gap-2 rtl:flex-row sm:gap-5 lg:mr-(--stair-margin) lg:flex-row rtl:lg:flex-row-reverse"
+						class="flex flex-row items-center gap-2 rtl:flex-row-reverse sm:gap-5 lg:mr-(--stair-margin)"
 						style={{ "--stair-margin": `${i * STAIR_STEP}rem` }}
 						data-index={i}
 					>
@@ -45,10 +45,6 @@ const STAIR_STEP = 3.5; // rem indent added per row, going up the list
 			}
 		</div>
 
-		<p data-i18n="dropvault.bonuses.closing" class="mx-auto mt-16 max-w-xl text-center font-helvetica text-base text-neutral-600 sm:text-lg dark:text-neutral-400">
-			You become a <span class="font-semibold text-primary">Dropvault</span> member the moment you become a Droparabia
-			user!
-		</p>
 	</div>
 </section>
 
