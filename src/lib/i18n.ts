@@ -87,7 +87,7 @@ export const translations: Record<string, Record<Lang, string>> = {
 		fr: `Comment fonctionne <span class="text-primary">Droparabia</span>`,
 	},
 	"howitworks.step0": {
-		en: "Integrate your Shopify into Droparabia, which allows you to add & sell any product directly on your website",
+		en: "Integrate your Shopify store into Droparabia, which allows you to add & sell any product directly on your website",
 		ar: "اربط متجر Shopify الخاص بك بدروب أرابيا، ليتيح لك إضافة وبيع أي منتج مباشرة على موقعك",
 		fr: "Connectez votre boutique Shopify à Droparabia pour ajouter et vendre n'importe quel produit directement sur votre site",
 	},
