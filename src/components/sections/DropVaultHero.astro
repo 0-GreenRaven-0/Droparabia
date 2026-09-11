@@ -5,17 +5,25 @@ import { ik } from "../../lib/imagekit";
 // Real community post screenshots. `?tr=w-1400,q-85` asks ImageKit for an already-sized,
 // already-compressed version rather than the full original — these render at ~400px wide
 // in the grid below, so the originals were many times larger than needed.
+// The width/height are each image's real intrinsic size (read from the encoded file, not
+// guessed). They matter more than usual here: these are remote images at w-full with no CSS
+// height, so without them the browser reserves NO space until each one decodes. The section
+// then renders collapsed, and two things measure it in that wrong state — HexBackground sizes
+// its grid and camera from the section's bounding box, and ScrollTrigger caches the card
+// positions. The images then land, the section grows, and the hex canvas is left stretched
+// while the card reveals fire at the wrong scroll offsets. With the dimensions present the
+// layout is correct on the first frame, so both measurements are taken against the real box.
 const posts = [
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d1.png?tr=w-1400,q-85",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d2.png?tr=w-1400,q-85",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d3.png?tr=w-1400,q-85",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d4.png?tr=w-1400,q-85",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d5.png?tr=w-1400,q-85",
-	"https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d6.png?tr=w-1400,q-85",
+	{ src: "https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d1.png?tr=w-1400,q-85", width: 1400, height: 375 },
+	{ src: "https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d2.png?tr=w-1400,q-85", width: 1400, height: 377 },
+	{ src: "https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d3.png?tr=w-1400,q-85", width: 1400, height: 374 },
+	{ src: "https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d4.png?tr=w-1400,q-85", width: 1400, height: 334 },
+	{ src: "https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d5.png?tr=w-1400,q-85", width: 1400, height: 376 },
+	{ src: "https://ik.imagekit.io/greenraven/Droparabia%20Official%20Website/d6.png?tr=w-1400,q-85", width: 1400, height: 366 },
 ];
 ---
 
-<section id="dropvault-hero" class="relative overflow-hidden px-6 pt-16 pb-24 text-center sm:pt-20 lg:px-16 lg:pt-24">
+<section id="dropvault-hero" class="relative overflow-hidden px-6 pt-12 pb-16 text-center sm:pt-20 sm:pb-24 lg:px-16 lg:pt-24">
 	<HexBackground cutCorner={true} cutSide="right" />
 
 	<!-- Logo + wordmark + subtext, pinned to the top of the section. -->
@@ -38,7 +46,7 @@ const posts = [
 		<p
 			id="dropvault-subtext"
 			data-i18n="dropvault.subtext"
-			class="mt-2 font-helvetica text-base font-normal text-neutral-900 sm:text-lg dark:text-white"
+			class="mt-2 font-helvetica text-sm font-normal text-neutral-900 sm:text-lg dark:text-white"
 		>
 			When you get access to Droparabia, you become a member of the Dropvault community, a place where you get to grow alongside ambitious sellers and get support whenever you need it!
 		</p>
@@ -47,15 +55,21 @@ const posts = [
 	<!-- The message field. A responsive grid handles layout and keeps cards from colliding;
 		 the "random positions" come from a per-card offset applied by the script at runtime,
 		 so the arrangement differs on every load instead of being baked in. -->
-	<div id="dropvault-field" class="relative z-10 mx-auto mt-14 grid max-w-7xl grid-cols-1 gap-x-10 gap-y-14 sm:mt-16 sm:grid-cols-2 lg:gap-x-16 lg:gap-y-20">
+	<!-- On mobile the cards bleed into the section's px-6 (-mx-4) so they render wider, and the
+		 vertical gap drops from 3.5rem to 1.5rem — at one column that much space just pushed the
+		 next card off-screen. Both reset at sm, where the two-column layout and the scatter
+		 offsets (which are derived from these gaps) take over unchanged. -->
+	<div id="dropvault-field" class="relative z-10 -mx-4 mt-10 grid max-w-7xl grid-cols-1 gap-x-10 gap-y-6 sm:mx-auto sm:mt-16 sm:grid-cols-2 sm:gap-y-14 lg:gap-x-16 lg:gap-y-20">
 		{
-			posts.map((src) => (
+			posts.map((post) => (
 				<img
-					src={src}
+					src={post.src}
 					alt=""
+					width={post.width}
+					height={post.height}
 					loading="eager"
 					decoding="async"
-					class="community-card w-full rounded-2xl shadow-[0_18px_40px_-20px_rgba(0,0,0,0.3)]"
+					class="community-card h-auto w-full rounded-2xl shadow-[0_18px_40px_-20px_rgba(0,0,0,0.3)]"
 				/>
 			))
 		}
@@ -117,11 +131,11 @@ const posts = [
 	const cards = Array.from(document.querySelectorAll<HTMLImageElement>(".community-card"));
 	const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-	// The cards are remote CDN images with no intrinsic size in the markup, so until they
-	// decode they occupy no space — ScrollTrigger then measures every one of them as already
-	// on-screen and fires the whole set at once. So wait for them to settle, re-measure, and
-	// only then play. The race() is a guard: one slow or dead image can never hold the pop-in
-	// hostage for more than 2.5s.
+	// The cards carry their real width/height in the markup, so they reserve the right space
+	// before they decode and the layout is correct on the first frame. This is only a safety
+	// net for anything that still settles late (a slow decode, a font swap) — once it resolves
+	// ScrollTrigger re-measures. The race() guard means one slow or dead image can never hold
+	// that re-measure up for more than 2.5s.
 	function imagesSettled(imgs: HTMLImageElement[], timeoutMs = 2500): Promise<unknown> {
 		const waits = imgs.map((img) =>
 			img.complete && img.naturalWidth > 0
@@ -183,9 +197,13 @@ const posts = [
 			);
 		});
 
-		imagesSettled(cards).then(() => {
-			ScrollTrigger.refresh();
-			playCards();
-		});
+		// Create the triggers immediately rather than waiting on the network. Previously this
+		// ran only after every image had loaded, which meant the start positions were cached
+		// against a layout that was still shifting as each one landed — so the reveals fired at
+		// the wrong scroll offsets and cards sat invisible until you scrolled past them. With
+		// the sizes reserved up front the first-frame layout is already right, and cards in view
+		// pop in at once instead of after a blank pause.
+		playCards();
+		imagesSettled(cards).then(() => ScrollTrigger.refresh());
 	}
 </script>

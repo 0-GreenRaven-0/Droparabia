@@ -702,9 +702,9 @@ export const translations: Record<string, Record<Lang, string>> = {
 		fr: "Ne brûlez plus votre budget en frictions",
 	},
 	"wall.subheading": {
-		en: "Get access to this powerful system to build the highest earning store alongside +700 sellers",
-		ar: "احصل على هذا النظام القوي لبناء أعلى متجر ربحًا إلى جانب أكثر من 700 بائع",
-		fr: "Accédez à ce système puissant pour bâtir la boutique la plus rentable aux côtés de plus de 700 vendeurs",
+		en: "Get access to this powerful system to build the highest earning store alongside +800 sellers",
+		ar: "احصل على هذا النظام القوي لبناء أعلى متجر ربحًا إلى جانب أكثر من 800 بائع",
+		fr: "Accédez à ce système puissant pour bâtir la boutique la plus rentable aux côtés de plus de 800 vendeurs",
 	},
 
 	"casestudy.heading": { en: "Latest case studies", ar: "أحدث دراسات الحالة", fr: "Dernières études de cas" },

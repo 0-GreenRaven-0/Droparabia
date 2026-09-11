@@ -6,7 +6,7 @@
 // /tools/[slug] hero (ToolHero.astro) — same real copy and screenshot, sourced from the
 // single tools.ts data file instead of a separate placeholder list.
 import { tools as toolsData } from "../../data/tools";
-import { ik } from "../../lib/imagekit";
+import { ik, ikSrcSetFromUrl } from "../../lib/imagekit";
 // Branding's own hero (BrandingHero.astro) shows the finished-product "branding example"
 // composite, but that image doesn't read well as a quick preview here — this panel uses
 // the catalog "Brandable" screenshot instead.
@@ -160,8 +160,12 @@ const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 					</p>
 
 					<div class="mt-10 w-full">
+						{/* The source screenshots are ~1900px wide but render at ~364px on a phone, which
+							was the single largest image over-download on the page. */}
 						<img
-							src={tool.heroImage ?? ik("/Tools/Winning Products.png", "w-1200,q-80")}
+							src={`${tool.heroImage ?? ik("/Tools/Winning Products.png")}?tr=w-1024,q-80`}
+							srcset={ikSrcSetFromUrl(tool.heroImage ?? ik("/Tools/Winning Products.png"), [400, 640, 828, 1024, 1280])}
+							sizes="(min-width: 1024px) 60rem, 100vw"
 							alt={tool.label}
 							class="tool-image mx-auto w-full rounded-xl object-contain shadow-[0_0_30px_8px_rgba(0,0,0,0.2)] dark:shadow-[0_0_30px_8px_rgba(0,0,0,0.3)]"
 						/>

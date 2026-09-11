@@ -35,7 +35,7 @@ const { tool } = Astro.props;
 			</p>
 			<div class="mt-8 flex w-full max-w-xs flex-col items-stretch gap-4 sm:w-auto sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center lg:justify-start">
 				<a
-					href="https://calendly.com/d/cr37-8xm-k5s/drop-arabia-strategy-session"
+					href="https://join.droparabia.com/"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="group inline-flex h-10 items-center justify-center gap-2 rounded-full bg-primary px-6 font-ibrand text-sm text-white shadow-[0_8px_20px_-6px_rgba(0,30,255,0.55)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-8px_rgba(0,30,255,0.7)] sm:h-12 sm:px-8 sm:text-base"
@@ -61,7 +61,9 @@ const { tool } = Astro.props;
 			 -me- (margin-inline-end), not -mr-: in RTL the grid mirrors, so the screenshot moves
 			 to the left column and has to bleed off the LEFT edge. A physical -mr- kept pulling it
 			 rightwards there, straight over the Arabic copy. -->
-		<div class="relative lg:-mr-[40vw] lg:w-[64rem] lg:max-w-none">
+		<!-- Same mobile bleed as the main Hero: -mx-4 reclaims part of the section's px-6 so the
+			 screenshot is wider on a phone, reset from sm up. -->
+		<div class="relative -mx-4 sm:mx-0 lg:-mr-[40vw] lg:w-[64rem] lg:max-w-none">
 			<img
 				src={tool.heroImage ?? ik("/Tools/Winning Products.png", "w-1200,q-80")}
 				alt={tool.label}

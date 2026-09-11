@@ -141,8 +141,12 @@ const points: { text: string; side: "left" | "right" | "center"; offset: number;
 				scrollTrigger: {
 					trigger: container,
 					start: isMobile ? "top 90%" : "top 80%",
-					end: isMobile ? "bottom 40%" : desktopEnd,
-					scrub: isMobile ? 0.5 : 2,
+					// Mobile finishes at "bottom 65%" rather than 40%: the fill is driven by the
+					// distance between start and end, so pulling the end point a quarter of a viewport
+					// higher completes the line over that much less scrolling. Paired with a shorter
+					// scrub so the stroke tracks the flick more tightly instead of coasting behind it.
+					end: isMobile ? "bottom 65%" : desktopEnd,
+					scrub: isMobile ? 0.4 : 2,
 				},
 				onUpdate() {
 					const dashoffset = Number(gsap.getProperty(fillPath, "strokeDashoffset"));

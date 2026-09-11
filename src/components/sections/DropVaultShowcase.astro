@@ -23,7 +23,7 @@ const { id, image, imageAlt, width, height, headingKey, subheadingKey, heading, 
 	Astro.props;
 ---
 
-<section id={id} class="relative overflow-hidden px-6 py-20 text-center sm:py-24 lg:py-28">
+<section id={id} class="relative overflow-hidden px-6 py-14 text-center sm:py-24 lg:py-28">
 	<HexBackground cutCorner={false} revealWidth={0.5} revealSide={revealSide} fadeTop={true} fadeHeight={1} />
 
 	<div class="relative z-10 mx-auto max-w-5xl">
@@ -33,7 +33,7 @@ const { id, image, imageAlt, width, height, headingKey, subheadingKey, heading, 
 		{subheading && (
 			<p
 				data-i18n={subheadingKey}
-				class="mx-auto mt-4 max-w-2xl font-helvetica text-base font-normal leading-relaxed text-neutral-900 dark:text-white"
+				class="mx-auto mt-3 max-w-2xl font-helvetica text-sm font-normal leading-relaxed text-neutral-900 sm:mt-4 sm:text-base dark:text-white"
 			>
 				{subheading}
 			</p>
@@ -46,7 +46,7 @@ const { id, image, imageAlt, width, height, headingKey, subheadingKey, heading, 
 			height={height}
 			loading="lazy"
 			decoding="async"
-			class="dropvault-showcase-img mx-auto mt-12 w-full rounded-2xl shadow-[0_25px_60px_-25px_rgba(0,0,0,0.35)]"
+			class="dropvault-showcase-img -mx-4 mt-8 w-[calc(100%+2rem)] max-w-none rounded-2xl shadow-[0_25px_60px_-25px_rgba(0,0,0,0.35)] sm:mx-auto sm:mt-12 sm:w-full"
 		/>
 	</div>
 </section>

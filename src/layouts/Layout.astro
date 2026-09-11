@@ -76,12 +76,15 @@ const jsonLd = {
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalURL} />
 		<link rel="preconnect" href="https://ik.imagekit.io" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" />
-		<!-- Arabic body/heading font — swapped in for the whole page whenever the language
-			 toggle sets dir="rtl" (see global.css's [dir="rtl"] font-family override). -->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" />
+
+		<!-- Every webfont is self-hosted now (see the @font-face block in global.css), so the two
+			 Google Fonts preconnects and the stylesheet they were warming are both gone — along
+			 with the render-blocking request and the second origin hop each one cost. -->
+
+		<!-- Ibrand renders the hero headline, i.e. the LCP text on most pages. Without this it
+			 isn't discovered until global.css has been fetched and parsed, which measured ~500ms
+			 in. Preloading starts it alongside the CSS instead. -->
+		<link rel="preload" href="/fonts/ibrand/ibrand.woff2" as="font" type="font/woff2" crossorigin />
 		<meta property="og:type" content="website" />
 		<meta property="og:site_name" content="Droparabia" />
 		<meta property="og:title" content={title} />

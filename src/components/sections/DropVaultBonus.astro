@@ -10,7 +10,7 @@ const bonuses = [
 const STAIR_STEP = 3.5; // rem indent added per row, going up the list
 ---
 
-<section id="dropvault-bonuses" class="px-4 py-20 sm:px-6 lg:px-16">
+<section id="dropvault-bonuses" class="px-3 py-20 sm:px-6 lg:px-16">
 	<div class="mx-auto max-w-6xl">
 		<h2 data-i18n="dropvault.bonuses.heading" class="text-center font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-5xl dark:text-white">
 			And that's not all!
@@ -20,16 +20,36 @@ const STAIR_STEP = 3.5; // rem indent added per row, going up the list
 			{
 				bonuses.map((bonus, i) => (
 					<div
-						class="flex flex-row items-center gap-2 rtl:flex-row-reverse sm:gap-5 lg:mr-(--stair-margin)"
+						class="flex w-full flex-row items-center gap-1 rtl:flex-row-reverse sm:w-auto sm:gap-5 lg:mr-(--stair-margin)"
 						style={{ "--stair-margin": `${i * STAIR_STEP}rem` }}
 						data-index={i}
 					>
-						<div class="vault-bonus-text flex flex-col gap-1 text-left lg:text-right" style={{ transitionDelay: `${i * 100}ms` }}>
+						{/* Right-aligned at every width, not just lg. Left-aligned on mobile the copy broke
+							ragged against the slash with a gap before it; right-aligned the last line sits
+							flush to the slash the same way it does on desktop. grow makes the alignment
+							meaningful for the shorter rows too — without it the box shrinks to its text and
+							there is no space to align within. */}
+						<div class="vault-bonus-text flex grow flex-col gap-1 text-right" style={{ transitionDelay: `${i * 100}ms` }}>
 							<p data-i18n={`dropvault.bonuses.title${i}`} class="font-helvetica text-base font-semibold text-neutral-900 sm:text-3xl dark:text-white">
 								{bonus.title}
 							</p>
 						</div>
-						<svg viewBox="0 0 54 92" width="54" height="92" class="shrink-0">
+						{/* Two SVGs rather than one with two toggled polygons, purely to reclaim width on
+							mobile. The narrow slash only spans x=10..42, so in the shared 54-wide box 22px
+							were empty padding pushing the copy leftwards. The mobile box is cropped to the
+							shape's own bounds via the viewBox origin — the slash renders at exactly the same
+							size, it just stops reserving space it never used. */}
+						<svg viewBox="10 0 32 92" width="32" height="92" class="shrink-0 sm:hidden">
+							<defs>
+								<linearGradient id={`vault-bonus-slash-sm-${i}`} x1="100%" y1="0%" x2="0%" y2="100%">
+									<stop offset="0%" stop-color="#2745ff" />
+									<stop offset="50%" stop-color="#001eff" />
+									<stop offset="100%" stop-color="#000c66" />
+								</linearGradient>
+							</defs>
+							<polygon points="42,6 18,86 10,86 34,6" fill={`url(#vault-bonus-slash-sm-${i})`} />
+						</svg>
+						<svg viewBox="0 0 54 92" width="54" height="92" class="hidden shrink-0 sm:block">
 							<defs>
 								<linearGradient id={`vault-bonus-slash-${i}`} x1="100%" y1="0%" x2="0%" y2="100%">
 									<stop offset="0%" stop-color="#2745ff" />
@@ -37,8 +57,7 @@ const STAIR_STEP = 3.5; // rem indent added per row, going up the list
 									<stop offset="100%" stop-color="#000c66" />
 								</linearGradient>
 							</defs>
-							<polygon points="42,6 18,86 10,86 34,6" fill={`url(#vault-bonus-slash-${i})`} class="sm:hidden" />
-							<polygon points="50,6 18,86 2,86 34,6" fill={`url(#vault-bonus-slash-${i})`} class="hidden sm:block" />
+							<polygon points="50,6 18,86 2,86 34,6" fill={`url(#vault-bonus-slash-${i})`} />
 						</svg>
 					</div>
 				))

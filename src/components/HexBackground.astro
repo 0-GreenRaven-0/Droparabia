@@ -272,5 +272,20 @@ const {
 		}
 		resize();
 		window.addEventListener("resize", resize);
+
+		// The window "resize" event only covers the viewport changing. A section can also change
+		// height on its own — images finishing, fonts swapping, a panel opening — and when that
+		// happens the canvas is stretched by CSS to the new box while the renderer keeps drawing
+		// at the old one, which shows up as visibly squashed or elongated hexes. Observing the
+		// section itself catches every cause instead of just the one.
+		//
+		// The grid's instance positions are still built once from the initial box, which is fine
+		// as long as the section only grows modestly — GRID_W/GRID_H carry 1.3x of headroom for
+		// exactly this. A large jump would out-run that, so callers should give late-loading
+		// content (images especially) an intrinsic size rather than relying on this.
+		if (typeof ResizeObserver !== "undefined") {
+			const ro = new ResizeObserver(() => resize());
+			ro.observe(section);
+		}
 	});
 </script>

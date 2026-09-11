@@ -1,5 +1,5 @@
 ---
-import { ik } from "../../lib/imagekit";
+import { ik, ikSrcSet } from "../../lib/imagekit";
 // Mobile app section. On desktop the phone starts centered across the grid, then slides to
 // the left column while the copy fades in on the right — one timeline that plays once when
 // the section scrolls into view. Below lg it's a plain stacked layout with no animation
@@ -13,8 +13,12 @@ const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.coderg
 		<!-- Phone. Starts shifted right (centering it across the whole grid) and animates back
 			 to xPercent:0 — its natural column position — as the section scrolls. -->
 		<div id="mobile-app-phone" class="flex justify-center">
+			<!-- Renders at 14/18/20rem, so the 711px original was ~3x more pixels than any breakpoint
+				 needs. The candidates cover 1x and 2x for each of the three sizes. -->
 			<img
-				src={ik("/phone-portrait.webp")}
+				src={ik("/phone-portrait.webp", "w-448,q-80")}
+				srcset={ikSrcSet("/phone-portrait.webp", [224, 288, 320, 448, 576, 640])}
+				sizes="(min-width: 1024px) 20rem, (min-width: 640px) 18rem, 14rem"
 				width="711"
 				height="1400"
 				alt="The Droparabia mobile app running on a phone"
@@ -39,7 +43,8 @@ const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.coderg
 					<img src={ik("/badge-app-store.svg")} alt="Download on the App Store" width="120" height="40" class="h-12 w-auto" />
 				</a>
 				<a href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer" class="transition-transform duration-200 ease-out hover:-translate-y-0.5">
-					<img src={ik("/badge-google-play.png")} alt="Get it on Google Play" width="564" height="168" class="h-12 w-auto" />
+					{/* Rendered at ~161x48; w-330 is the 2x version rather than the 564px original. */}
+					<img src={ik("/badge-google-play.png", "w-330,q-85")} alt="Get it on Google Play" width="564" height="168" class="h-12 w-auto" />
 				</a>
 			</div>
 		</div>
@@ -79,7 +84,7 @@ const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.coderg
 		// Plays once on its own timing when the section comes into view — not tied to scroll
 		// position, so nothing pins and the page never takes over the wheel.
 		tween = gsap.timeline({
-			scrollTrigger: { trigger: section, start: "top 65%", once: true },
+			scrollTrigger: { trigger: section, start: "top 80%", once: true },
 			defaults: { ease: "power3.out" },
 		});
 		tween
@@ -90,6 +95,16 @@ const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.coderg
 	}
 
 	build();
+
+	// ScrollTrigger converts "top 80%" into an absolute scroll offset once, when the trigger is
+	// created. Everything above this section is still settling at that point — the @font-face
+	// files for Ibrand and Helvetica have not swapped in yet, and every heading between the hero
+	// and here changes height when they do. The section ends up at a different scroll position
+	// than the cached offset says, which is why the reveal fired long after it should have.
+	// refresh() recomputes every trigger against the real layout, so do it once the fonts have
+	// actually landed and again at load for anything else that settled late.
+	document.fonts?.ready.then(() => ScrollTrigger.refresh());
+	window.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
 
 	// Rebuild on breakpoint changes so resizing across lg doesn't leave the phone stranded
 	// mid-slide.

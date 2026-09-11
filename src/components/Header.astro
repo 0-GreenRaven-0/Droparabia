@@ -831,6 +831,9 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 		document.documentElement.lang = lang;
 		// Arabic is the only RTL language offered — English and French both stay LTR.
 		document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+		// No font loading needed here: Noto Sans Arabic is declared in global.css behind a
+		// unicode-range, so setting dir="rtl" is enough — the browser fetches the Arabic subset
+		// the moment it has Arabic glyphs to paint, and never before.
 		// Layout.astro's applyTranslations() listens for this to re-run on every [data-i18n]
 		// element on the page, whichever page that happens to be.
 		window.dispatchEvent(new Event("droparabia:lang-changed"));
