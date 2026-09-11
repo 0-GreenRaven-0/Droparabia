@@ -51,10 +51,15 @@ const columns = [
 				data-drift={column.speed}
 				style={{ marginTop: column.offset }}
 			>
+				{/* Every source, once ImageKit has applied TR, comes back at exactly 500x889 —
+					measured, not assumed. Declaring it lets the browser reserve each slot before the
+					image decodes instead of reflowing the column as they arrive. */}
 				{column.images.map((src) => (
 					<img
 						src={`${src}${TR}`}
 						alt=""
+						width="500"
+						height="889"
 						loading="lazy"
 						decoding="async"
 						class="h-auto w-full rounded-xl border border-black/5 opacity-80 dark:border-white/10 dark:opacity-75"

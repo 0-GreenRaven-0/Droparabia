@@ -164,8 +164,10 @@ const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 							was the single largest image over-download on the page. */}
 						<img
 							src={`${tool.heroImage ?? ik("/Tools/Winning Products.png")}?tr=w-1024,q-80`}
-							srcset={ikSrcSetFromUrl(tool.heroImage ?? ik("/Tools/Winning Products.png"), [400, 640, 828, 1024, 1280])}
+							srcset={ikSrcSetFromUrl(tool.heroImage ?? ik("/Tools/Winning Products.png"), [400, 640, 720, 828, 1024, 1280])}
 							sizes="(min-width: 1024px) 60rem, 100vw"
+							width="1899"
+							height="879"
 							alt={tool.label}
 							class="tool-image mx-auto w-full rounded-xl object-contain shadow-[0_0_30px_8px_rgba(0,0,0,0.2)] dark:shadow-[0_0_30px_8px_rgba(0,0,0,0.3)]"
 						/>
