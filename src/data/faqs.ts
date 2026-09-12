@@ -9,17 +9,17 @@ export const faqs: Faq[] = [
 	{
 		question: "What is Droparabia?",
 		answer:
-			"Droparabia is the first dropshipping platform in Lebanon, and very soon in the MENA region, inspired by CJ Dropshipping and DSers but built for the Lebanese and MENA market. It was built to solve the common problems that cause most e-com owners and dropshippers to fail in their businesses.",
+			"Droparabia is the first e-commerce platform for dropshipping in Lebanon, and very soon in the MENA region, inspired by CJ Dropshipping and DSers but built for the Lebanese and MENA market. It was built to solve the common problems that cause most e-com owners and dropshippers to fail in their businesses.",
 	},
 	{
 		question: "What does Droparabia bring to the table?",
 		answer:
-			"Droparabia removes all the annoying, money-burning, and time-consuming aspects found in traditional e-commerce and old dropshipping, including purchasing, owning, and managing inventory; the risk of purchasing products in bulk that might not sell; finding reliable third party services such as delivery companies, packaging companies, and warehouses; dealing with risky suppliers and the headache of negotiations; and requiring huge upfront investments, like traditional e-commerce's minimum of $3,000.",
+			"Droparabia removes all the annoying, money-burning, and time-consuming aspects found in traditional e-commerce and old dropshipping, including purchasing, owning, and managing inventory; the risk of purchasing products in bulk that might not sell in the Lebanese market; finding reliable third party services such as delivery companies, packaging companies, and warehouses; dealing with risky suppliers and the headache of negotiations; and requiring huge upfront investments, like traditional e-commerce's minimum of $3,000. It removes all that friction so you can focus on scaling your business, marketing and advertising.",
 	},
 	{
 		question: "Who is Droparabia for?",
 		answer:
-			"Droparabia is for e-commerce brands, dropshippers, or anyone looking to start their own online business, regardless of their experience in digital marketing, education level, or technical skills, who wants to invest their time and budget directly rather than becoming a victim of beginner mistakes like finding the right product to sell, managing inventory, or handling delivery.",
+			"Droparabia is for investors who want to start a dropshipping or e-commerce business in Lebanon, regardless of their experience in digital marketing, education level, or technical skills. It was built to protect these investors from wasting their hard-earned savings by making mistakes that might destroy the business before it starts, or from wasting money on friction like inventory that might not sell or shipping fees.",
 	},
 	{
 		question: "Is Droparabia an easy way to make money?",
