@@ -16,12 +16,48 @@
     "url": "https://ik.imagekit.io/greenraven/droparabia/courses.webp"
   },
   {
+    "path": "/crepe-maker.webp",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/crepe-maker.webp"
+  },
+  {
+    "path": "/electric-milk-frother.jpg",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/electric-milk-frother.jpg"
+  },
+  {
+    "path": "/eyebrow-trimmer.jpg",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/eyebrow-trimmer.jpg"
+  },
+  {
     "path": "/favicon.svg",
     "url": "https://ik.imagekit.io/greenraven/droparabia/favicon.svg"
   },
   {
+    "path": "/flame-diffuser.webp",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/flame-diffuser.webp"
+  },
+  {
+    "path": "/galaxy-projector.jpg",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/galaxy-projector.jpg"
+  },
+  {
+    "path": "/garlic-machine.jpg",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/garlic-machine.jpg"
+  },
+  {
     "path": "/gcc-mask.png",
     "url": "https://ik.imagekit.io/greenraven/droparabia/gcc-mask.png"
+  },
+  {
+    "path": "/gun-massager.jpg",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/gun-massager.jpg"
+  },
+  {
+    "path": "/hair-curler.png",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/hair-curler.png"
+  },
+  {
+    "path": "/hair-oil-applicator.jpg",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/hair-oil-applicator.jpg"
   },
   {
     "path": "/hero-app.webp",
@@ -32,8 +68,32 @@
     "url": "https://ik.imagekit.io/greenraven/droparabia/lebanon.webp"
   },
   {
+    "path": "/lint-remover.jpg",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/lint-remover.jpg"
+  },
+  {
     "path": "/phone-portrait.webp",
     "url": "https://ik.imagekit.io/greenraven/droparabia/phone-portrait.webp"
+  },
+  {
+    "path": "/portable-blender-cup.jpeg",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/portable-blender-cup.jpeg"
+  },
+  {
+    "path": "/rain-cloud-humidifier.jpg",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/rain-cloud-humidifier.jpg"
+  },
+  {
+    "path": "/shoe-cleaner.jpg",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/shoe-cleaner.jpg"
+  },
+  {
+    "path": "/solar-floor-lamp.png",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/solar-floor-lamp.png"
+  },
+  {
+    "path": "/spaceship-humidifier.webp",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/spaceship-humidifier.webp"
   },
   {
     "path": "/testimonial-1.png",
@@ -50,5 +110,9 @@
   {
     "path": "/testimonial-4.png",
     "url": "https://ik.imagekit.io/greenraven/droparabia/testimonial-4.png"
+  },
+  {
+    "path": "/wrinkle-remover.jpg",
+    "url": "https://ik.imagekit.io/greenraven/droparabia/wrinkle-remover.jpg"
   }
 ]

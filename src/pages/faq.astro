@@ -14,7 +14,17 @@ const faqSchema = [
 		mainEntity: faqs.map((faq) => ({
 			"@type": "Question",
 			name: faq.question,
-			acceptedAnswer: { "@type": "Answer", text: faq.answer },
+			// Answers are HTML fragments; schema.org wants the prose, so the tags come back out
+			// and the block-level ones become line breaks rather than running words together.
+			acceptedAnswer: {
+				"@type": "Answer",
+				text: faq.answer
+					.replace(/<\/(?:p|li|ul)>/g, "\n")
+					.replace(/<[^>]+>/g, "")
+					.replace(/&amp;/g, "&")
+					.replace(/\n{2,}/g, "\n")
+					.trim(),
+			},
 		})),
 	},
 ];

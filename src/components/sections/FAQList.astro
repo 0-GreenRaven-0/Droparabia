@@ -33,7 +33,11 @@ import { faqs } from "../../data/faqs";
 						</button>
 						<div class="faq-panel grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]" style="grid-template-rows: 0fr;">
 							<div class="overflow-hidden">
-								<p data-i18n={`faq.a${i}`} class="mt-4 font-helvetica text-sm text-neutral-600 sm:text-base dark:text-neutral-400">{faq.answer}</p>
+								<div
+									data-i18n={`faq.a${i}`}
+									class="faq-answer mt-4 font-helvetica text-sm text-neutral-600 sm:text-base dark:text-neutral-400"
+									set:html={faq.answer}
+								/>
 							</div>
 						</div>
 					</div>
@@ -46,6 +50,27 @@ import { faqs } from "../../data/faqs";
 <style>
 	.faq-item.is-open .chevron {
 		transform: rotate(180deg);
+	}
+
+	/* Answer bodies are injected as HTML, so their children never receive Astro scope
+	   attributes — these have to reach through :global to land. */
+	.faq-answer :global(p + p),
+	.faq-answer :global(ul) {
+		margin-top: 0.75rem;
+	}
+	.faq-answer :global(ul) {
+		list-style: disc;
+		padding-inline-start: 1.25rem;
+	}
+	.faq-answer :global(li + li) {
+		margin-top: 0.25rem;
+	}
+	.faq-answer :global(strong) {
+		font-weight: 600;
+		color: rgb(23 23 23);
+	}
+	:global(.dark) .faq-answer :global(strong) {
+		color: #ffffff;
 	}
 </style>
 

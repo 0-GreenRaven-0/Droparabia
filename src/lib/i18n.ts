@@ -626,63 +626,226 @@ export const translations: Record<string, Record<Lang, string>> = {
 		fr: "Majd Abdulsalam, expert en marketing digital et entrepreneur à 6 chiffres, a créé Droparabia à partir de tous les obstacles, essais et erreurs rencontrés en construisant ses propres marques e-commerce, et met aujourd'hui cette expertise au service des autres pour les aider à bâtir des boutiques e-commerce et dropshipping performantes.",
 	},
 
-	"faq.q0": { en: "What is Droparabia?", ar: "ما هو دروب أرابيا؟", fr: "Qu'est-ce que Droparabia ?" },
+	// --- FAQ page: questions and answers, indexed to match src/data/faqs.ts ---
+	"faq.q0": {
+		en: `What is Droparabia?`,
+		ar: `ما هو دروب أرابيا؟`,
+		fr: `Qu'est-ce que Droparabia ?`,
+	},
 	"faq.a0": {
-		en: "Droparabia is the first e-commerce platform for dropshipping in Lebanon, and very soon in the MENA region, inspired by CJ Dropshipping and DSers but built for the Lebanese and MENA market. It was built to solve the common problems that cause most e-com owners and dropshippers to fail in their businesses.",
-		ar: "دروب أرابيا هي أول منصة تجارة إلكترونية للدروبشيبينغ في لبنان، وقريبًا في منطقة الشرق الأوسط وشمال أفريقيا، مستوحاة من CJ Dropshipping وDSers لكنها مبنية للسوق اللبناني والعربي. صُممت لحل المشاكل الشائعة التي تجعل معظم أصحاب المتاجر الإلكترونية ودروبشيبرز يفشلون في أعمالهم.",
-		fr: "Droparabia est la première plateforme e-commerce de dropshipping au Liban, et très bientôt dans la région MENA, inspirée de CJ Dropshipping et DSers mais conçue pour le marché libanais et MENA. Elle a été créée pour résoudre les problèmes courants qui font échouer la plupart des propriétaires de boutiques en ligne et des dropshippers.",
+		en: `<p>Droparabia is an e-commerce platform built specifically for Lebanon, designed to remove the biggest obstacles that make starting an online business difficult.</p><p>Instead of buying inventory upfront, finding suppliers, arranging warehousing, packaging, delivery, and payment collection yourself, Droparabia handles the operational side for you.</p><p>You choose what you want to sell, connect your Shopify store, market your products, and focus on growing your business while Droparabia handles sourcing, inventory, fulfillment, and delivery.</p>`,
+		ar: `<p>دروب أرابيا منصة تجارة إلكترونية مبنية خصيصًا للبنان، مصمّمة لإزالة أكبر العقبات التي تجعل بدء عمل تجاري عبر الإنترنت صعبًا.</p><p>بدلًا من شراء المخزون مقدمًا، وإيجاد الموردين، وترتيب التخزين والتغليف والتوصيل وتحصيل المدفوعات بنفسك، يتولى دروب أرابيا الجانب التشغيلي نيابةً عنك.</p><p>أنت تختار ما تريد بيعه، وتربط متجر شوبيفاي الخاص بك، وتسوّق منتجاتك، وتركّز على تنمية عملك، بينما يتولى دروب أرابيا التوريد والمخزون والتجهيز والتوصيل.</p>`,
+		fr: `<p>Droparabia est une plateforme e-commerce conçue spécifiquement pour le Liban, pensée pour supprimer les principaux obstacles qui rendent difficile le lancement d'une activité en ligne.</p><p>Au lieu d'acheter du stock à l'avance, de trouver des fournisseurs, d'organiser l'entreposage, l'emballage, la livraison et l'encaissement vous-même, Droparabia prend en charge tout le volet opérationnel.</p><p>Vous choisissez ce que vous voulez vendre, connectez votre boutique Shopify, faites la promotion de vos produits et vous concentrez sur la croissance de votre activité pendant que Droparabia gère le sourcing, le stock, la préparation et la livraison.</p>`,
 	},
-	"faq.q1": { en: "What does Droparabia bring to the table?", ar: "ماذا يقدّم دروب أرابيا؟", fr: "Qu'apporte Droparabia ?" },
+	"faq.q1": {
+		en: `What does Droparabia bring to the table?`,
+		ar: `ماذا يقدّم دروب أرابيا؟`,
+		fr: `Qu'apporte Droparabia ?`,
+	},
 	"faq.a1": {
-		en: "Droparabia removes all the annoying, money-burning, and time-consuming aspects found in traditional e-commerce and old dropshipping, including purchasing, owning, and managing inventory; the risk of purchasing products in bulk that might not sell in the Lebanese market; finding reliable third party services such as delivery companies, packaging companies, and warehouses; dealing with risky suppliers and the headache of negotiations; and requiring huge upfront investments, like traditional e-commerce's minimum of $3,000. It removes all that friction so you can focus on scaling your business, marketing and advertising.",
-		ar: "يزيل دروب أرابيا كل الجوانب المزعجة والمكلفة والمستهلكة للوقت في التجارة الإلكترونية التقليدية والدروبشيبينغ القديم، بما فيها شراء وامتلاك وإدارة المخزون؛ خطر شراء منتجات بالجملة قد لا تُباع في السوق اللبناني؛ إيجاد خدمات موثوقة كشركات التوصيل والتغليف والمستودعات؛ التعامل مع موردين غير موثوقين وصداع التفاوض؛ والحاجة لاستثمارات ضخمة مقدمًا كالحد الأدنى 3000 دولار في التجارة التقليدية. يزيل كل هذه العقبات لتتمكن من التركيز على تنمية عملك والتسويق والإعلان.",
-		fr: "Droparabia supprime tous les aspects pénibles, coûteux et chronophages du e-commerce traditionnel et de l'ancien dropshipping : l'achat, la possession et la gestion des stocks ; le risque d'acheter en gros des produits qui ne se vendent pas sur le marché libanais ; la recherche de prestataires fiables comme les sociétés de livraison, d'emballage et les entrepôts ; les rapports avec des fournisseurs à risque et les casse-têtes des négociations ; et la nécessité d'investissements initiaux importants, comme le minimum de 3 000 $ du e-commerce traditionnel. Il supprime toute cette friction pour que vous puissiez vous concentrer sur la croissance de votre activité, le marketing et la publicité.",
+		en: `<p>Droparabia removes the time-consuming and expensive parts of traditional e-commerce and old-school dropshipping.</p><p>You don't need to:</p><ul><li>Purchase inventory in bulk</li><li>Rent a warehouse</li><li>Manage stock yourself</li><li>Find and negotiate with suppliers</li><li>Find your own delivery company</li><li>Handle packaging and fulfillment</li><li>Pay for inventory before you've sold it</li><li>Spend hours searching for products to test</li></ul><p>Instead, you get access to a catalog of researched products, direct supplier relationships, fulfillment infrastructure, product sourcing, Shopify integration, payment collection, AI tools, branding, educational resources, and dedicated advisors.</p><p>This lets you spend your time where it matters most: building your brand, marketing your products, and growing your store.</p>`,
+		ar: `<p>يزيل دروب أرابيا الأجزاء المكلفة والمستهلكة للوقت في التجارة الإلكترونية التقليدية والدروبشيبينغ القديم.</p><p>لست بحاجة إلى:</p><ul><li>شراء المخزون بالجملة</li><li>استئجار مستودع</li><li>إدارة المخزون بنفسك</li><li>إيجاد الموردين والتفاوض معهم</li><li>إيجاد شركة توصيل خاصة بك</li><li>التعامل مع التغليف والتجهيز</li><li>الدفع مقابل المخزون قبل بيعه</li><li>قضاء ساعات في البحث عن منتجات لاختبارها</li></ul><p>بدلًا من ذلك، تحصل على كتالوج منتجات مدروسة، وعلاقات مباشرة مع الموردين، وبنية تحتية للتجهيز، وتوريد المنتجات، وتكامل مع شوبيفاي، وتحصيل المدفوعات، وأدوات ذكاء اصطناعي، وخدمة العلامة التجارية، وموارد تعليمية، ومستشارين مخصصين.</p><p>هذا يتيح لك تخصيص وقتك لما يهم فعلًا: بناء علامتك التجارية، وتسويق منتجاتك، وتنمية متجرك.</p>`,
+		fr: `<p>Droparabia supprime les aspects chronophages et coûteux du e-commerce traditionnel et du dropshipping à l'ancienne.</p><p>Vous n'avez pas besoin de :</p><ul><li>Acheter du stock en gros</li><li>Louer un entrepôt</li><li>Gérer le stock vous-même</li><li>Trouver des fournisseurs et négocier avec eux</li><li>Trouver votre propre transporteur</li><li>Gérer l'emballage et la préparation</li><li>Payer le stock avant de l'avoir vendu</li><li>Passer des heures à chercher des produits à tester</li></ul><p>À la place, vous accédez à un catalogue de produits étudiés, à des relations directes avec les fournisseurs, à une infrastructure de préparation, au sourcing produit, à l'intégration Shopify, à l'encaissement, à des outils d'IA, à un service de branding, à des ressources pédagogiques et à des conseillers dédiés.</p><p>Vous pouvez ainsi consacrer votre temps à ce qui compte vraiment : construire votre marque, promouvoir vos produits et développer votre boutique.</p>`,
 	},
-	"faq.q2": { en: "Who is Droparabia for?", ar: "لمن دروب أرابيا؟", fr: "À qui s'adresse Droparabia ?" },
+	"faq.q2": {
+		en: `Who is Droparabia for?`,
+		ar: `لمن صُمّم دروب أرابيا؟`,
+		fr: `À qui s'adresse Droparabia ?`,
+	},
 	"faq.a2": {
-		en: "Droparabia is for investors who want to start a dropshipping or e-commerce business in Lebanon, regardless of their experience in digital marketing, education level, or technical skills. It was built to protect these investors from wasting their hard-earned savings by making mistakes that might destroy the business before it starts, or from wasting money on friction like inventory that might not sell or shipping fees.",
-		ar: "دروب أرابيا مخصص للمستثمرين الراغبين ببدء عمل في الدروبشيبينغ أو التجارة الإلكترونية في لبنان، بغض النظر عن خبرتهم في التسويق الرقمي أو مستواهم التعليمي أو مهاراتهم التقنية. صُمم لحماية هؤلاء المستثمرين من إهدار مدخراتهم التي جنوها بجهدهم بسبب أخطاء قد تدمر العمل قبل أن يبدأ، أو من إهدار المال على عقبات كالمخزون الذي قد لا يُباع أو رسوم الشحن.",
-		fr: "Droparabia s'adresse aux investisseurs qui souhaitent lancer une activité de dropshipping ou de e-commerce au Liban, quels que soient leur expérience en marketing digital, leur niveau d'études ou leurs compétences techniques. La plateforme a été conçue pour protéger ces investisseurs du gaspillage de leurs économies durement gagnées à cause d'erreurs susceptibles de détruire l'activité avant même qu'elle ne démarre, ou du gaspillage d'argent en frictions comme un stock qui ne se vend pas ou des frais de livraison.",
+		en: `<p>Droparabia is for people who want to build a real e-commerce business in Lebanon, whether they're complete beginners or already experienced in online selling.</p><p>You don't need previous e-commerce experience, advanced technical skills, or a large amount of capital to get started.</p><p>However, you do need to be willing to learn, test, make mistakes, and consistently work on your business. Droparabia removes the operational friction — it doesn't remove the work required to build a successful business.</p>`,
+		ar: `<p>دروب أرابيا مخصص لمن يريد بناء عمل تجاري إلكتروني حقيقي في لبنان، سواء كان مبتدئًا تمامًا أو لديه خبرة في البيع عبر الإنترنت.</p><p>لا تحتاج إلى خبرة سابقة في التجارة الإلكترونية، أو مهارات تقنية متقدمة، أو رأس مال كبير للبدء.</p><p>لكنك تحتاج إلى الاستعداد للتعلّم والاختبار وارتكاب الأخطاء والعمل على مشروعك باستمرار. دروب أرابيا يزيل العقبات التشغيلية — لكنه لا يزيل الجهد المطلوب لبناء عمل ناجح.</p>`,
+		fr: `<p>Droparabia s'adresse à celles et ceux qui veulent bâtir une véritable activité e-commerce au Liban, qu'ils soient totalement débutants ou déjà expérimentés dans la vente en ligne.</p><p>Vous n'avez besoin ni d'expérience préalable en e-commerce, ni de compétences techniques avancées, ni d'un capital important pour démarrer.</p><p>En revanche, vous devez être prêt à apprendre, à tester, à faire des erreurs et à travailler régulièrement sur votre activité. Droparabia supprime la friction opérationnelle — pas le travail nécessaire pour réussir.</p>`,
 	},
 	"faq.q3": {
-		en: "Is Droparabia an easy way to make money?",
-		ar: "هل دروب أرابيا طريقة سهلة لكسب المال؟",
-		fr: "Droparabia est-il un moyen facile de gagner de l'argent ?",
+		en: `Is Droparabia an easy way to make money?`,
+		ar: `هل دروب أرابيا طريقة سهلة لكسب المال؟`,
+		fr: `Droparabia est-il un moyen facile de gagner de l'argent ?`,
 	},
 	"faq.a3": {
-		en: "Absolutely not. Droparabia is for people who are serious about building a successful online business and are ready to put in the effort required, even if they fail at first. Droparabia makes it easier for you to create your own business; whether it succeeds or fails depends on your effort.",
-		ar: "بالتأكيد لا. دروب أرابيا مخصص للأشخاص الجادين في بناء عمل إلكتروني ناجح والمستعدين لبذل الجهد المطلوب، حتى لو فشلوا في البداية. يسهّل دروب أرابيا عليك إنشاء عملك الخاص؛ أما نجاحه أو فشله فيعتمد على جهدك.",
-		fr: "Absolument pas. Droparabia s'adresse aux personnes sérieuses, qui veulent bâtir une activité en ligne prospère et sont prêtes à fournir les efforts nécessaires, même en cas d'échec au départ. Droparabia vous facilite la création de votre activité ; sa réussite ou son échec dépend de vos efforts.",
+		en: `<p>Absolutely not.</p><p>Droparabia gives you the infrastructure, products, tools, education, advisors, and support needed to make starting an e-commerce business significantly easier.</p><p>But you are still responsible for your store, marketing, advertising, content, and decisions.</p><p>There will be products that don't work, ads that don't perform, and tests that fail. That's part of building a real business.</p><p>Droparabia's goal is to make those failures cheaper and easier to learn from — not to promise that you'll become rich overnight.</p>`,
+		ar: `<p>إطلاقًا لا.</p><p>يمنحك دروب أرابيا البنية التحتية والمنتجات والأدوات والتعليم والمستشارين والدعم اللازم لجعل بدء عمل تجاري إلكتروني أسهل بكثير.</p><p>لكنك تبقى مسؤولًا عن متجرك وتسويقك وإعلاناتك ومحتواك وقراراتك.</p><p>ستكون هناك منتجات لا تنجح، وإعلانات لا تحقق نتائج، واختبارات تفشل. هذا جزء من بناء عمل حقيقي.</p><p>هدف دروب أرابيا هو جعل هذه الإخفاقات أقل كلفة وأسهل للتعلّم منها — لا أن يَعِدك بالثراء بين ليلة وضحاها.</p>`,
+		fr: `<p>Absolument pas.</p><p>Droparabia vous donne l'infrastructure, les produits, les outils, la formation, les conseillers et le support nécessaires pour rendre le lancement d'une activité e-commerce nettement plus simple.</p><p>Mais vous restez responsable de votre boutique, de votre marketing, de vos publicités, de votre contenu et de vos décisions.</p><p>Il y aura des produits qui ne marchent pas, des publicités qui ne performent pas et des tests qui échouent. Cela fait partie de la construction d'une vraie activité.</p><p>L'objectif de Droparabia est de rendre ces échecs moins coûteux et plus faciles à exploiter — pas de vous promettre de devenir riche du jour au lendemain.</p>`,
 	},
 	"faq.q4": {
-		en: "Isn't it better to just start traditional e-commerce?",
-		ar: "أليس من الأفضل البدء بالتجارة الإلكترونية التقليدية؟",
-		fr: "Ne vaut-il pas mieux se lancer simplement dans le e-commerce traditionnel ?",
+		en: `I don't have marketing experience. Can I still start?`,
+		ar: `ليس لديّ خبرة في التسويق. هل يمكنني البدء رغم ذلك؟`,
+		fr: `Je n'ai aucune expérience en marketing. Puis-je quand même me lancer ?`,
 	},
 	"faq.a4": {
-		en: "Traditional e-commerce means buying hundreds of products upfront, storing them, and hoping they sell. If they don't, you're stuck with dead inventory and wasted money. Dropshipping with Droparabia lets you test products with zero inventory risk. Once you find winners, you can then scale, or even move to traditional e-commerce, if you want. But why bet your savings when you can test first?",
-		ar: "التجارة الإلكترونية التقليدية تعني شراء مئات المنتجات مقدمًا وتخزينها والأمل أن تُباع. إن لم تُبع، تبقى عالقًا بمخزون ميت ومال ضائع. الدروبشيبينغ مع دروب أرابيا يتيح لك اختبار المنتجات دون أي خطر مخزون. وبمجرد أن تجد المنتجات الرابحة، يمكنك التوسع أو حتى الانتقال إلى التجارة التقليدية إن أردت. فلماذا تخاطر بمدخراتك بينما يمكنك الاختبار أولاً؟",
-		fr: "Le e-commerce traditionnel implique d'acheter des centaines de produits à l'avance, de les stocker et d'espérer qu'ils se vendent. Si ce n'est pas le cas, vous vous retrouvez avec des stocks morts et de l'argent perdu. Le dropshipping avec Droparabia vous permet de tester des produits sans aucun risque de stock. Une fois vos produits gagnants trouvés, vous pouvez passer à l'échelle, ou même basculer vers le e-commerce traditionnel si vous le souhaitez. Mais pourquoi risquer vos économies quand vous pouvez d'abord tester ?",
+		en: `<p>Yes.</p><p>Every Droparabia user gets access to our support community, educational resources, tutorials, and advisor groups.</p><p>Your advisors can help you understand product selection, marketing, advertising, store building, and the steps you need to take as you grow.</p><p>You don't have to figure everything out alone or learn everything from scratch.</p>`,
+		ar: `<p>نعم.</p><p>يحصل كل مستخدم في دروب أرابيا على مجتمع الدعم، والموارد التعليمية، والدروس التطبيقية، ومجموعات المستشارين.</p><p>يمكن لمستشاريك مساعدتك في فهم اختيار المنتجات والتسويق والإعلان وبناء المتجر والخطوات التي تحتاج إلى اتخاذها مع نموّك.</p><p>لست مضطرًا لاكتشاف كل شيء بمفردك أو تعلّم كل شيء من الصفر.</p>`,
+		fr: `<p>Oui.</p><p>Chaque utilisateur Droparabia accède à notre communauté de support, à nos ressources pédagogiques, à nos tutoriels et aux groupes de conseillers.</p><p>Vos conseillers peuvent vous aider à comprendre la sélection de produits, le marketing, la publicité, la création de boutique et les étapes à suivre à mesure que vous progressez.</p><p>Vous n'avez pas à tout découvrir seul ni à tout apprendre de zéro.</p>`,
 	},
 	"faq.q5": {
-		en: "I don't have marketing experience, or I don't know how to manage social media",
-		ar: "ليست لدي خبرة تسويقية، أو لا أعرف كيف أدير وسائل التواصل الاجتماعي",
-		fr: "Je n'ai pas d'expérience en marketing, ou je ne sais pas gérer les réseaux sociaux",
+		en: `How does the money work when I make a sale?`,
+		ar: `كيف تسير الأمور ماليًا عند تحقيق عملية بيع؟`,
+		fr: `Comment fonctionne l'argent lorsque je réalise une vente ?`,
 	},
 	"faq.a5": {
-		en: "That's exactly why we offer a dedicated support community for all Droparabia users, where they can access tons of free courses and prerecorded tutorials, plus a team of experienced advisors ready to guide you so you never have to learn anything from scratch!",
-		ar: "لهذا السبب بالضبط نوفر مجتمع دعم مخصص لجميع مستخدمي دروب أرابيا، حيث يمكنهم الوصول إلى الكثير من الدورات المجانية والدروس المسجّلة، إضافة إلى فريق من المستشارين ذوي الخبرة الجاهزين لمرافقتك خطوة بخطوة حتى لا تضطر لتعلّم أي شيء من الصفر!",
-		fr: "C'est exactement pour cela que nous offrons une communauté de soutien dédiée à tous les utilisateurs de Droparabia, où ils accèdent à une multitude de formations gratuites et de tutoriels préenregistrés, ainsi qu'à une équipe de conseillers expérimentés prêts à les accompagner pas à pas : vous n'aurez jamais à tout apprendre de zéro !",
+		en: `<p>You are no longer limited to traditional cash-on-delivery arrangements.</p><p>Droparabia has its own delivery drivers who handle delivery and payment collection. Once the order is successfully delivered, the payment can be forwarded to your Whish Money account.</p><p>This means you can sell throughout Lebanon without having to build your own delivery and payment-collection infrastructure.</p>`,
+		ar: `<p>لم تعد مقيّدًا بترتيبات الدفع عند الاستلام التقليدية.</p><p>لدى دروب أرابيا سائقو توصيل خاصون به يتولون التوصيل وتحصيل المدفوعات. وبمجرد تسليم الطلب بنجاح، يمكن تحويل المبلغ إلى حسابك على Whish Money.</p><p>هذا يعني أنه يمكنك البيع في جميع أنحاء لبنان دون الحاجة إلى بناء بنية توصيل وتحصيل خاصة بك.</p>`,
+		fr: `<p>Vous n'êtes plus limité aux dispositifs classiques de paiement à la livraison.</p><p>Droparabia dispose de ses propres livreurs, qui assurent la livraison et l'encaissement. Une fois la commande livrée avec succès, le paiement peut être transféré sur votre compte Whish Money.</p><p>Vous pouvez ainsi vendre partout au Liban sans avoir à construire votre propre infrastructure de livraison et d'encaissement.</p>`,
 	},
 	"faq.q6": {
-		en: "Do I get a refund if Droparabia fails to deliver on its promises?",
-		ar: "هل أحصل على استرداد إذا لم يفِ دروب أرابيا بوعوده؟",
-		fr: "Suis-je remboursé si Droparabia ne tient pas ses promesses ?",
+		en: `How does delivery work?`,
+		ar: `كيف يتم التوصيل؟`,
+		fr: `Comment fonctionne la livraison ?`,
 	},
 	"faq.a6": {
-		en: "We are confident in our platform and its capabilities in helping others start and grow their businesses, which is why we have a full refund policy, plus compensation for the time and money lost using this platform, if the user followed all our instructions and made full use of Droparabia's features (with proof provided) but made no sales whatsoever within 90 days.",
-		ar: "نحن واثقون من منصتنا وقدرتها على مساعدة الآخرين على بدء وتنمية أعمالهم، ولهذا لدينا سياسة استرداد كاملة، إضافة إلى تعويض عن الوقت والمال المفقودين باستخدام هذه المنصة، إذا اتبع المستخدم كل تعليماتنا واستخدم ميزات دروب أرابيا بالكامل (مع تقديم إثبات) لكنه لم يحقق أي مبيعات خلال 90 يومًا.",
-		fr: "Nous avons confiance en notre plateforme et en sa capacité à aider chacun à lancer et développer son activité, c'est pourquoi nous appliquons une politique de remboursement intégral, assortie d'une compensation pour le temps et l'argent perdus sur la plateforme, si l'utilisateur a suivi toutes nos instructions et pleinement exploité les fonctionnalités de Droparabia (preuves à l'appui) sans réaliser la moindre vente en 90 jours.",
+		en: `<p>Once a customer places an order through your store, Droparabia handles the fulfillment process.</p><p>We take care of the product, packaging, and delivery through our own logistics and delivery infrastructure.</p><p>Our average delivery time is around 5–7 days across Lebanon, so you can focus on selling instead of managing individual shipments.</p>`,
+		ar: `<p>بمجرد أن يضع العميل طلبًا عبر متجرك، يتولى دروب أرابيا عملية التجهيز.</p><p>نحن نهتم بالمنتج والتغليف والتوصيل عبر بنيتنا اللوجستية وشبكة التوصيل الخاصة بنا.</p><p>متوسط مدة التوصيل لدينا نحو 5–7 أيام في جميع أنحاء لبنان، لتتمكن من التركيز على البيع بدلًا من إدارة كل شحنة على حدة.</p>`,
+		fr: `<p>Dès qu'un client passe commande sur votre boutique, Droparabia prend en charge la préparation.</p><p>Nous nous occupons du produit, de l'emballage et de la livraison via notre propre infrastructure logistique.</p><p>Notre délai de livraison moyen est d'environ 5 à 7 jours partout au Liban, ce qui vous permet de vous concentrer sur la vente plutôt que sur la gestion de chaque expédition.</p>`,
+	},
+	"faq.q7": {
+		en: `What happens if a customer refuses or doesn't receive an order?`,
+		ar: `ماذا يحدث إذا رفض العميل الطلب أو لم يستلمه؟`,
+		fr: `Que se passe-t-il si un client refuse ou ne reçoit pas sa commande ?`,
+	},
+	"faq.a7": {
+		en: `<p>If an order isn't successfully delivered, the product simply returns to our warehouse.</p><p>Because our delivery operation is handled through Droparabia's own delivery team, you don't have to find a courier yourself or personally deal with retrieving the product.</p><p>The product remains within the Droparabia fulfillment system and can be handled according to the applicable order process.</p>`,
+		ar: `<p>إذا لم يُسلَّم الطلب بنجاح، يعود المنتج ببساطة إلى مستودعنا.</p><p>ولأن عملية التوصيل تتم عبر فريق التوصيل الخاص بدروب أرابيا، لست مضطرًا لإيجاد شركة شحن بنفسك أو التعامل شخصيًا مع استرجاع المنتج.</p><p>يبقى المنتج ضمن نظام التجهيز في دروب أرابيا ويُعالَج وفق إجراءات الطلب المعمول بها.</p>`,
+		fr: `<p>Si une commande n'est pas livrée avec succès, le produit revient simplement à notre entrepôt.</p><p>Comme la livraison est assurée par l'équipe de Droparabia, vous n'avez pas à trouver un transporteur ni à vous occuper personnellement de récupérer le produit.</p><p>Le produit reste dans le système de préparation de Droparabia et est traité selon la procédure applicable.</p>`,
+	},
+	"faq.q8": {
+		en: `Do I have to buy inventory before I sell it?`,
+		ar: `هل عليّ شراء المخزون قبل بيعه؟`,
+		fr: `Dois-je acheter du stock avant de le vendre ?`,
+	},
+	"faq.a8": {
+		en: `<p>No.</p><p>That's one of the main reasons Droparabia exists.</p><p>You don't have to purchase hundreds of units, rent storage, or gamble your money on inventory that might not sell.</p><p>Droparabia keeps track of inventory and charges you for the product when you successfully sell it.</p><p>You test products first, find what works, and then scale.</p>`,
+		ar: `<p>لا.</p><p>هذا أحد الأسباب الرئيسية لوجود دروب أرابيا.</p><p>لست مضطرًا لشراء مئات القطع، أو استئجار مساحة تخزين، أو المجازفة بأموالك على مخزون قد لا يُباع.</p><p>يتابع دروب أرابيا المخزون ويحاسبك على المنتج عند بيعه بنجاح.</p><p>تختبر المنتجات أولًا، وتكتشف ما ينجح، ثم توسّع.</p>`,
+		fr: `<p>Non.</p><p>C'est l'une des principales raisons d'être de Droparabia.</p><p>Vous n'avez pas à acheter des centaines d'unités, à louer un espace de stockage, ni à miser votre argent sur un stock qui pourrait ne pas se vendre.</p><p>Droparabia suit le stock et vous facture le produit une fois que vous l'avez vendu.</p><p>Vous testez d'abord, vous identifiez ce qui fonctionne, puis vous passez à l'échelle.</p>`,
+	},
+	"faq.q9": {
+		en: `Can I order a sample before selling a product?`,
+		ar: `هل يمكنني طلب عيّنة قبل بيع المنتج؟`,
+		fr: `Puis-je commander un échantillon avant de vendre un produit ?`,
+	},
+	"faq.a9": {
+		en: `<p>Yes.</p><p>You can order samples of products before committing to selling them.</p><p>Many sellers use their samples to test the product themselves and create their own UGC and advertising content. You can also send your sample directly to a UGC creator to produce content for your store.</p><p>This lets you experience the product before putting your brand behind it.</p>`,
+		ar: `<p>نعم.</p><p>يمكنك طلب عيّنات من المنتجات قبل الالتزام ببيعها.</p><p>يستخدم كثير من البائعين عيّناتهم لتجربة المنتج بأنفسهم وإنتاج محتوى UGC ومحتوى إعلاني خاص بهم. ويمكنك أيضًا إرسال عيّنتك مباشرة إلى صانع محتوى UGC لإنتاج محتوى لمتجرك.</p><p>هذا يتيح لك تجربة المنتج قبل أن تضع علامتك التجارية خلفه.</p>`,
+		fr: `<p>Oui.</p><p>Vous pouvez commander des échantillons avant de vous engager à vendre un produit.</p><p>De nombreux vendeurs utilisent leurs échantillons pour tester le produit eux-mêmes et créer leur propre contenu UGC et publicitaire. Vous pouvez aussi envoyer votre échantillon directement à un créateur UGC afin qu'il produise du contenu pour votre boutique.</p><p>Cela vous permet d'éprouver le produit avant d'engager votre marque.</p>`,
+	},
+	"faq.q10": {
+		en: `What if the product I want isn't available in Droparabia's catalog?`,
+		ar: `ماذا لو لم يكن المنتج الذي أريده متوفرًا في كتالوج دروب أرابيا؟`,
+		fr: `Et si le produit que je veux n'est pas dans le catalogue Droparabia ?`,
+	},
+	"faq.a10": {
+		en: `<p>You can submit a product through our <strong>Product Request</strong> feature.</p><p>Send us an image or details of the product you're looking for, and we'll try to source it for you without an additional sourcing fee.</p><p>Not every request is accepted. We may reject products that are already widely available in regular stores, don't solve a meaningful problem, or don't have enough potential to become a viable online product.</p>`,
+		ar: `<p>يمكنك تقديم طلب منتج عبر ميزة <strong>طلب منتج</strong>.</p><p>أرسل لنا صورة أو تفاصيل المنتج الذي تبحث عنه، وسنحاول توريده لك دون رسوم توريد إضافية.</p><p>لا يُقبل كل طلب. قد نرفض المنتجات المتوفرة على نطاق واسع في المتاجر العادية، أو التي لا تحل مشكلة حقيقية، أو التي لا تملك إمكانات كافية لتصبح منتجًا ناجحًا عبر الإنترنت.</p>`,
+		fr: `<p>Vous pouvez soumettre un produit via notre fonctionnalité <strong>Demande de produit</strong>.</p><p>Envoyez-nous une image ou les détails du produit recherché, et nous tenterons de le sourcer pour vous sans frais de sourcing supplémentaires.</p><p>Toutes les demandes ne sont pas acceptées. Nous pouvons refuser des produits déjà largement disponibles en magasin, qui ne résolvent pas de problème réel, ou dont le potentiel est insuffisant pour en faire un produit viable en ligne.</p>`,
+	},
+	"faq.q11": {
+		en: `Can I create my own brand with Droparabia?`,
+		ar: `هل يمكنني إنشاء علامتي التجارية الخاصة مع دروب أرابيا؟`,
+		fr: `Puis-je créer ma propre marque avec Droparabia ?`,
+	},
+	"faq.a11": {
+		en: `<p>Yes.</p><p>Droparabia allows you to add your own logo to eligible products using our product-branding service.</p><p>There is no minimum order quantity for this service. You pay per item sold, which gives you a way to start building a private-label-style brand without purchasing large quantities of inventory upfront.</p>`,
+		ar: `<p>نعم.</p><p>يتيح لك دروب أرابيا إضافة شعارك الخاص على المنتجات المؤهلة عبر خدمة تخصيص العلامة التجارية.</p><p>لا يوجد حد أدنى لكمية الطلب في هذه الخدمة. أنت تدفع لكل قطعة تُباع، ما يمنحك طريقة لبناء علامة تجارية خاصة دون شراء كميات كبيرة من المخزون مقدمًا.</p>`,
+		fr: `<p>Oui.</p><p>Droparabia vous permet d'apposer votre propre logo sur les produits éligibles grâce à notre service de branding produit.</p><p>Aucune quantité minimum de commande n'est requise pour ce service. Vous payez à l'article vendu, ce qui vous permet de construire une marque de type marque propre sans acheter de grandes quantités de stock à l'avance.</p>`,
+	},
+	"faq.q12": {
+		en: `Where do Droparabia's products come from?`,
+		ar: `من أين تأتي منتجات دروب أرابيا؟`,
+		fr: `D'où viennent les produits de Droparabia ?`,
+	},
+	"faq.a12": {
+		en: `<p>We work with our own network of supplier partners, including suppliers locally in Lebanon and in China.</p><p>These supplier relationships allow us to source products at competitive prices and make them available through Droparabia's fulfillment system.</p><p>Our team researches and evaluates products before adding them to the catalog, with a focus on demand, potential margins, and suitability for the Lebanese market.</p>`,
+		ar: `<p>نعمل مع شبكة شركاء الموردين الخاصة بنا، وتشمل موردين محليين في لبنان وفي الصين.</p><p>تتيح لنا هذه العلاقات توريد المنتجات بأسعار تنافسية وإتاحتها عبر نظام التجهيز في دروب أرابيا.</p><p>يبحث فريقنا في المنتجات ويقيّمها قبل إضافتها إلى الكتالوج، مع التركيز على الطلب، والهوامش المحتملة، ومدى ملاءمتها للسوق اللبناني.</p>`,
+		fr: `<p>Nous travaillons avec notre propre réseau de fournisseurs partenaires, au Liban comme en Chine.</p><p>Ces relations nous permettent de sourcer des produits à des prix compétitifs et de les rendre disponibles via le système de préparation de Droparabia.</p><p>Notre équipe recherche et évalue les produits avant de les ajouter au catalogue, en se concentrant sur la demande, les marges potentielles et l'adéquation au marché libanais.</p>`,
+	},
+	"faq.q13": {
+		en: `How do you find your winning products?`,
+		ar: `كيف تعثرون على المنتجات الرابحة؟`,
+		fr: `Comment trouvez-vous vos produits gagnants ?`,
+	},
+	"faq.a13": {
+		en: `<p>Our advisors continuously research products and market opportunities to identify products with potential in the Lebanese market.</p><p>The catalog is updated regularly, and our product research is also used to train and improve our AI systems so they can become better at identifying promising products and analyzing their potential.</p><p>You can also use our AI Winning Products tools to explore products that have been identified through this process.</p>`,
+		ar: `<p>يبحث مستشارونا باستمرار في المنتجات وفرص السوق لتحديد المنتجات ذات الإمكانات في السوق اللبناني.</p><p>يُحدَّث الكتالوج بانتظام، كما تُستخدم أبحاثنا عن المنتجات لتدريب أنظمة الذكاء الاصطناعي لدينا وتحسينها حتى تصبح أفضل في تحديد المنتجات الواعدة وتحليل إمكاناتها.</p><p>يمكنك أيضًا استخدام أدوات المنتجات الرابحة بالذكاء الاصطناعي لاستكشاف المنتجات التي تم تحديدها عبر هذه العملية.</p>`,
+		fr: `<p>Nos conseillers étudient en continu les produits et les opportunités de marché afin d'identifier ceux qui ont du potentiel au Liban.</p><p>Le catalogue est mis à jour régulièrement, et nos recherches produit servent aussi à entraîner et améliorer nos systèmes d'IA, afin qu'ils repèrent mieux les produits prometteurs et analysent leur potentiel.</p><p>Vous pouvez également utiliser nos outils IA Produits Gagnants pour explorer les produits identifiés par ce processus.</p>`,
+	},
+	"faq.q14": {
+		en: `What is MajdGBT?`,
+		ar: `ما هو MajdGBT؟`,
+		fr: `Qu'est-ce que MajdGBT ?`,
+	},
+	"faq.a14": {
+		en: `<p>MajdGBT is Droparabia's AI assistant, built around the knowledge, experience, and e-commerce expertise of our founder, Majd.</p><p>It has access to Droparabia's ecosystem and is designed to help you with things such as product research, product analysis, buyer avatars, marketing, and building your online business.</p><p>Think of it as having an AI version of the experience behind Droparabia available whenever you need it.</p>`,
+		ar: `<p>MajdGBT هو مساعد الذكاء الاصطناعي في دروب أرابيا، مبني على معرفة وخبرة مؤسسنا مجد في التجارة الإلكترونية.</p><p>لديه وصول إلى منظومة دروب أرابيا، وهو مصمم لمساعدتك في أمور مثل البحث عن المنتجات، وتحليلها، وبناء شخصية المشتري، والتسويق، وبناء عملك عبر الإنترنت.</p><p>اعتبره نسخة ذكاء اصطناعي من الخبرة التي يقوم عليها دروب أرابيا، متاحة كلما احتجت إليها.</p>`,
+		fr: `<p>MajdGBT est l'assistant IA de Droparabia, construit autour des connaissances, de l'expérience et de l'expertise e-commerce de notre fondateur, Majd.</p><p>Il a accès à l'écosystème Droparabia et est conçu pour vous aider sur des sujets comme la recherche de produits, l'analyse produit, les personas d'acheteurs, le marketing et la construction de votre activité en ligne.</p><p>Voyez-le comme une version IA de l'expérience qui a donné naissance à Droparabia, disponible quand vous en avez besoin.</p>`,
+	},
+	"faq.q15": {
+		en: `Do I get a personal advisor?`,
+		ar: `هل أحصل على مستشار شخصي؟`,
+		fr: `Ai-je droit à un conseiller personnel ?`,
+	},
+	"faq.a15": {
+		en: `<p>Yes.</p><p>Droparabia users have access to their own advisor groups within our community.</p><p>Your advisors can guide you through the process of building your store, selecting products, testing ideas, improving your marketing, and progressing through the different stages of your business.</p><p>You also have access to the wider Droparabia community, educational content, tutorials, and other resources.</p>`,
+		ar: `<p>نعم.</p><p>يملك مستخدمو دروب أرابيا وصولًا إلى مجموعات المستشارين الخاصة بهم داخل مجتمعنا.</p><p>يمكن لمستشاريك إرشادك خلال بناء متجرك، واختيار المنتجات، واختبار الأفكار، وتحسين تسويقك، والتقدم عبر المراحل المختلفة لعملك.</p><p>كما يمكنك الوصول إلى مجتمع دروب أرابيا الأوسع، والمحتوى التعليمي، والدروس التطبيقية، وموارد أخرى.</p>`,
+		fr: `<p>Oui.</p><p>Les utilisateurs de Droparabia ont accès à leurs propres groupes de conseillers au sein de notre communauté.</p><p>Vos conseillers peuvent vous guider pour construire votre boutique, sélectionner vos produits, tester vos idées, améliorer votre marketing et franchir les différentes étapes de votre activité.</p><p>Vous accédez également à la communauté Droparabia au sens large, aux contenus pédagogiques, aux tutoriels et à d'autres ressources.</p>`,
+	},
+	"faq.q16": {
+		en: `How long does it take to launch my store?`,
+		ar: `كم يستغرق إطلاق متجري؟`,
+		fr: `Combien de temps faut-il pour lancer ma boutique ?`,
+	},
+	"faq.a16": {
+		en: `<p>You can get your store up and running in around 10–14 days.</p><p>The reason this process can be much faster than traditional e-commerce is that Droparabia removes many of the time-consuming preparations you'd normally have to handle yourself — such as finding suppliers, sourcing products, arranging fulfillment, and setting up delivery infrastructure.</p><p>Your job is to build and market your store. We handle the operational infrastructure behind it.</p>`,
+		ar: `<p>يمكنك تجهيز متجرك وتشغيله خلال نحو 10–14 يومًا.</p><p>السبب في أن هذه العملية أسرع بكثير من التجارة الإلكترونية التقليدية هو أن دروب أرابيا يزيل الكثير من التحضيرات المستهلكة للوقت التي كنت ستتولاها بنفسك عادةً — مثل إيجاد الموردين، وتوريد المنتجات، وترتيب التجهيز، وإنشاء بنية التوصيل.</p><p>مهمتك هي بناء متجرك وتسويقه. ونحن نتولى البنية التشغيلية خلفه.</p>`,
+		fr: `<p>Vous pouvez avoir votre boutique opérationnelle en 10 à 14 jours environ.</p><p>Si ce processus est bien plus rapide que le e-commerce traditionnel, c'est parce que Droparabia supprime une grande partie des préparatifs chronophages que vous auriez normalement à gérer — trouver des fournisseurs, sourcer les produits, organiser la préparation et mettre en place la livraison.</p><p>Votre travail consiste à construire et promouvoir votre boutique. Nous nous occupons de l'infrastructure opérationnelle derrière.</p>`,
+	},
+	"faq.q17": {
+		en: `How much money can I make with Droparabia?`,
+		ar: `كم يمكنني أن أربح مع دروب أرابيا؟`,
+		fr: `Combien puis-je gagner avec Droparabia ?`,
+	},
+	"faq.a17": {
+		en: `<p>There is no fixed amount you can expect to make.</p><p>Your results depend on your product selection, marketing, advertising, consistency, and ability to learn from your results.</p><p>Across our community, beginners commonly generate around $600–$700 in monthly store revenue, while our top 10 sellers generate more than $10,000 per month.</p><p>These figures are examples of what users in our community have achieved, not guaranteed earnings or profit.</p><p>Revenue is also not the same as profit — your advertising, operating, and other business expenses still need to be taken into account.</p>`,
+		ar: `<p>لا يوجد مبلغ ثابت يمكنك توقّعه.</p><p>تعتمد نتائجك على اختيارك للمنتجات، والتسويق، والإعلان، والاستمرارية، وقدرتك على التعلّم من نتائجك.</p><p>في مجتمعنا، يحقق المبتدئون عادةً نحو 600–700 دولار من إيرادات المتجر شهريًا، بينما يحقق أفضل 10 بائعين لدينا أكثر من 10,000 دولار شهريًا.</p><p>هذه الأرقام أمثلة على ما حققه مستخدمون في مجتمعنا، وليست أرباحًا أو عوائد مضمونة.</p><p>كما أن الإيرادات ليست هي الربح — إذ يجب أخذ مصاريف الإعلان والتشغيل وغيرها من نفقات العمل بعين الاعتبار.</p>`,
+		fr: `<p>Il n'existe aucun montant fixe que vous pouvez espérer gagner.</p><p>Vos résultats dépendent de votre sélection de produits, de votre marketing, de vos publicités, de votre régularité et de votre capacité à tirer des leçons de vos résultats.</p><p>Dans notre communauté, les débutants génèrent couramment environ 600 à 700 $ de chiffre d'affaires mensuel, tandis que nos 10 meilleurs vendeurs dépassent 10 000 $ par mois.</p><p>Ces chiffres illustrent ce que des utilisateurs de notre communauté ont obtenu ; ce ne sont ni des gains ni des bénéfices garantis.</p><p>Le chiffre d'affaires n'est pas non plus le bénéfice — vos dépenses publicitaires, opérationnelles et autres doivent être prises en compte.</p>`,
+	},
+	"faq.q18": {
+		en: `What happens if I use Droparabia for 90 days and make no sales?`,
+		ar: `ماذا يحدث إذا استخدمت دروب أرابيا لمدة 90 يومًا ولم أحقق أي مبيعات؟`,
+		fr: `Que se passe-t-il si j'utilise Droparabia pendant 90 jours sans faire de ventes ?`,
+	},
+	"faq.a18": {
+		en: `<p>If you actively use Droparabia for 90 days, follow our instructions, make full use of the platform's features, provide proof of your activity, and make no sales whatsoever, you may qualify for our 90-day refund policy.</p><p>Eligible users can receive a full refund, along with compensation for the time and money lost using the platform, subject to the terms and conditions of the guarantee.</p><p>The guarantee is intended for users who genuinely put the system into practice. It does not apply to unused accounts or users who do not demonstrate meaningful effort.</p><p>See our full Terms &amp; Conditions for the complete requirements.</p>`,
+		ar: `<p>إذا استخدمت دروب أرابيا بفعالية لمدة 90 يومًا، واتبعت تعليماتنا، واستفدت بالكامل من ميزات المنصة، وقدّمت إثباتًا على نشاطك، ولم تحقق أي مبيعات على الإطلاق، فقد تكون مؤهلًا لسياسة الاسترداد خلال 90 يومًا.</p><p>يمكن للمستخدمين المؤهلين الحصول على استرداد كامل، إضافة إلى تعويض عن الوقت والمال المفقودين أثناء استخدام المنصة، وفقًا لشروط وأحكام الضمان.</p><p>الضمان مخصص للمستخدمين الذين يطبّقون النظام فعليًا. ولا ينطبق على الحسابات غير المستخدمة أو على من لا يُظهر جهدًا حقيقيًا.</p><p>راجع الشروط والأحكام الكاملة للاطلاع على المتطلبات كافة.</p>`,
+		fr: `<p>Si vous utilisez activement Droparabia pendant 90 jours, suivez nos instructions, exploitez pleinement les fonctionnalités de la plateforme, fournissez une preuve de votre activité et ne réalisez aucune vente, vous pouvez être éligible à notre politique de remboursement à 90 jours.</p><p>Les utilisateurs éligibles peuvent recevoir un remboursement intégral, ainsi qu'une compensation pour le temps et l'argent perdus sur la plateforme, sous réserve des conditions générales de la garantie.</p><p>Cette garantie s'adresse aux utilisateurs qui mettent réellement le système en pratique. Elle ne s'applique pas aux comptes inutilisés ni aux utilisateurs ne démontrant pas d'effort sérieux.</p><p>Consultez nos Conditions générales complètes pour le détail des exigences.</p>`,
+	},
+	"faq.q19": {
+		en: `Is there a catch with dropshipping?`,
+		ar: `هل هناك مكسب خفي في الدروبشيبينغ؟`,
+		fr: `Y a-t-il un piège avec le dropshipping ?`,
+	},
+	"faq.a19": {
+		en: `<p>There is no magic button.</p><p>Dropshipping removes the need to purchase and manage inventory upfront, but it doesn't remove the responsibility of running a business.</p><p>You'll still need to choose products, build your store, create content, run ads, understand your customers, test different approaches, and learn from your results.</p><p>The difference is that Droparabia handles much of the infrastructure and operational friction that would otherwise consume your time and money.</p>`,
+		ar: `<p>لا يوجد زر سحري.</p><p>يزيل الدروبشيبينغ الحاجة إلى شراء المخزون وإدارته مقدمًا، لكنه لا يزيل مسؤولية إدارة عمل تجاري.</p><p>ستظل بحاجة إلى اختيار المنتجات، وبناء متجرك، وإنشاء المحتوى، وتشغيل الإعلانات، وفهم عملائك، وتجربة أساليب مختلفة، والتعلّم من نتائجك.</p><p>الفرق أن دروب أرابيا يتولى جزءًا كبيرًا من البنية التحتية والعقبات التشغيلية التي كانت ستستهلك وقتك ومالك.</p>`,
+		fr: `<p>Il n'y a pas de bouton magique.</p><p>Le dropshipping supprime la nécessité d'acheter et de gérer du stock à l'avance, mais il ne supprime pas la responsabilité de diriger une activité.</p><p>Vous devrez toujours choisir vos produits, construire votre boutique, créer du contenu, lancer des publicités, comprendre vos clients, tester différentes approches et apprendre de vos résultats.</p><p>La différence, c'est que Droparabia prend en charge l'essentiel de l'infrastructure et de la friction opérationnelle qui consommeraient autrement votre temps et votre argent.</p>`,
+	},
+	"faq.q20": {
+		en: `Can I eventually turn my dropshipping store into a real brand?`,
+		ar: `هل يمكنني تحويل متجر الدروبشيبينغ إلى علامة تجارية حقيقية لاحقًا؟`,
+		fr: `Puis-je transformer ma boutique de dropshipping en véritable marque ?`,
+	},
+	"faq.a20": {
+		en: `<p>Absolutely.</p><p>In fact, that's one of the paths Droparabia is designed to support.</p><p>You can start by testing products without purchasing inventory, identify what your customers actually want, and then begin building a recognizable brand around your winning products.</p><p>With our product-branding service, you can even start adding your own logo to eligible products without committing to large minimum orders.</p><p>Dropshipping can be your testing phase — not necessarily the final destination.</p>`,
+		ar: `<p>بالتأكيد.</p><p>في الواقع، هذا أحد المسارات التي صُمم دروب أرابيا لدعمها.</p><p>يمكنك البدء باختبار المنتجات دون شراء مخزون، ومعرفة ما يريده عملاؤك فعلًا، ثم البدء ببناء علامة تجارية مميزة حول منتجاتك الرابحة.</p><p>ومع خدمة تخصيص العلامة التجارية، يمكنك أيضًا البدء بإضافة شعارك على المنتجات المؤهلة دون الالتزام بطلبات كبيرة.</p><p>يمكن أن يكون الدروبشيبينغ مرحلة الاختبار لديك — وليس بالضرورة المحطة الأخيرة.</p>`,
+		fr: `<p>Absolument.</p><p>C'est même l'une des trajectoires que Droparabia est conçu pour accompagner.</p><p>Vous pouvez commencer par tester des produits sans acheter de stock, identifier ce que vos clients veulent réellement, puis construire une marque reconnaissable autour de vos produits gagnants.</p><p>Avec notre service de branding produit, vous pouvez même commencer à apposer votre logo sur les produits éligibles sans vous engager sur de grandes commandes minimum.</p><p>Le dropshipping peut être votre phase de test — pas nécessairement la destination finale.</p>`,
+	},
+	"faq.q21": {
+		en: `What makes Droparabia different from traditional dropshipping?`,
+		ar: `ما الذي يميّز دروب أرابيا عن الدروبشيبينغ التقليدي؟`,
+		fr: `Qu'est-ce qui différencie Droparabia du dropshipping traditionnel ?`,
+	},
+	"faq.a21": {
+		en: `<p>Traditional dropshipping often means spending hours finding products, researching suppliers, negotiating prices, arranging international shipping, and figuring out how to get products to your customers.</p><p>Droparabia brings those pieces together into one system built specifically for the Lebanese market.</p><p>You get:</p><ul><li>Product research</li><li>Supplier relationships</li><li>Product sourcing</li><li>Inventory management</li><li>Fulfillment</li><li>Delivery</li><li>Payment collection</li><li>Shopify integration</li><li>AI tools</li><li>Product branding</li><li>Educational resources</li><li>Advisor support</li><li>A community of other sellers</li></ul><p>So instead of building the entire infrastructure yourself, you can focus on the part that actually grows your business: selling.</p>`,
+		ar: `<p>غالبًا ما يعني الدروبشيبينغ التقليدي قضاء ساعات في إيجاد المنتجات، والبحث عن الموردين، والتفاوض على الأسعار، وترتيب الشحن الدولي، ومعرفة كيفية إيصال المنتجات إلى عملائك.</p><p>يجمع دروب أرابيا هذه القطع في نظام واحد مبني خصيصًا للسوق اللبناني.</p><p>تحصل على:</p><ul><li>بحث المنتجات</li><li>علاقات مع الموردين</li><li>توريد المنتجات</li><li>إدارة المخزون</li><li>التجهيز</li><li>التوصيل</li><li>تحصيل المدفوعات</li><li>تكامل مع شوبيفاي</li><li>أدوات ذكاء اصطناعي</li><li>تخصيص العلامة التجارية</li><li>موارد تعليمية</li><li>دعم المستشارين</li><li>مجتمع من البائعين الآخرين</li></ul><p>وبدلًا من بناء البنية التحتية بالكامل بنفسك، يمكنك التركيز على الجزء الذي ينمّي عملك فعلًا: البيع.</p>`,
+		fr: `<p>Le dropshipping traditionnel implique souvent de passer des heures à chercher des produits, étudier les fournisseurs, négocier les prix, organiser le transport international et trouver comment acheminer les produits jusqu'à vos clients.</p><p>Droparabia réunit toutes ces pièces dans un seul système conçu spécifiquement pour le marché libanais.</p><p>Vous obtenez :</p><ul><li>La recherche de produits</li><li>Les relations fournisseurs</li><li>Le sourcing produit</li><li>La gestion des stocks</li><li>La préparation</li><li>La livraison</li><li>L'encaissement</li><li>L'intégration Shopify</li><li>Des outils d'IA</li><li>Le branding produit</li><li>Des ressources pédagogiques</li><li>Le support de conseillers</li><li>Une communauté d'autres vendeurs</li></ul><p>Ainsi, au lieu de bâtir toute l'infrastructure vous-même, vous pouvez vous concentrer sur ce qui fait réellement grandir votre activité : vendre.</p>`,
 	},
 
 	"mobileapp.heading": {
@@ -858,9 +1021,81 @@ export const translations: Record<string, Record<Lang, string>> = {
 	"hero.niche0": { en: "Kitchen", ar: "المطبخ", fr: "Cuisine" },
 	"hero.niche1": { en: "Health and beauty", ar: "الصحة والجمال", fr: "Santé et beauté" },
 	"hero.niche2": { en: "Electronic", ar: "الإلكترونيات", fr: "Électronique" },
-	"hero.niche3": { en: "Car Care", ar: "العناية بالسيارات", fr: "Entretien auto" },
-	"hero.niche4": { en: "Pets", ar: "الحيوانات الأليفة", fr: "Animaux" },
-	"hero.niche5": { en: "Sporting Goods", ar: "المستلزمات الرياضية", fr: "Articles de sport" },
+	"hero.niche3": { en: "Home & Garden", ar: "المنزل والحديقة", fr: "Maison et jardin" },
+
+	// --- Product catalog: Alibaba vs Droparabia comparison ---
+	// Chrome (buttons, headings, the Alibaba explainer) is tagged with data-i18n and handled
+	// by the global applier in Layout.astro. The price rows are not: their text is rewritten
+	// per product by the catalog's own script, which would leave the applier's cached English
+	// "original" pointing at whichever product happened to be on screen first. Those rows
+	// carry data-row-key / data-row-vkey instead and are resolved by that same script.
+	"catalog.toggle.alibaba": { en: "On Alibaba", ar: "على علي بابا", fr: "Sur Alibaba" },
+	"catalog.toggle.droparabia": { en: "On Droparabia", ar: "على دروب أرابيا", fr: "Sur Droparabia" },
+	"catalog.info.button": { en: "How is this calculated?", ar: "كيف يتم حساب ذلك؟", fr: "Comment est-ce calculé ?" },
+	"catalog.info.source": { en: "See it on Alibaba", ar: "شاهده على علي بابا", fr: "Voir sur Alibaba" },
+
+	"catalog.intro.moq": {
+		en: "Items on Alibaba are sold at a wholesale price per piece and suppliers require you to buy in a Minimum Order Quantity (MOQ).",
+		ar: "تُباع المنتجات على علي بابا بسعر الجملة للقطعة الواحدة، ويشترط الموردون الشراء بحدّ أدنى لكمية الطلب (MOQ).",
+		fr: "Les articles sur Alibaba sont vendus à un prix de gros à la pièce et les fournisseurs exigent un achat selon une quantité minimum de commande (MOQ).",
+	},
+	"catalog.intro.example": {
+		en: "Example: $1/unit with MOQ of 100, meaning you need to buy at least 100 piece.",
+		ar: "مثال: 1 دولار للوحدة مع حدّ أدنى للطلب 100، أي أنك بحاجة إلى شراء 100 قطعة على الأقل.",
+		fr: "Exemple : 1 $/unité avec un MOQ de 100, c'est-à-dire que vous devez acheter au moins 100 pièce.",
+	},
+	"catalog.intro.shipping": {
+		en: "Air shipping to Lebanon can average approximately $13 per kg ($15 for batteries and liquids).",
+		ar: "قد يبلغ متوسط الشحن الجوي إلى لبنان نحو 13 دولارًا للكيلوغرام (15 دولارًا للبطاريات والسوائل).",
+		fr: "Le fret aérien vers le Liban coûte en moyenne environ 13 $ par kg (15 $ pour les batteries et les liquides).",
+	},
+	"catalog.intro.lead": {
+		en: "So, an example if you were to buy this product from Alibaba:",
+		ar: "وإليك مثالاً لو أردت شراء هذا المنتج من علي بابا:",
+		fr: "Voici donc un exemple si vous achetiez ce produit sur Alibaba :",
+	},
+
+	// Row labels. Kept short on purpose: each row is a label opposite a figure, so a long
+	// translation wraps and breaks the alignment the comparison depends on.
+	"catalog.row.costPerItem": { en: "Cost per item", ar: "سعر القطعة", fr: "Prix unitaire" },
+	"catalog.row.moq": { en: "MOQ", ar: "الحد الأدنى", fr: "MOQ" },
+	"catalog.row.shippingPerItem": { en: "Shipping per item", ar: "شحن القطعة", fr: "Livraison / article" },
+	"catalog.row.totalCost": { en: "Total cost", ar: "التكلفة الإجمالية", fr: "Coût total" },
+	"catalog.row.productCost": { en: "Product Cost", ar: "تكلفة المنتج", fr: "Coût du produit" },
+	"catalog.row.estimatedSelling": { en: "Estimated Selling", ar: "سعر البيع المتوقع", fr: "Vente estimée" },
+	"catalog.row.estimatedProfit": { en: "Estimated Profit", ar: "الربح المتوقع", fr: "Bénéfice estimé" },
+	"catalog.row.weight": { en: "Weight", ar: "الوزن", fr: "Poids" },
+	"catalog.row.shippingCostPerItem": { en: "Shipping cost per item", ar: "تكلفة الشحن للقطعة", fr: "Coût de livraison par article" },
+	"catalog.row.productCostCalc": { en: "Product cost", ar: "تكلفة المنتج", fr: "Coût du produit" },
+	"catalog.row.shippingCost": { en: "Shipping cost", ar: "تكلفة الشحن", fr: "Coût de livraison" },
+	"catalog.row.priceCovers": { en: "Price covers", ar: "السعر يشمل", fr: "Le prix couvre" },
+	"catalog.row.shipping": { en: "Shipping", ar: "الشحن", fr: "Livraison" },
+	"catalog.row.operations": { en: "Operations", ar: "التشغيل", fr: "Opérations" },
+
+	// Values that are prose rather than figures. Figures stay as-is in every language; only
+	// the unit word after a MOQ count is substituted, via catalog.value.piece.
+	"catalog.value.none": { en: "None", ar: "لا يوجد", fr: "Aucune" },
+	"catalog.value.piece": { en: "piece", ar: "قطعة", fr: "pièce" },
+	"catalog.value.noMoq": {
+		en: "No minimum order quantity, you pay the cost of each item sold and keep the profit",
+		ar: "لا حدّ أدنى لكمية الطلب، تدفع تكلفة كل قطعة تُباع وتحتفظ بالربح",
+		fr: "Aucune quantité minimum de commande : vous payez le coût de chaque article vendu et gardez le bénéfice",
+	},
+	"catalog.value.covers": {
+		en: "Sourcing, international shipping, warehousing, fulfillment and handling",
+		ar: "التوريد والشحن الدولي والتخزين والتجهيز والمناولة",
+		fr: "Sourcing, transport international, stockage, préparation et manutention",
+	},
+	"catalog.value.airFreight": {
+		en: "Air freight to Lebanon averages around $15/kg, and varies by shipment",
+		ar: "يبلغ متوسط الشحن الجوي إلى لبنان نحو 15 دولارًا للكيلوغرام، ويختلف حسب الشحنة",
+		fr: "Le fret aérien vers le Liban coûte en moyenne environ 15 $/kg et varie selon l'expédition",
+	},
+	"catalog.value.operations": {
+		en: "Around 15–20% covers fulfillment, warehousing and related running costs",
+		ar: "نحو 15–20% تغطي التجهيز والتخزين والتكاليف التشغيلية المرتبطة",
+		fr: "Environ 15–20 % couvrent la préparation, le stockage et les frais de fonctionnement associés",
+	},
 
 	// --- MajdGBT chat demo ---
 	"majdgbt.inputPlaceholder": {

@@ -3,53 +3,684 @@ import HexBackground from "../HexBackground.astro";
 import { ik } from "../../lib/imagekit";
 import { translations } from "../../lib/i18n";
 
-// Axial hex-grid coordinates (flat-top hexagons) for a tightly interlocked
-// diagonal cluster, bottom-left to top-right — matches the reference hive image.
-// Colors are a linear interpolation between the brand primary and secondary,
-// ordered along the same diagonal so the cluster reads as one smooth gradient.
-// Pointy-top hexagons (point at top/bottom, flat edges on the sides) — matches /ref.png.
-const HEX_W = 170; // flat-to-flat width
-const HEX_SIZE = HEX_W / Math.sqrt(3); // circumradius
-const HEX_H = HEX_SIZE * 2; // vertex-to-vertex height
-// Spreads the hex centers out further than a tight tessellation would, so a visible
-// gap opens up between neighbors instead of them sharing an edge.
-const SPACING_FACTOR = 1.16;
-// Product image, perfectly centered in each hex.
-const ICON_SCALE = (HEX_W * 0.66) / 24;
-const ICON_X = HEX_W / 2 - (24 * ICON_SCALE) / 2;
-const ICON_Y = HEX_H / 2 - (24 * ICON_SCALE) / 2;
-// SVGs clip to their viewBox by default, and the hex's top/bottom vertices sit right on
-// that edge, so half the outline's stroke width was getting cut off at the tips. Padding
-// the SVG canvas (and shifting the viewBox origin negative) gives the stroke room to
-// breathe without moving the hex path's own coordinates.
-const STROKE_PAD = 4;
-const SVG_W = HEX_W + STROKE_PAD * 2;
-const SVG_H = HEX_H + STROKE_PAD * 2;
-
 // Niches the toggle next to the hex cluster cycles through — each folder under
 // /public/products holds 8 numbered images, one per hex. The toggle is a diagonal
 // line (bottom-left to top-right) with an arrow button at each end.
-const niches = ["Kitchen", "Health and beauty", "Electronic", "Car Care", "Pets", "Sporting Goods"];
+const niches = ["Kitchen", "Health and beauty", "Electronic", "Home & Garden"];
+
+// Both sides of the comparison, per product. The Alibaba side is deliberately the full
+// breakdown rather than one number — the whole argument the section makes is that the real
+// cost of sourcing yourself is the MOQ-multiplied total, not the per-item price.
+// Each row is a label and a value, where the value keeps the working shown rather than just
+// the result — "$15 x 0.109 = $1.63" instead of "$1.63". Seeing the MOQ multiply out is the
+// argument the section is making, so the arithmetic is the content, not a detail.
+interface Row {
+	label: string;
+	value: string;
+	// Emphasised rows: the three derived totals on the Alibaba side, and the profit line.
+	strong?: boolean;
+}
+// summary is what the card shows at rest — the few numbers that make the comparison. detail
+// is the working behind them, revealed by the info button, so the formulas are available to
+// anyone who wants to check the maths without crowding the card for everyone who doesn't.
+interface Side {
+	summary: Row[];
+	detail: Row[];
+	// The listing these figures were read off, shown as a link at the foot of the popover.
+	// Optional: only products whose source is public have one.
+	sourceUrl?: string;
+}
+interface Pricing {
+	name: string;
+	alibaba: Side;
+	droparabia: Side;
+}
+
+// What the Droparabia price covers. The same for every product, so it's written once rather
+// than copied per product where the four copies could drift apart.
+const DROPARABIA_DETAIL: Row[] = [
+	{ label: "MOQ", value: "No minimum order quantity, you pay the cost of each item sold and keep the profit" },
+	{ label: "Price covers", value: "Sourcing, international shipping, warehousing, fulfillment and handling" },
+	{ label: "Shipping", value: "Air freight to Lebanon averages around $15/kg, and varies by shipment" },
+	{ label: "Operations", value: "Around 15–20% covers fulfillment, warehousing and related running costs" },
+];
+
+// PLACEHOLDER — every product without supplied figures yet. Identical across 23 of the 24
+// products, so it must not ship as real data; it exists only so the layout can be seen
+// before the numbers arrive.
+const PLACEHOLDER: Pricing = {
+	name: "Product name",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "—" },
+			{ label: "MOQ", value: "—" },
+			{ label: "Shipping per item", value: "—" },
+			{ label: "Total cost", value: "—", strong: true },
+		],
+		detail: [],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "—" },
+			{ label: "MOQ", value: "—" },
+			{ label: "Estimated Selling", value: "—" },
+			{ label: "Estimated Profit", value: "—", strong: true },
+		],
+		detail: [],
+	},
+};
+
+// Real, supplied figures, transcribed exactly as written — same wording, same operators,
+// same order — since they're the proof behind each summary's total. The Alibaba arithmetic
+// follows one rule throughout: shipping per item is $15 x weight, both the product and the
+// shipping line multiply out by MOQ, and the total is the two added together.
+const MILK_FROTHER: Pricing = {
+	name: "Electric milk frother",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$3.99" },
+			{ label: "MOQ", value: "100 piece" },
+			{ label: "Shipping per item", value: "$1.63" },
+			{ label: "Total cost", value: "$562.00", strong: true },
+		],
+		sourceUrl:
+			"https://www.alibaba.com/product-detail/Professional-Electric-Milk-Frother-Handheld-Battery_1601871972191.html",
+		detail: [
+			{ label: "Cost per item", value: "$3.99" },
+			{ label: "Weight", value: "0.109 Kg" },
+			{ label: "MOQ", value: "100 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 0.109 = $1.63" },
+			{ label: "Product cost", value: "$3.99 × 100 = $399.00", strong: true },
+			{ label: "Shipping cost", value: "$1.63 × 100 = $163.00", strong: true },
+			{ label: "Total cost", value: "$399.00 + $163.00 = $562.00", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$4.50" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$24.99" },
+			{ label: "Estimated Profit", value: "$13.99", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+const PORTABLE_BLENDER: Pricing = {
+	name: "2 in 1 Portable Blender & Cup",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$1.54" },
+			{ label: "MOQ", value: "2 piece" },
+			{ label: "Shipping per item", value: "$4.50" },
+			{ label: "Total cost", value: "$12.08", strong: true },
+		],
+		// An image-search results page rather than a single listing, so the query string is
+		// the address here and can't be trimmed the way the others' tracking params were.
+		sourceUrl:
+			"https://www.alibaba.com/search/page?spm=a2700.image-text-search.the-new-header_fy23_pc_search_bar.multiImage&SearchScene=imageTextSearch&imagePath=https%3A%2F%2Ficbu-picture.oss-us-west-1.aliyuncs.com%2Ficbuimgsearch%2FimageBase64_4e888463942c4012b2ae967221f1de38.jpeg&regions=%5B%22334%2C406%2C9%2C209%22%2C%2247%2C115%2C228%2C402%22%2C%2267%2C195%2C0%2C209%22%2C%22122%2C188%2C271%2C401%22%5D&tab=all",
+		detail: [
+			{ label: "Cost per item", value: "$1.54" },
+			{ label: "Weight", value: "0.300 Kg" },
+			{ label: "MOQ", value: "2 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 0.300 = $4.50" },
+			{ label: "Product cost", value: "$1.54 × 2 = $3.08", strong: true },
+			{ label: "Shipping cost", value: "$4.50 × 2 = $9.00", strong: true },
+			{ label: "Total cost", value: "$3.08 + $9.00 = $12.08", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$8.70" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$34.99" },
+			{ label: "Estimated Profit", value: "$20.99", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+const CREPE_MAKER: Pricing = {
+	name: "Multifunction Crepe Maker",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$4.82" },
+			{ label: "MOQ", value: "16 piece" },
+			{ label: "Shipping per item", value: "$75.00" },
+			{ label: "Total cost", value: "$1,277.12", strong: true },
+		],
+		sourceUrl:
+			"https://www.alibaba.com/product-detail/New-Trend-Home-Automatic-Pancake-Maker_1600499198445.html",
+		detail: [
+			{ label: "Cost per item", value: "$4.82" },
+			{ label: "Weight", value: "5 Kg" },
+			{ label: "MOQ", value: "16 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 5 = $75.00" },
+			{ label: "Product cost", value: "$4.82 × 16 = $77.12", strong: true },
+			{ label: "Shipping cost", value: "$75.00 × 16 = $1,200.00", strong: true },
+			{ label: "Total cost", value: "$77.12 + $1,200.00 = $1,277.12", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$11.10" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$34.99" },
+			{ label: "Estimated Profit", value: "$20.49", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+const GARLIC_MACHINE: Pricing = {
+	name: "Mini Electric Garlic Machine",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$2.31" },
+			{ label: "MOQ", value: "50 piece" },
+			{ label: "Shipping per item", value: "$6.00" },
+			{ label: "Total cost", value: "$415.50", strong: true },
+		],
+		sourceUrl:
+			"https://www.alibaba.com/product-detail/Manufacturer-Wholesale-Household-Mini-Meat-Grinder_1601019151181.html",
+		detail: [
+			{ label: "Cost per item", value: "$2.31" },
+			{ label: "Weight", value: "0.400 Kg" },
+			{ label: "MOQ", value: "50 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 0.400 = $6.00" },
+			{ label: "Product cost", value: "$2.31 × 50 = $115.50", strong: true },
+			{ label: "Shipping cost", value: "$6.00 × 50 = $300.00", strong: true },
+			{ label: "Total cost", value: "$115.50 + $300.00 = $415.50", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$3.00" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$27.99" },
+			{ label: "Estimated Profit", value: "$16.49", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+const EYEBROW_TRIMMER: Pricing = {
+	name: "2 in 1 eyebrow trimmer",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$4.39" },
+			{ label: "MOQ", value: "2 piece" },
+			{ label: "Shipping per item", value: "$6.00" },
+			{ label: "Total cost", value: "$20.78", strong: true },
+		],
+		sourceUrl: "https://www.alibaba.com/product-detail/Electric-2-in-1-USB-Rechargeable_1601448753334.html",
+		detail: [
+			{ label: "Cost per item", value: "$4.39" },
+			{ label: "Weight", value: "0.400 Kg" },
+			{ label: "MOQ", value: "2 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 0.400 = $6.00" },
+			{ label: "Product cost", value: "$4.39 × 2 = $8.78", strong: true },
+			{ label: "Shipping cost", value: "$6.00 × 2 = $12.00", strong: true },
+			{ label: "Total cost", value: "$8.78 + $12.00 = $20.78", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$4.80" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$27.99" },
+			{ label: "Estimated Profit", value: "$17.49", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+const HAIR_OIL_APPLICATOR: Pricing = {
+	name: "2 in 1 Electric Hair Oil Applicator and Scalp Massager",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$9.90" },
+			{ label: "MOQ", value: "10 piece" },
+			{ label: "Shipping per item", value: "$22.50" },
+			{ label: "Total cost", value: "$324.00", strong: true },
+		],
+		sourceUrl: "https://www.alibaba.com/product-detail/LED-Scalp-Vibration-Massager-Hair-Growth_1601280153633.html",
+		detail: [
+			{ label: "Cost per item", value: "$9.90" },
+			{ label: "Weight", value: "1.500 Kg" },
+			{ label: "MOQ", value: "10 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 1.500 = $22.50" },
+			{ label: "Product cost", value: "$9.90 × 10 = $99.00", strong: true },
+			{ label: "Shipping cost", value: "$22.50 × 10 = $225.00", strong: true },
+			{ label: "Total cost", value: "$99.00 + $225.00 = $324.00", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$14.00" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$29.99" },
+			{ label: "Estimated Profit", value: "$17.50", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+const HAIR_CURLER: Pricing = {
+	name: "Cordless Automatic Hair Curler",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$11.15" },
+			{ label: "MOQ", value: "50 piece" },
+			{ label: "Shipping per item", value: "$15.00" },
+			{ label: "Total cost", value: "$1,307.50", strong: true },
+		],
+		sourceUrl: "https://www.alibaba.com/product-detail/2022-New-Style-Wireless-Automatic-Magic_1600296897275.html",
+		detail: [
+			{ label: "Cost per item", value: "$11.15" },
+			{ label: "Weight", value: "1.000 Kg" },
+			{ label: "MOQ", value: "50 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 1.000 = $15.00" },
+			{ label: "Product cost", value: "$11.15 × 50 = $557.50", strong: true },
+			{ label: "Shipping cost", value: "$15.00 × 50 = $750.00", strong: true },
+			{ label: "Total cost", value: "$557.50 + $750.00 = $1,307.50", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$11.00" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$59.99" },
+			{ label: "Estimated Profit", value: "$38.99", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+const WRINKLE_REMOVER: Pricing = {
+	name: "Neck and face wrinkle remover",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$14.15" },
+			{ label: "MOQ", value: "2 piece" },
+			{ label: "Shipping per item", value: "$4.50" },
+			{ label: "Total cost", value: "$37.30", strong: true },
+		],
+		sourceUrl: "https://www.alibaba.com/product-detail/Tiktok-Hot-Seller-Neck-Face-Beauty_1601704975274.html",
+		detail: [
+			{ label: "Cost per item", value: "$14.15" },
+			{ label: "Weight", value: "0.300 Kg" },
+			{ label: "MOQ", value: "2 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 0.300 = $4.50" },
+			{ label: "Product cost", value: "$14.15 × 2 = $28.30", strong: true },
+			{ label: "Shipping cost", value: "$4.50 × 2 = $9.00", strong: true },
+			{ label: "Total cost", value: "$28.30 + $9.00 = $37.30", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$12.00" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$49.99" },
+			{ label: "Estimated Profit", value: "$33.49", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+const GUN_MASSAGER: Pricing = {
+	name: "Gun Massager",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$4.90" },
+			{ label: "MOQ", value: "5 piece" },
+			{ label: "Shipping per item", value: "$9.00" },
+			{ label: "Total cost", value: "$69.50", strong: true },
+		],
+		sourceUrl: "https://www.alibaba.com/product-detail/Home-Impulse-Percussion-Deep-Tissue-Vibration_1601672045864.html",
+		detail: [
+			{ label: "Cost per item", value: "$4.90" },
+			{ label: "Weight", value: "0.600 Kg" },
+			{ label: "MOQ", value: "5 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 0.600 = $9.00" },
+			{ label: "Product cost", value: "$4.90 × 5 = $24.50", strong: true },
+			{ label: "Shipping cost", value: "$9.00 × 5 = $45.00", strong: true },
+			{ label: "Total cost", value: "$24.50 + $45.00 = $69.50", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$9.90" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$79.99" },
+			{ label: "Estimated Profit", value: "$48.99", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+const GALAXY_PROJECTOR: Pricing = {
+	name: "Astronaut Galaxy Sky Projector Rechargeable with Bluetooth Speaker",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$4.50" },
+			{ label: "MOQ", value: "2 piece" },
+			{ label: "Shipping per item", value: "$15.00" },
+			{ label: "Total cost", value: "$39.00", strong: true },
+		],
+		sourceUrl: "https://www.alibaba.com/product-detail/Adjustable-Brightness-Astronaut-galaxy-Nebula-Sky_1601049079843.html",
+		detail: [
+			{ label: "Cost per item", value: "$4.50" },
+			{ label: "Weight", value: "1.000 Kg" },
+			{ label: "MOQ", value: "2 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 1.000 = $15.00" },
+			{ label: "Product cost", value: "$4.50 × 2 = $9.00", strong: true },
+			{ label: "Shipping cost", value: "$15.00 × 2 = $30.00", strong: true },
+			{ label: "Total cost", value: "$9.00 + $30.00 = $39.00", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$11.00" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$39.99" },
+			{ label: "Estimated Profit", value: "$24.99", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+const RAIN_CLOUD_HUMIDIFIER: Pricing = {
+	name: "RGB Raining Humidifier Rain Cloud",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$33.50" },
+			{ label: "MOQ", value: "1 piece" },
+			{ label: "Shipping per item", value: "$15.00" },
+			{ label: "Total cost", value: "$48.50", strong: true },
+		],
+		sourceUrl: "https://www.alibaba.com/product-detail/Newest-Battery-Operated-Rechargeable-Mushroom-Humidifier_1600785869484.html",
+		detail: [
+			{ label: "Cost per item", value: "$33.50" },
+			{ label: "Weight", value: "1.000 Kg" },
+			{ label: "MOQ", value: "1 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 1.000 = $15.00" },
+			{ label: "Product cost", value: "$33.50 × 1 = $33.50", strong: true },
+			{ label: "Shipping cost", value: "$15.00 × 1 = $15.00", strong: true },
+			{ label: "Total cost", value: "$33.50 + $15.00 = $48.50", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$13.00" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$34.99" },
+			{ label: "Estimated Profit", value: "$19.49", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+const SPACESHIP_HUMIDIFIER: Pricing = {
+	name: "Astronaut Spaceship Aromatherapy Air Humidifier Purifier",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$3.65" },
+			{ label: "MOQ", value: "50 piece" },
+			{ label: "Shipping per item", value: "$30.00" },
+			{ label: "Total cost", value: "$1,682.50", strong: true },
+		],
+		sourceUrl: "https://www.alibaba.com/product-detail/Space-Capsule-USB-Aromatherapy-Diffuser-220mL_1601622490780.html",
+		detail: [
+			{ label: "Cost per item", value: "$3.65" },
+			{ label: "Weight", value: "2.000 Kg" },
+			{ label: "MOQ", value: "50 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 2.000 = $30.00" },
+			{ label: "Product cost", value: "$3.65 × 50 = $182.50", strong: true },
+			{ label: "Shipping cost", value: "$30.00 × 50 = $1,500.00", strong: true },
+			{ label: "Total cost", value: "$182.50 + $1,500.00 = $1,682.50", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$5.00" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$29.99" },
+			{ label: "Estimated Profit", value: "$17.49", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+const SOLAR_FLOOR_LAMP: Pricing = {
+	name: "Outdoor Waterproof LED Floor Lamp Solar",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$1.95" },
+			{ label: "MOQ", value: "10 piece" },
+			{ label: "Shipping per item", value: "$12.00" },
+			{ label: "Total cost", value: "$139.50", strong: true },
+		],
+		sourceUrl: "https://www.alibaba.com/product-detail/Outdoor-Solar-Powered-Garden-Lights-Ultra_1601423201865.html",
+		detail: [
+			{ label: "Cost per item", value: "$1.95" },
+			{ label: "Weight", value: "0.800 Kg" },
+			{ label: "MOQ", value: "10 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 0.800 = $12.00" },
+			{ label: "Product cost", value: "$1.95 × 10 = $19.50", strong: true },
+			{ label: "Shipping cost", value: "$12.00 × 10 = $120.00", strong: true },
+			{ label: "Total cost", value: "$19.50 + $120.00 = $139.50", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$4.00" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$34.99" },
+			{ label: "Estimated Profit", value: "$20.49", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+const FLAME_DIFFUSER: Pricing = {
+	name: "Flame Diffuser Night Light Gift Set Decor Fire Flame Humidifier",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$6.03" },
+			{ label: "MOQ", value: "1 piece" },
+			{ label: "Shipping per item", value: "$6.00" },
+			{ label: "Total cost", value: "$12.03", strong: true },
+		],
+		sourceUrl: "https://www.alibaba.com/product-detail/Commercial-Hotel-Electric-Humificador-Humidifier-Air_1600700702691.html",
+		detail: [
+			{ label: "Cost per item", value: "$6.03" },
+			{ label: "Weight", value: "0.400 Kg" },
+			{ label: "MOQ", value: "1 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 0.400 = $6.00" },
+			{ label: "Product cost", value: "$6.03 × 1 = $6.03", strong: true },
+			{ label: "Shipping cost", value: "$6.00 × 1 = $6.00", strong: true },
+			{ label: "Total cost", value: "$6.03 + $6.00 = $12.03", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$12.00" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$32.99" },
+			{ label: "Estimated Profit", value: "$21.49", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+const LINT_REMOVER: Pricing = {
+	name: "Lint Remover",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$3.05" },
+			{ label: "MOQ", value: "5 piece" },
+			{ label: "Shipping per item", value: "$3.90" },
+			{ label: "Total cost", value: "$34.75", strong: true },
+		],
+		sourceUrl: "https://www.alibaba.com/product-detail/New-Style-Cordless-Electric-Lint-Remover_1601599343252.html",
+		detail: [
+			{ label: "Cost per item", value: "$3.05" },
+			{ label: "Weight", value: "0.260 Kg" },
+			{ label: "MOQ", value: "5 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 0.260 = $3.90" },
+			{ label: "Product cost", value: "$3.05 × 5 = $15.25", strong: true },
+			{ label: "Shipping cost", value: "$3.90 × 5 = $19.50", strong: true },
+			{ label: "Total cost", value: "$15.25 + $19.50 = $34.75", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$5.70" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$24.99" },
+			{ label: "Estimated Profit", value: "$14.49", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+// The supplied figure for this one was a volume (150ml/bottle), not a weight, so the $15/kg
+// rule had nothing to multiply. 0.150 Kg is the straight water-equivalent conversion and
+// ignores the bottle itself — confirm before this ships as a real number.
+const SHOE_CLEANER: Pricing = {
+	name: "Shoe cleaner",
+	alibaba: {
+		summary: [
+			{ label: "Cost per item", value: "$0.72" },
+			{ label: "MOQ", value: "1000 piece" },
+			{ label: "Shipping per item", value: "$2.25" },
+			{ label: "Total cost", value: "$2,970.00", strong: true },
+		],
+		sourceUrl: "https://www.alibaba.com/product-detail/Foam-Leather-White-Shoe-Cleaner_1600663547132.html",
+		detail: [
+			{ label: "Cost per item", value: "$0.72" },
+			{ label: "Weight", value: "150ml/bottle (≈ 0.150 Kg)" },
+			{ label: "MOQ", value: "1000 piece" },
+			{ label: "Shipping cost per item", value: "$15 x 0.150 = $2.25" },
+			{ label: "Product cost", value: "$0.72 × 1000 = $720.00", strong: true },
+			{ label: "Shipping cost", value: "$2.25 × 1000 = $2,250.00", strong: true },
+			{ label: "Total cost", value: "$720.00 + $2,250.00 = $2,970.00", strong: true },
+		],
+	},
+	droparabia: {
+		summary: [
+			{ label: "Product Cost", value: "$5.99" },
+			{ label: "MOQ", value: "None" },
+			{ label: "Estimated Selling", value: "$24.99" },
+			{ label: "Estimated Profit", value: "$14.49", strong: true },
+		],
+		detail: DROPARABIA_DETAIL,
+	},
+};
+
+// Products whose figures and photo have both been supplied, keyed by niche. Photos go through
+// ik() like every other image on the site, so they are served CDN-side at the width actually
+// rendered rather than as full-size files from this origin.
+const sourced: Record<string, { img: string; pricing: Pricing }[]> = {
+	Kitchen: [
+		{ img: ik("/electric-milk-frother.jpg", "w-420,q-80"), pricing: MILK_FROTHER },
+		{ img: ik("/portable-blender-cup.jpeg", "w-420,q-80"), pricing: PORTABLE_BLENDER },
+		{ img: ik("/crepe-maker.webp", "w-420,q-80"), pricing: CREPE_MAKER },
+		{ img: ik("/garlic-machine.jpg", "w-420,q-80"), pricing: GARLIC_MACHINE },
+	],
+	// Key must match the niche string exactly, hence "Health and beauty" rather than "Beauty".
+	"Health and beauty": [
+		{ img: ik("/eyebrow-trimmer.jpg", "w-420,q-80"), pricing: EYEBROW_TRIMMER },
+		{ img: ik("/hair-oil-applicator.jpg", "w-420,q-80"), pricing: HAIR_OIL_APPLICATOR },
+		{ img: ik("/hair-curler.png", "w-420,q-80"), pricing: HAIR_CURLER },
+		{ img: ik("/wrinkle-remover.jpg", "w-420,q-80"), pricing: WRINKLE_REMOVER },
+	],
+	Electronic: [
+		{ img: ik("/gun-massager.jpg", "w-420,q-80"), pricing: GUN_MASSAGER },
+		{ img: ik("/galaxy-projector.jpg", "w-420,q-80"), pricing: GALAXY_PROJECTOR },
+		{ img: ik("/rain-cloud-humidifier.jpg", "w-420,q-80"), pricing: RAIN_CLOUD_HUMIDIFIER },
+		{ img: ik("/spaceship-humidifier.webp", "w-420,q-80"), pricing: SPACESHIP_HUMIDIFIER },
+	],
+	"Home & Garden": [
+		{ img: ik("/solar-floor-lamp.png", "w-420,q-80"), pricing: SOLAR_FLOOR_LAMP },
+		{ img: ik("/flame-diffuser.webp", "w-420,q-80"), pricing: FLAME_DIFFUSER },
+		{ img: ik("/lint-remover.jpg", "w-420,q-80"), pricing: LINT_REMOVER },
+		{ img: ik("/shoe-cleaner.jpg", "w-420,q-80"), pricing: SHOE_CLEANER },
+	],
+};
+
 const nicheProducts = niches.map((niche) =>
-	Array.from({ length: 8 }, (_, i) => ik(`/products/${niche}/${i + 1}.png`, "w-300,q-80")),
+	Array.from({ length: 4 }, (_, i) => sourced[niche]?.[i]?.img ?? ik(`/products/${niche}/${i + 1}.png`, "w-300,q-80")),
+);
+// Row text is rewritten per product by the client script, so these rows can't use the
+// global [data-i18n] applier — it caches the first English value it sees as the "original"
+// and would restore that one for every later product. Each row instead carries the i18n key
+// for its label (and, where the value is prose rather than a figure, for its value), and the
+// catalog's own script resolves them. Figures are identical in every language and are left
+// exactly as written; only the unit word after a MOQ count is substituted.
+const ROW_KEYS: Record<string, string> = {
+	"Cost per item": "catalog.row.costPerItem",
+	MOQ: "catalog.row.moq",
+	"Shipping per item": "catalog.row.shippingPerItem",
+	"Total cost": "catalog.row.totalCost",
+	"Product Cost": "catalog.row.productCost",
+	"Estimated Selling": "catalog.row.estimatedSelling",
+	"Estimated Profit": "catalog.row.estimatedProfit",
+	Weight: "catalog.row.weight",
+	"Shipping cost per item": "catalog.row.shippingCostPerItem",
+	// Distinguished from "Product Cost" above only by case — the summary row and the
+	// working's line are different strings and translate differently.
+	"Product cost": "catalog.row.productCostCalc",
+	"Shipping cost": "catalog.row.shippingCost",
+	"Price covers": "catalog.row.priceCovers",
+	Shipping: "catalog.row.shipping",
+	Operations: "catalog.row.operations",
+};
+const VALUE_KEYS: Record<string, string> = {
+	None: "catalog.value.none",
+	"No minimum order quantity, you pay the cost of each item sold and keep the profit": "catalog.value.noMoq",
+	"Sourcing, international shipping, warehousing, fulfillment and handling": "catalog.value.covers",
+	"Air freight to Lebanon averages around $15/kg, and varies by shipment": "catalog.value.airFreight",
+	"Around 15–20% covers fulfillment, warehousing and related running costs": "catalog.value.operations",
+};
+
+interface I18nRow extends Row {
+	lkey?: string;
+	vkey?: string;
+	// Set for "100 piece"-style values: the count stays, the unit word is translated.
+	count?: string;
+}
+function enrichRow(row: Row): I18nRow {
+	const out: I18nRow = { ...row };
+	if (ROW_KEYS[row.label]) out.lkey = ROW_KEYS[row.label];
+	const moq = /^(\d[\d,]*) piece$/.exec(row.value);
+	if (VALUE_KEYS[row.value]) out.vkey = VALUE_KEYS[row.value];
+	else if (moq) {
+		out.vkey = "catalog.value.piece";
+		out.count = moq[1];
+	}
+	return out;
+}
+function enrichSide(side: Side) {
+	return { ...side, summary: side.summary.map(enrichRow), detail: side.detail.map(enrichRow) };
+}
+
+// Only the catalog's own strings are handed to the client script — the whole translation
+// table would be a few dozen KiB of inline JSON on every page load.
+const catalogI18n = Object.fromEntries(Object.entries(translations).filter(([k]) => k.startsWith("catalog.")));
+
+// Parallel to nicheProducts: same niche order, same product order.
+const nichePricing = niches.map((niche) =>
+	Array.from({ length: 4 }, (_, i) => {
+		const pricing = sourced[niche]?.[i]?.pricing ?? PLACEHOLDER;
+		return { name: pricing.name, alibaba: enrichSide(pricing.alibaba), droparabia: enrichSide(pricing.droparabia) };
+	}),
 );
 // Display labels only — folder names above (used for image paths) stay in English regardless
 // of language, since they're just disk paths, not user-facing text.
 const nicheLabels = niches.map((_, i) => translations[`hero.niche${i}`]);
 
-// A proper rectangular honeycomb — 4 hexes across the top row, 4 across the bottom row,
-// the bottom row offset half a hex right (and down) by the axial (q + r/2) term so they
-// interlock tightly, matching the reference image.
-const axial = [
-	{ q: 0, r: 0, color: "#2745ff" },
-	{ q: 1, r: 0, color: "#213de9" },
-	{ q: 2, r: 0, color: "#1c35d3" },
-	{ q: 3, r: 0, color: "#162dbd" },
-	{ q: 0, r: 1, color: "#1124a8" },
-	{ q: 1, r: 1, color: "#0b1c92" },
-	{ q: 2, r: 1, color: "#06147c" },
-	{ q: 3, r: 1, color: "#000c66" },
-];
 // Blends a hex color toward white (t > 0) or black (t < 0) to build a highlight/shadow
 // pair for a glossy sheen, instead of one flat stroke color per hexagon.
 function shade(hex: string, t: number): string {
@@ -58,59 +689,27 @@ function shade(hex: string, t: number): string {
 	const mix = (c: number) => Math.round(c + ((t > 0 ? 255 : 0) - c) * Math.abs(t));
 	return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
 }
-const rawHexes = axial.map((h) => ({
-	x: HEX_SIZE * Math.sqrt(3) * (h.q + h.r / 2) * SPACING_FACTOR,
-	y: HEX_SIZE * 1.5 * h.r * SPACING_FACTOR,
-	color: h.color,
-	light: shade(h.color, 0.55),
-	dark: shade(h.color, -0.35),
-}));
-const minX = Math.min(...rawHexes.map((h) => h.x));
-const minY = Math.min(...rawHexes.map((h) => h.y));
-const hexes = rawHexes.map((h) => ({ x: h.x - minX, y: h.y - minY, color: h.color, light: h.light, dark: h.dark }));
-const clusterWidth = Math.max(...hexes.map((h) => h.x)) + HEX_W;
-const clusterHeight = Math.max(...hexes.map((h) => h.y)) + HEX_H;
 
-// clip-path can't round polygon corners, so every hex is drawn as an SVG path instead —
-// each vertex is rounded by trimming back along its two edges and joining with a curve.
-const CORNER_RADIUS = 10;
-const hexPoints: [number, number][] = [
-	[HEX_W / 2, 0],
-	[HEX_W, HEX_H * 0.25],
-	[HEX_W, HEX_H * 0.75],
-	[HEX_W / 2, HEX_H],
-	[0, HEX_H * 0.75],
-	[0, HEX_H * 0.25],
-];
-function roundedHexPath(points: [number, number][], radius: number): string {
-	const n = points.length;
-	const lerp = (a: [number, number], b: [number, number], t: number): [number, number] => [
-		a[0] + (b[0] - a[0]) * t,
-		a[1] + (b[1] - a[1]) * t,
-	];
-	const approach: [number, number][] = [];
-	const leave: [number, number][] = [];
-	for (let i = 0; i < n; i++) {
-		const curr = points[i];
-		const prev = points[(i - 1 + n) % n];
-		const next = points[(i + 1) % n];
-		const distPrev = Math.hypot(curr[0] - prev[0], curr[1] - prev[1]);
-		const distNext = Math.hypot(next[0] - curr[0], next[1] - curr[1]);
-		approach.push(lerp(curr, prev, Math.min(radius / distPrev, 0.5)));
-		leave.push(lerp(curr, next, Math.min(radius / distNext, 0.5)));
-	}
-	let d = `M ${leave[n - 1][0]} ${leave[n - 1][1]} `;
-	for (let i = 0; i < n; i++) {
-		d += `L ${approach[i][0]} ${approach[i][1]} Q ${points[i][0]} ${points[i][1]} ${leave[i][0]} ${leave[i][1]} `;
-	}
-	return d + "Z";
-}
-const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
+// One accent per card. The hexagons are gone, but their outline gradient isn't — it now
+// frames the product photo itself, still walking the same primary-to-secondary ramp down
+// the grid so the four cards read as one set.
+const cardAccents = ["#2745ff", "#1c35d3", "#1124a8", "#000c66"].map((color) => ({
+	color,
+	light: shade(color, 0.55),
+	dark: shade(color, -0.35),
+}));
+// The outline is painted as a gradient background with the image inset by BORDER_PX, since
+// a border can't take a gradient. Angle matches the stroke the hexes used.
+const BORDER_PX = 4;
+const frameGradient = (a: { light: string; color: string; dark: string }) =>
+	`linear-gradient(135deg, ${a.light} 0%, ${a.color} 35%, ${a.dark} 65%, ${a.light} 100%)`;
+
 ---
 
-<!-- The niche product catalog: a toggle that spins the hex cluster through one niche's eight
-	 products at a time. Lived inside the hero until it was pulled out into its own section so
-	 the hero could carry a single visual instead of two competing ones. -->
+<!-- The niche product catalog: a toggle that spins a 2x2 grid through one niche's four
+	 products at a time, each card pairing the product with what it costs to source and what it
+	 can sell for. Lived inside the hero until it was pulled out into its own section so the
+	 hero could carry a single visual instead of two competing ones. -->
 <section id="product-catalog" class="relative flex flex-col items-center px-6 py-20 text-center sm:py-24 lg:py-28">
 	<!-- Same left-half hex wash ReviewsHero uses: the grid fills from the left edge and stops
 		 at the middle of the section, so the cluster on the right sits against clean background. -->
@@ -164,88 +763,523 @@ const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 		</button>
 	</div>
 
-	<!-- The hex cluster's coordinates are all fixed pixels sized for desktop, so on smaller
-		 screens it's scaled down via CSS transform on an inner wrapper rather than rebuilt —
-		 the outer wrapper's own box shrinks to match (via the same --cluster-scale var in a
-		 calc()), so it reserves only the visually-scaled footprint, not the full-size one. -->
+	<!-- 2x2 on anything wider than a phone, stacked below that. -->
 	<div
-		class="pointer-events-none relative mt-10 [--cluster-scale:0.36] sm:[--cluster-scale:0.6] lg:mt-16 lg:[--cluster-scale:1]"
-		style={{ width: `calc(${clusterWidth}px * var(--cluster-scale))`, height: `calc(${clusterHeight}px * var(--cluster-scale))` }}
-		aria-hidden="true"
+		id="catalog-grid"
+		class="relative z-10 mt-12 grid w-full max-w-6xl grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 sm:gap-x-12 lg:mt-16 lg:gap-x-16 lg:gap-y-14"
 	>
-		<div
-			class="absolute top-0 left-0 origin-top-left"
-			style={{ width: `${clusterWidth}px`, height: `${clusterHeight}px`, transform: "scale(var(--cluster-scale))", perspective: "900px" }}
-		>
 		{
-			hexes.map((hex, i) => {
+			cardAccents.map((accent, i) => {
 				const productSrc = nicheProducts[0][i];
 				return (
-					<div
-						class="absolute animate-hex-float"
-						style={{
-							left: `${hex.x - STROKE_PAD}px`,
-							top: `${hex.y - STROKE_PAD}px`,
-							animationDelay: `${(i % 4) * 0.5}s`,
-							animationDuration: `${4 + (i % 3) * 0.6}s`,
-						}}
-					>
-						<svg
-							id={`hex-${i}`}
-							width={SVG_W}
-							height={SVG_H}
-							viewBox={`-${STROKE_PAD} -${STROKE_PAD} ${SVG_W} ${SVG_H}`}
+					<div class="price-card flex flex-col items-start gap-3 text-left sm:flex-row sm:items-center sm:gap-5 lg:gap-6" data-price-view="droparabia">
+						{/* The photo is the whole visual now — no shape cut into it, just the gradient
+							outline the hexes used to carry. object-contain so nothing is ever cropped;
+							a square photo therefore fills the frame edge to edge. */}
+						<div
+							id={`product-${i}`}
+							class="aspect-square w-48 shrink-0 self-center overflow-hidden rounded-2xl sm:w-36 sm:self-auto lg:w-52"
 							style={{
-								backfaceVisibility: "hidden",
-								willChange: "transform",
-								filter: "drop-shadow(0 10px 18px rgba(39,69,255,0.22))",
+								background: frameGradient(accent),
+								padding: `${BORDER_PX}px`,
+								willChange: "opacity, transform",
+								boxShadow: "0 10px 18px rgba(39,69,255,0.22)",
 							}}
+							aria-hidden="true"
 						>
-							<defs>
-								<linearGradient id={`hex-shine-${i}`} x1="15%" y1="0%" x2="85%" y2="100%">
-									<stop offset="0%" stop-color={hex.light} />
-									<stop offset="35%" stop-color={hex.color} />
-									<stop offset="65%" stop-color={hex.dark} />
-									<stop offset="100%" stop-color={hex.light} />
-								</linearGradient>
-							</defs>
-							<path d={hexPath} fill="white" class="dark:fill-neutral-900" stroke={`url(#hex-shine-${i})`} stroke-width="6" />
-							<image
-								id={`hex-img-${i}`}
-								href={productSrc}
-								x={ICON_X}
-								y={ICON_Y}
-								width={24 * ICON_SCALE}
-								height={24 * ICON_SCALE}
-								preserveAspectRatio="xMidYMid meet"
+							<img
+								id={`product-img-${i}`}
+								src={productSrc}
+								alt=""
+								width="208"
+								height="208"
+								loading="lazy"
+								decoding="async"
+								class="h-full w-full rounded-xl bg-white object-contain dark:bg-neutral-900"
 							/>
-						</svg>
+						</div>
+
+						{/* Both panels are rendered and CSS picks which one shows, rather than swapping
+							text on click — no reflow, no flash, and the toggle stays instant. dl because
+							these are label/value pairs: a screen reader reading "Estimated Profit,
+							$13.99" as a pair is the whole point. */}
+						<div class="w-full min-w-0 flex-1 font-helvetica text-sm sm:w-auto sm:text-base">
+							<p
+								class="price-name line-clamp-2 min-h-[3.5rem] text-center font-ibrand text-lg text-neutral-900 sm:text-left dark:text-white"
+								title={nichePricing[0][i].name}
+							>
+								{nichePricing[0][i].name}
+							</p>
+
+							{/* Per-card switch: each product is its own comparison, so each carries its
+								own control. Small and low-contrast until selected, so four of them down
+								the grid read as part of the cards rather than four competing buttons. */}
+							<div class="my-2.5 mx-auto flex w-fit rounded-full bg-black/[0.07] p-1 sm:mx-0 dark:bg-white/10">
+								<button
+									type="button"
+									data-price-view="alibaba"
+									class="price-toggle cursor-pointer rounded-full px-3 py-1 font-ibrand text-xs whitespace-nowrap transition-colors duration-200 ease-out sm:px-4 sm:text-sm"
+									data-i18n="catalog.toggle.alibaba"
+								>
+									On Alibaba
+								</button>
+								<button
+									type="button"
+									data-price-view="droparabia"
+									class="price-toggle cursor-pointer rounded-full px-3 py-1 font-ibrand text-xs whitespace-nowrap transition-colors duration-200 ease-out sm:px-4 sm:text-sm"
+									data-i18n="catalog.toggle.droparabia"
+								>
+									On Droparabia
+								</button>
+							</div>
+
+							{/* Both sides render from the same shape, so the two panels can't drift apart
+								in styling and the niche-switch script has one structure to update. They're
+								stacked in a single grid cell rather than swapped in and out of flow, so the
+								card reserves the taller of the two and the toggle never moves anything. */}
+							<div class="price-panels">
+								{(["alibaba", "droparabia"] as const).map((side) => (
+								<div class={`price-${side}`}>
+									<dl class="space-y-0.5">
+										{nichePricing[0][i][side].summary.map((row) => (
+											<div class="flex items-baseline justify-between gap-3">
+												<dt
+													class:list={["shrink-0", row.strong ? "text-neutral-900 dark:text-white" : "text-neutral-600 dark:text-neutral-400"]}
+													data-row-key={row.lkey}
+													data-row-en={row.label}
+												>
+													{row.label}
+												</dt>
+												<dd
+													data-row-vkey={row.vkey}
+													data-row-count={row.count}
+													data-row-en={row.value || "—"}
+													class:list={[
+														"price-value shrink-0 font-semibold",
+														row.strong
+															? side === "alibaba"
+																? "text-red-600 dark:text-red-400"
+																: "font-bold text-emerald-600 dark:text-emerald-400"
+															: "text-neutral-900 dark:text-white",
+													]}
+												>
+													{row.value || "—"}
+												</dd>
+											</div>
+										))}
+									</dl>
+
+									{/* Only rendered where there's working to show, so the icon never promises
+										a breakdown that turns out to be empty. */}
+									{nichePricing[0][i][side].detail.length > 0 && (
+										<div class="price-detail-wrap relative">
+											<button
+												type="button"
+												class="price-info inline-flex cursor-pointer items-center gap-1.5 font-helvetica text-xs text-neutral-500 transition-colors duration-150 ease-out hover:text-primary dark:text-neutral-400 dark:hover:text-primary"
+												aria-expanded="false"
+											>
+												<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="shrink-0">
+													<circle cx="12" cy="12" r="10" />
+													<path d="M12 16v-4" />
+													<path d="M12 8h.01" />
+												</svg>
+												<span data-i18n="catalog.info.button">How is this calculated?</span>
+											</button>
+
+											{/* Sits above the button it belongs to, so the explanation appears next to
+												the number it explains. Width is capped against the viewport as well as a
+												max, so it can't push past the screen edge on a phone. */}
+											<div class="price-pop absolute bottom-full left-0 z-30 mb-2.5 w-[min(21rem,calc(100vw-2.5rem))] rounded-xl bg-white shadow-[0_12px_32px_-8px_rgba(0,0,0,0.3)] dark:bg-neutral-800" hidden>
+												<div class="price-pop-scroll overflow-y-auto rounded-xl p-4">
+												{side === "alibaba" && (
+													<div class="mb-3 space-y-2 border-b border-black/10 pb-3 font-helvetica text-xs text-neutral-600 dark:border-white/10 dark:text-neutral-400">
+														<p data-i18n="catalog.intro.moq">
+															Items on Alibaba are sold at a wholesale price per piece and suppliers require you to buy in a
+															Minimum Order Quantity (MOQ).
+														</p>
+														<p data-i18n="catalog.intro.example">
+															Example: $1/unit with MOQ of 100, meaning you need to buy at least 100 piece.
+														</p>
+														<p data-i18n="catalog.intro.shipping">
+															Air shipping to Lebanon can average approximately $13 per kg ($15 for batteries and liquids).
+														</p>
+														<p class="font-semibold text-neutral-900 dark:text-white" data-i18n="catalog.intro.lead">
+															So, an example if you were to buy this product from Alibaba:
+														</p>
+													</div>
+												)}
+												<dl class="price-detail space-y-2 font-helvetica text-xs">
+													{nichePricing[0][i][side].detail.map((row) => (
+														<div class="flex items-baseline gap-1.5">
+															<dt
+																class:list={["shrink-0", row.strong ? "font-semibold text-neutral-900 dark:text-white" : "text-neutral-600 dark:text-neutral-400"]}
+																data-row-key={row.lkey}
+																data-row-en={row.label}
+																data-row-suffix={row.strong ? " =" : ":"}
+															>
+																{row.label}
+																{row.strong ? " =" : ":"}
+															</dt>
+															<dd
+																class:list={["min-w-0", row.strong ? "font-semibold text-neutral-900 dark:text-white" : "text-neutral-700 dark:text-neutral-300"]}
+																data-row-vkey={row.vkey}
+																data-row-count={row.count}
+																data-row-en={row.value}
+															>
+																{row.value}
+															</dd>
+														</div>
+													))}
+												</dl>
+												{nichePricing[0][i][side].sourceUrl && (
+													<a
+														class="price-source relative z-10 mt-3 inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 font-ibrand text-xs text-white transition-opacity duration-150 ease-out hover:opacity-90"
+														href={nichePricing[0][i][side].sourceUrl}
+														target="_blank"
+														rel="noopener noreferrer"
+													>
+														<span data-i18n="catalog.info.source">See it on Alibaba</span>
+														<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
+															<path d="M7 17 17 7" />
+															<path d="M7 7h10v10" />
+														</svg>
+													</a>
+												)}
+												</div>
+
+												{/* Tail. Which edge it sits on is set in CSS, since the panel can open
+													either above or below depending on the room available. */}
+												<div class="price-pop-tail absolute left-5 h-2.5 w-2.5 rotate-45 bg-white dark:bg-neutral-800" />
+											</div>
+										</div>
+									)}
+								</div>
+								))}
+							</div>
+						</div>
 					</div>
 				);
 			})
 		}
-		</div>
 	</div>
 </section>
 
 <style>
-	@keyframes hex-float {
-		0%,
-		100% {
-			transform: translateY(0);
-		}
-		50% {
-			transform: translateY(-14px);
+	/* Which of the two price panels a card shows is decided entirely by that card's own data
+	   attribute, so toggling is one attribute write rather than a DOM rebuild — and each card
+	   flips independently. Both panels ship in the markup, so neither is ever re-rendered. */
+	.price-panels {
+		display: grid;
+	}
+	/* Same cell, so the grid sizes to the taller panel and holds that height through the
+	   swap — the whole reason the hidden side is faded out rather than taken out of flow. */
+	.price-panels > div {
+		grid-area: 1 / 1;
+		/* Column layout so the info button can be pushed to the bottom edge of the shared
+		   cell rather than trailing whichever dl happens to be taller. */
+		display: flex;
+		flex-direction: column;
+		transition:
+			opacity 200ms ease-out,
+			transform 200ms ease-out,
+			visibility 200ms;
+	}
+	.price-card[data-price-view="alibaba"] .price-droparabia,
+	.price-card[data-price-view="droparabia"] .price-alibaba {
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(4px);
+		pointer-events: none;
+	}
+
+	/* margin-top:auto rather than a fixed gap: it eats whatever slack the shorter side leaves,
+	   which parks the button at the same y on both sides. padding-top keeps its breathing room
+	   when there's no slack to eat. */
+	.price-detail-wrap {
+		margin-top: auto;
+		padding-top: 0.5rem;
+	}
+
+	/* The popover is display:none while [hidden], so showing it restarts this animation —
+	   no JS class juggling needed to replay it. */
+	@keyframes price-pop-in {
+		from {
+			opacity: 0;
+			transform: translateY(6px) scale(0.97);
 		}
 	}
-	.animate-hex-float {
-		animation-name: hex-float;
-		animation-timing-function: ease-in-out;
-		animation-iteration-count: infinite;
+	.price-pop {
+		transform-origin: bottom left;
+		animation: price-pop-in 180ms ease-out;
+	}
+	/* Opened downward instead, when there isn't room above the button. */
+	.price-pop-below {
+		top: 100%;
+		bottom: auto;
+		margin-top: 0.625rem;
+		margin-bottom: 0;
+		transform-origin: top left;
+	}
+	.price-pop-tail {
+		bottom: -0.25rem;
+	}
+	.price-pop-below .price-pop-tail {
+		top: -0.25rem;
+		bottom: auto;
+	}
+	/* The global scrollbar is primary blue, which is far too loud inside a small panel. */
+	.price-pop-scroll {
+		scrollbar-width: thin;
+		scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
+	}
+	.price-pop-scroll::-webkit-scrollbar {
+		width: 6px;
+	}
+	.price-pop-scroll::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	.price-pop-scroll::-webkit-scrollbar-thumb {
+		background: rgba(0, 0, 0, 0.25);
+		border-radius: 999px;
+	}
+	:global(.dark) .price-pop-scroll {
+		scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+	}
+	:global(.dark) .price-pop-scroll::-webkit-scrollbar-thumb {
+		background: rgba(255, 255, 255, 0.3);
+	}
+
+	.price-toggle {
+		color: rgb(64 64 64);
+	}
+	:global(.dark) .price-toggle {
+		color: rgb(212 212 212);
+	}
+	/* The active pill is painted here rather than by swapping Tailwind classes in the script,
+	   so the styling lives next to the rule that hides/shows the panel it controls. */
+	.price-toggle[aria-pressed="true"] {
+		background: #ffffff;
+		color: #001eff;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	}
+	/* The pill grows into place rather than snapping on, which reads as the control moving
+	   to the option you picked instead of two buttons blinking. */
+	.price-toggle {
+		transition:
+			background-color 200ms ease-out,
+			color 200ms ease-out,
+			box-shadow 200ms ease-out,
+			transform 200ms cubic-bezier(0.34, 1.4, 0.64, 1);
+	}
+	.price-toggle[aria-pressed="false"]:hover {
+		transform: scale(1.03);
+	}
+	.price-toggle[aria-pressed="true"] {
+		transform: scale(1.04);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.price-panels > div,
+		.price-toggle {
+			transition: none;
+		}
+		.price-pop {
+			animation: none;
+		}
+		.price-toggle[aria-pressed="true"],
+		.price-toggle[aria-pressed="false"]:hover {
+			transform: none;
+		}
+	}
+	:global(.dark) .price-toggle[aria-pressed="true"] {
+		background: rgb(38 38 38);
+		color: #ffffff;
 	}
 </style>
 
-<script is:inline define:vars={{ niches, nicheProducts, nicheLabels }}>
+<script is:inline define:vars={{ niches, nicheProducts, nicheLabels, nichePricing, catalogI18n }}>
+	// Resolves one row's text for the current language. English is returned from the element's
+	// own cached source rather than the table, so a row always falls back to exactly what was
+	// server-rendered if a key is missing.
+	function rowText(el) {
+		const en = el.dataset.rowEn ?? "";
+		const key = el.dataset.rowKey ?? el.dataset.rowVkey;
+		const suffix = el.dataset.rowSuffix ?? "";
+		const lang = currentLang();
+		let text = en;
+		if (lang !== "en" && key && catalogI18n[key] && catalogI18n[key][lang]) {
+			const translated = catalogI18n[key][lang];
+			// "100 piece" -> count stays, unit word translates.
+			text = el.dataset.rowCount ? el.dataset.rowCount + " " + translated : translated;
+		}
+		return text + suffix;
+	}
+
+	function applyRowText(root) {
+		(root ?? document).querySelectorAll("[data-row-en]").forEach((el) => {
+			el.textContent = rowText(el);
+		});
+	}
+
+	// Alibaba/Droparabia switch, one per card. Flipping that card's own data attribute is the
+	// whole mechanism — the CSS above does the showing and hiding.
+	const priceCards = Array.from(document.querySelectorAll(".price-card"));
+	priceCards.forEach((card) => {
+		const toggles = Array.from(card.querySelectorAll(".price-toggle"));
+		const sync = () => toggles.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.priceView === card.dataset.priceView)));
+		toggles.forEach((btn) => {
+			btn.addEventListener("click", () => {
+				card.dataset.priceView = btn.dataset.priceView;
+				// The other side's popover explains numbers that are no longer on screen.
+				closeAllPops();
+				sync();
+			});
+		});
+		// Read the card's starting view rather than hardcoding which button is active, so the
+		// two can't disagree if that default ever changes.
+		sync();
+	});
+
+	// "How is this calculated?" — opens a popover above the button. Only one is ever open,
+	// so four of these down the grid can't stack up on top of each other.
+	const pops = Array.from(document.querySelectorAll(".price-pop"));
+	function closeAllPops() {
+		pops.forEach((pop) => (pop.hidden = true));
+		document.querySelectorAll(".price-info").forEach((b) => b.setAttribute("aria-expanded", "false"));
+	}
+	// Both headers are fixed and sit above the popover, so the space "above the button" ends
+	// at whichever one is currently on screen rather than at the top of the viewport.
+	function fixedHeaderBottom() {
+		let bottom = 0;
+		document.querySelectorAll("header").forEach((h) => {
+			const r = h.getBoundingClientRect();
+			if (r.height > 0 && r.width > 0 && getComputedStyle(h).position === "fixed") bottom = Math.max(bottom, r.bottom);
+		});
+		return bottom;
+	}
+
+	// Must run with the panel already visible — scrollHeight is 0 while it's [hidden].
+	function placePop(btn, pop) {
+		const scroll = pop.querySelector(".price-pop-scroll");
+		pop.classList.remove("price-pop-below");
+		if (scroll) scroll.style.maxHeight = "";
+
+		const r = btn.getBoundingClientRect();
+		const GAP = 10;
+		const EDGE = 12;
+		const MIN = 160;
+		const above = r.top - fixedHeaderBottom() - GAP - EDGE;
+		const below = window.innerHeight - r.bottom - GAP - EDGE;
+		const needed = pop.offsetHeight;
+
+		if (needed <= above) return;
+		if (needed <= below) {
+			pop.classList.add("price-pop-below");
+			return;
+		}
+		// Neither side fits, so take the roomier one and let it scroll within that space.
+		if (below > above) {
+			pop.classList.add("price-pop-below");
+			if (scroll) scroll.style.maxHeight = Math.max(below, MIN) + "px";
+		} else if (scroll) {
+			scroll.style.maxHeight = Math.max(above, MIN) + "px";
+		}
+	}
+
+	document.querySelectorAll(".price-detail-wrap").forEach((wrap) => {
+		const pop = wrap.querySelector(".price-pop");
+		const btn = wrap.querySelector(".price-info");
+		if (!pop || !btn) return;
+		btn.addEventListener("pointerdown", (e) => e.stopPropagation());
+		btn.addEventListener("click", (e) => {
+			e.stopPropagation();
+			const opening = pop.hidden;
+			closeAllPops();
+			pop.hidden = !opening;
+			btn.setAttribute("aria-expanded", String(opening));
+			if (opening) placePop(btn, pop);
+		});
+		// Taps and clicks inside the popover are for reading it, not dismissing it.
+		pop.addEventListener("pointerdown", (e) => e.stopPropagation());
+		pop.addEventListener("click", (e) => e.stopPropagation());
+	});
+	document.addEventListener("pointerdown", closeAllPops);
+	window.addEventListener("resize", () => {
+		const open = pops.find((pop) => !pop.hidden);
+		if (!open) return;
+		const btn = open.parentElement?.querySelector(".price-info");
+		if (btn) placePop(btn, open);
+	});
+	document.addEventListener("keydown", (e) => {
+		if (e.key === "Escape") closeAllPops();
+	});
+
+	// Writes one product's figures into one card when the niche changes. Row counts can differ
+	// between products, so rows are matched positionally and any surplus row is hidden rather
+	// than left showing the previous product's numbers. A product with no working at all gets
+	// its info button hidden too, so the icon never opens an empty breakdown.
+	function setCardPricing(cardIndex, pricing) {
+		const card = priceCards[cardIndex];
+		if (!card || !pricing) return;
+
+		const name = card.querySelector(".price-name");
+		if (name) {
+			name.textContent = pricing.name;
+			name.title = pricing.name;
+		}
+
+		["alibaba", "droparabia"].forEach((side) => {
+			const panel = card.querySelector(`.price-${side}`);
+			if (!panel) return;
+
+			const fill = (list, rows, isDetail) => {
+				if (!list) return;
+				Array.from(list.children).forEach((el, r) => {
+					const row = rows[r];
+					if (!row) {
+						el.hidden = true;
+						return;
+					}
+					el.hidden = false;
+					const dt = el.querySelector("dt");
+					const dd = el.querySelector("dd");
+					if (dt) {
+						dt.dataset.rowEn = row.label;
+						// Detail rows carry the separator the summary rows don't.
+						if (isDetail) dt.dataset.rowSuffix = row.strong ? " =" : ":";
+						if (row.lkey) dt.dataset.rowKey = row.lkey;
+						else delete dt.dataset.rowKey;
+						dt.textContent = rowText(dt);
+					}
+					if (dd) {
+						dd.dataset.rowEn = row.value || "—";
+						if (row.vkey) dd.dataset.rowVkey = row.vkey;
+						else delete dd.dataset.rowVkey;
+						if (row.count) dd.dataset.rowCount = row.count;
+						else delete dd.dataset.rowCount;
+						dd.textContent = rowText(dd);
+					}
+				});
+			};
+
+			fill(panel.querySelector("dl:not(.price-detail)"), pricing[side].summary, false);
+
+			const wrap = panel.querySelector(".price-detail-wrap");
+			const detailRows = pricing[side].detail;
+			if (wrap) {
+				wrap.hidden = detailRows.length === 0;
+				fill(wrap.querySelector(".price-detail"), detailRows, true);
+
+				const source = wrap.querySelector(".price-source");
+				if (source) {
+					const url = pricing[side].sourceUrl;
+					source.hidden = !url;
+					if (url) source.href = url;
+				}
+			}
+		});
+	}
+
 	// Warm the image cache for every niche up front, so the mid-flip href swap never
 	// stalls on a network fetch/decode — that stall is what reads as "lag" mid-spin.
 	nicheProducts.flat().forEach((src) => {
@@ -270,9 +1304,13 @@ const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 	// not this display label.
 	window.addEventListener("droparabia:lang-changed", () => {
 		if (label) label.textContent = nicheLabels[index][currentLang()];
+		applyRowText();
 	});
+	// The server renders English; a visitor arriving with another language already selected
+	// needs the rows resolved on load, before any toggle is touched.
+	if (currentLang() !== "en") applyRowText();
 
-	const SPIN_MS = 550;
+	const SWAP_MS = 420;
 	const STAGGER_MS = 55;
 
 	function setButtonsDisabled(disabled) {
@@ -302,37 +1340,47 @@ const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 		}
 
 		const items = nicheProducts[index];
+		// A popover pinned to a card that's about to show a different product would be
+		// explaining numbers that no longer exist.
+		closeAllPops();
 		items.forEach((src, i) => {
-			const hex = document.getElementById(`hex-${i}`);
-			if (!hex) return;
+			const card = priceCards[i];
+			if (!card) return;
 			const delay = i * STAGGER_MS;
-			hex.getAnimations().forEach((a) => a.cancel());
+			card.getAnimations().forEach((a) => a.cancel());
 
-			// Two chained halves instead of one 3-keyframe animation + a separate setTimeout:
-			// the image swap is driven by the first half's own `finished` promise, so it
-			// lands exactly when that half visually completes — never early, never late.
-			const firstHalf = hex.animate(
-				[{ transform: "rotateY(0deg) scale(1)" }, { transform: "rotateY(180deg) scale(1.06)" }],
-				{ duration: SPIN_MS / 2, delay, easing: "ease-in", fill: "forwards" },
+			// Two chained halves rather than one animation plus a setTimeout: the swap is
+			// driven by the first half's own `finished` promise, so it lands exactly when the
+			// card has faded out — never early, never late, and never visible mid-change.
+			const fadeOut = card.animate(
+				[
+					{ opacity: 1, transform: "translateY(0)" },
+					{ opacity: 0, transform: "translateY(8px)" },
+				],
+				{ duration: SWAP_MS / 2, delay, easing: "ease-in", fill: "forwards" },
 			);
-			firstHalf.finished
+			fadeOut.finished
 				.then(() => {
-					// Remove the held (fill: forwards) first half before starting the second —
-					// otherwise it lingers in the animation stack and, once the second half's
-					// own effect ends, the browser falls back to this stale 180deg state,
-					// which backface-visibility hides forever.
-					firstHalf.cancel();
-					const img = document.getElementById(`hex-img-${i}`);
-					if (img) img.setAttribute("href", src);
-					hex.animate(
-						[{ transform: "rotateY(180deg) scale(1.06)" }, { transform: "rotateY(360deg) scale(1)" }],
-						{ duration: SPIN_MS / 2, easing: "ease-out" },
+					// Drop the held (fill: forwards) half before starting the next, or it lingers
+					// in the animation stack and the card falls back to opacity 0 once the second
+					// half's effect ends.
+					fadeOut.cancel();
+					const img = document.getElementById(`product-img-${i}`);
+					if (img) img.src = src;
+					// Same beat as the image, so the panel never describes the previous product.
+					setCardPricing(i, nichePricing[index][i]);
+					card.animate(
+						[
+							{ opacity: 0, transform: "translateY(8px)" },
+							{ opacity: 1, transform: "translateY(0)" },
+						],
+						{ duration: SWAP_MS / 2, easing: "ease-out" },
 					);
 				})
 				.catch(() => {});
 		});
 
-		const totalMs = (items.length - 1) * STAGGER_MS + SPIN_MS;
+		const totalMs = (items.length - 1) * STAGGER_MS + SWAP_MS;
 		setTimeout(() => {
 			animating = false;
 			setButtonsDisabled(false);
