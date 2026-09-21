@@ -70,15 +70,18 @@ export const translations: Record<string, Record<Lang, string>> = {
 	"social.stat2": { en: "sellers and brand owners", ar: "بائع وصاحب علامة تجارية", fr: "vendeurs et propriétaires de marques" },
 	"social.stat3": { en: "Official Shopify Partner", ar: "شريك رسمي لدى Shopify", fr: "Partenaire officiel Shopify" },
 
+	// The accent moved from the subheading to the heading with this rewrite — the subheading
+	// is now a plain sentence, and the section would otherwise be the only one on the page
+	// with no brand colour in its title block.
 	"catalog.heading": {
-		en: "No more spending hours searching for a product to sell",
-		ar: "لا مزيد من قضاء الساعات بحثًا عن منتج لبيعه",
-		fr: "Fini les heures passées à chercher un produit à vendre",
+		en: 'A huge catalog of proven <span class="text-primary">winning products</span>',
+		ar: 'كتالوج ضخم من <span class="text-primary">المنتجات الرابحة</span> المثبتة',
+		fr: 'Un immense catalogue de <span class="text-primary">produits gagnants</span> éprouvés',
 	},
 	"catalog.subheading": {
-		en: 'Choose your <span class="text-primary">winning product</span> from a catalog of proven high-sellers',
-		ar: 'اختر <span class="text-primary">منتجك الرابح</span> من كتالوج من الأكثر مبيعًا والمثبت نجاحها',
-		fr: 'Choisissez votre <span class="text-primary">produit gagnant</span> dans un catalogue de best-sellers éprouvés',
+		en: "You don't need to buy bulk inventories from China and pay shipping fees or search for hours looking for a product to sell",
+		ar: "لست بحاجة إلى شراء مخزون بالجملة من الصين ودفع رسوم الشحن، أو البحث لساعات عن منتج لبيعه",
+		fr: "Vous n'avez pas besoin d'acheter du stock en gros depuis la Chine et de payer des frais de livraison, ni de chercher pendant des heures un produit à vendre",
 	},
 
 	"howitworks.heading": {
@@ -1032,6 +1035,11 @@ export const translations: Record<string, Record<Lang, string>> = {
 	"catalog.toggle.alibaba": { en: "On Alibaba", ar: "على علي بابا", fr: "Sur Alibaba" },
 	"catalog.toggle.droparabia": { en: "On Droparabia", ar: "على دروب أرابيا", fr: "Sur Droparabia" },
 	"catalog.info.button": { en: "How is this calculated?", ar: "كيف يتم حساب ذلك؟", fr: "Comment est-ce calculé ?" },
+	"catalog.info.whyHigher": {
+		en: "Why the cost on Droparabia is higher?",
+		ar: "لماذا التكلفة على دروب أرابيا أعلى؟",
+		fr: "Pourquoi le coût est-il plus élevé sur Droparabia ?",
+	},
 	"catalog.info.source": { en: "See it on Alibaba", ar: "شاهده على علي بابا", fr: "Voir sur Alibaba" },
 
 	"catalog.intro.moq": {
