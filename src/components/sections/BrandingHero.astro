@@ -34,7 +34,7 @@ const { tool } = Astro.props;
 				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-0.5"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
 			</a>
 			<a
-				href="/tools"
+				href="/#tools"
 				data-i18n="cta.backToTools"
 				class="inline-flex h-10 items-center justify-center rounded-full bg-[#e5e4e2] px-6 text-center font-ibrand text-sm text-neutral-900 shadow-[0_8px_20px_-8px_rgba(0,0,0,0.4)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#dcdbd9] hover:shadow-[0_14px_30px_-10px_rgba(0,0,0,0.5)] sm:h-12 sm:px-8 sm:text-base"
 			>
@@ -43,11 +43,14 @@ const { tool } = Astro.props;
 		</div>
 	</div>
 
-	<div class="relative mx-auto mt-16 max-w-5xl">
+	<!-- Phones: same bleed as the homepage hero — starts 8px in from the leading edge, twice
+		 the width it has left, so exactly half runs off the trailing edge and the section clips
+		 it. Square corners, since only one side is visible. Logical margin, so Arabic mirrors. -->
+	<div class="relative mt-16 -ms-4 w-[calc(200vw-16px)] max-w-none sm:mx-auto sm:w-auto sm:max-w-5xl">
 		<img
 			src={tool.heroImage ?? ik("/Tools/Winning Products.png", "w-1200,q-80")}
 			alt={tool.label}
-			class="w-full rounded-2xl object-contain drop-shadow-[0_15px_35px_-15px_rgba(0,30,255,0.22)]"
+			class="w-full rounded-none object-contain sm:rounded-2xl drop-shadow-[0_15px_35px_-15px_rgba(0,30,255,0.22)]"
 		/>
 	</div>
 </section>

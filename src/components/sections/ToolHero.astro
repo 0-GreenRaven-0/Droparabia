@@ -22,7 +22,7 @@ const { tool } = Astro.props;
 
 	<!-- z-10: HexBackground's canvas is absolutely positioned, so static siblings after it
 		 still paint underneath without this. -->
-	<div class="relative z-10 mx-auto grid w-full max-w-[1320px] items-center gap-8 rtl:lg:[direction:ltr] lg:grid-cols-[auto_1fr] lg:gap-6">
+	<div class="relative z-10 mx-auto grid w-full max-w-[1320px] grid-cols-1 items-center gap-8 rtl:lg:[direction:ltr] lg:grid-cols-[auto_1fr] lg:gap-6">
 		<div class="flex w-full flex-col items-center justify-center text-center lg:items-start lg:text-left rtl:lg:[direction:rtl] rtl:lg:items-start rtl:lg:text-right">
 			<svg width="56" height="56" viewBox="0 0 24 24" class="mx-auto mb-4 sm:hidden">
 				<g fill="none" stroke={tool.color} stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={tool.icon} />
@@ -61,13 +61,14 @@ const { tool } = Astro.props;
 			 -me- (margin-inline-end), not -mr-: in RTL the grid mirrors, so the screenshot moves
 			 to the left column and has to bleed off the LEFT edge. A physical -mr- kept pulling it
 			 rightwards there, straight over the Arabic copy. -->
-		<!-- Same mobile bleed as the main Hero: -mx-4 reclaims part of the section's px-6 so the
-			 screenshot is wider on a phone, reset from sm up. -->
-		<div class="relative -mx-4 sm:mx-0 lg:-mr-[40vw] lg:w-[64rem] lg:max-w-none">
+		<!-- Phones: same bleed as the homepage hero — starts 8px in from the leading edge, twice
+			 the width it has left, so exactly half runs off the trailing edge and the section clips
+			 it. Square corners, since only one side is visible. Logical margin, so Arabic mirrors. -->
+		<div class="relative -ms-4 w-[calc(200vw-16px)] max-w-none sm:mx-0 sm:w-auto lg:-mr-[40vw] lg:w-[64rem] lg:max-w-none">
 			<img
 				src={tool.heroImage ?? ik("/Tools/Winning Products.png", "w-1200,q-80")}
 				alt={tool.label}
-				class="w-full rounded-[0.7rem] object-contain shadow-[0_40px_90px_-30px_rgba(0,0,0,0.3)] sm:rounded-[0.8rem]"
+				class="w-full rounded-none object-contain shadow-[0_40px_90px_-30px_rgba(0,0,0,0.3)] sm:rounded-[0.8rem]"
 			/>
 		</div>
 	</div>

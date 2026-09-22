@@ -23,27 +23,27 @@ Founded by Majd Abdulsalam, a digital marketing specialist and e-commerce brand 
 
 ## Tools
 
-- [Find Products](https://droparabia.com/tools/find-products): A catalog of in-demand, proven products. Filter by niche, order a physical sample before committing, and one-click import to Shopify.
-- [AI Winning Products](https://droparabia.com/tools/ai-winning-products): Each product gets an AI score out of 100 across trend, competition, margin, saturation, impulse buy and repeat-purchase potential, plus a target-audience analysis and a sell recommendation.
-- [AI Studio](https://droparabia.com/tools/ai-studio): Generate your own product ad images and videos from your own prompts, instead of reusing other creators' content.
-- [Branding](https://droparabia.com/tools/branding): Print on demand per sold item, so you build a branded store without paying upfront to private-label a bulk order.
-- [Product Request](https://droparabia.com/tools/product-request): Send an image of a product you want and Droparabia sources it for you, with no extra sourcing fee.
-- [Leader Board](https://droparabia.com/tools/leader-board): See how your store ranks against other sellers, with events, giveaways and an affiliate program for top performers.
+- [Find Products](https://www.droparabia.com/tools/find-products/): A catalog of in-demand, proven products. Filter by niche, order a physical sample before committing, and one-click import to Shopify.
+- [AI Winning Products](https://www.droparabia.com/tools/ai-winning-products/): Each product gets an AI score out of 100 across trend, competition, margin, saturation, impulse buy and repeat-purchase potential, plus a target-audience analysis and a sell recommendation.
+- [AI Studio](https://www.droparabia.com/tools/ai-studio/): Generate your own product ad images and videos from your own prompts, instead of reusing other creators' content.
+- [Branding](https://www.droparabia.com/tools/branding/): Print on demand per sold item, so you build a branded store without paying upfront to private-label a bulk order.
+- [Product Request](https://www.droparabia.com/tools/product-request/): Send an image of a product you want and Droparabia sources it for you, with no extra sourcing fee.
+- [Leader Board](https://www.droparabia.com/tools/leader-board/): See how your store ranks against other sellers, with events, giveaways and an affiliate program for top performers.
 
 ## Main pages
 
-- [Droparabia](https://droparabia.com): Homepage — what the platform is, how it works, and the full tool set.
-- [Dropvault community](https://droparabia.com/dropvault): Every Droparabia user is a member of Dropvault: 20+ hours of free courses and recorded tutorials, weekly coaching calls with advisors, occasional giveaways, and a dedicated WhatsApp support group.
-- [FAQ](https://droparabia.com/faq): Answers to the most common questions, including the refund policy — a full refund plus compensation for time and money lost if a user followed all instructions and made full use of the platform (with proof provided) but made no sales within 90 days.
-- [Reviews](https://droparabia.com/reviews): Reviews written by Droparabia sellers.
-- [About](https://droparabia.com/about): The company, its founder, and the logistics operation behind it.
-- [Leave a review](https://droparabia.com/leave-review): Form for sellers to submit their own review.
+- [Droparabia](https://www.droparabia.com/): Homepage — what the platform is, how it works, and the full tool set.
+- [Dropvault community](https://www.droparabia.com/dropvault/): Every Droparabia user is a member of Dropvault: 20+ hours of free courses and recorded tutorials, weekly coaching calls with advisors, occasional giveaways, and a dedicated WhatsApp support group.
+- [FAQ](https://www.droparabia.com/faq/): Answers to the most common questions, including the refund policy — a full refund plus compensation for time and money lost if a user followed all instructions and made full use of the platform (with proof provided) but made no sales within 90 days.
+- [Reviews](https://www.droparabia.com/reviews/): Reviews written by Droparabia sellers.
+- [About](https://www.droparabia.com/about/): The company, its founder, and the logistics operation behind it.
+- [Leave a review](https://www.droparabia.com/leave-review/): Form for sellers to submit their own review.
 
 ## Blog
 
-- [Dropshipping for newbies in Lebanon](https://droparabia.com/blog/dropshipping-for-newbies-lebanon): A beginner's guide to starting a dropshipping business in Lebanon.
-- [Dropshipping is "dead"](https://droparabia.com/blog/dropshipping-is-dead): Where the "dropshipping is dead" myth came from, and what is actually true about the model in 2026.
-- [Why Droparabia exists](https://droparabia.com/blog/why-droparabia-exists): The obstacles the founder hit building his own e-commerce businesses, and the infrastructure built to remove them.
+- [Dropshipping for newbies in Lebanon](https://www.droparabia.com/blog/dropshipping-for-newbies-lebanon/): A beginner's guide to starting a dropshipping business in Lebanon.
+- [Dropshipping is "dead"](https://www.droparabia.com/blog/dropshipping-is-dead/): Where the "dropshipping is dead" myth came from, and what is actually true about the model in 2026.
+- [Why Droparabia exists](https://www.droparabia.com/blog/why-droparabia-exists/): The obstacles the founder hit building his own e-commerce businesses, and the infrastructure built to remove them.
 
 ## Apps and profiles
 
@@ -54,8 +54,8 @@ Founded by Majd Abdulsalam, a digital marketing specialist and e-commerce brand 
 
 ## Optional
 
-- [Privacy Policy](https://droparabia.com/privacy): What data Droparabia collects and which third-party services it is shared with.
-- [Terms of Service](https://droparabia.com/terms): The terms covering use of the platform.
+- [Privacy Policy](https://www.droparabia.com/privacy/): What data Droparabia collects and which third-party services it is shared with.
+- [Terms of Service](https://www.droparabia.com/terms/): The terms covering use of the platform.
 
 ## Notes
 

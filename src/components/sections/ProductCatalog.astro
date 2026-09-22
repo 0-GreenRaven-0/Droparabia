@@ -639,8 +639,29 @@ const ROW_KEYS: Record<string, string> = {
 	Shipping: "catalog.row.shipping",
 	Operations: "catalog.row.operations",
 };
+// Product names go through the same per-row mechanism as the price rows: the niche switch
+// rewrites them, so the global applier would restore the wrong one in English.
+const NAME_KEYS: Record<string, string> = {
+	"Electric milk frother": "catalog.product.milkFrother",
+	"2 in 1 Portable Blender & Cup": "catalog.product.blender",
+	"Multifunction Crepe Maker": "catalog.product.crepeMaker",
+	"Mini Electric Garlic Machine": "catalog.product.garlicMachine",
+	"2 in 1 eyebrow trimmer": "catalog.product.eyebrowTrimmer",
+	"2 in 1 Electric Hair Oil Applicator and Scalp Massager": "catalog.product.hairOilApplicator",
+	"Cordless Automatic Hair Curler": "catalog.product.hairCurler",
+	"Neck and face wrinkle remover": "catalog.product.wrinkleRemover",
+	"Gun Massager": "catalog.product.gunMassager",
+	"Astronaut Galaxy Sky Projector Rechargeable with Bluetooth Speaker": "catalog.product.galaxyProjector",
+	"RGB Raining Humidifier Rain Cloud": "catalog.product.rainCloud",
+	"Astronaut Spaceship Aromatherapy Air Humidifier Purifier": "catalog.product.spaceshipHumidifier",
+	"Outdoor Waterproof LED Floor Lamp Solar": "catalog.product.solarLamp",
+	"Flame Diffuser Night Light Gift Set Decor Fire Flame Humidifier": "catalog.product.flameDiffuser",
+	"Lint Remover": "catalog.product.lintRemover",
+	"Shoe cleaner": "catalog.product.shoeCleaner",
+};
 const VALUE_KEYS: Record<string, string> = {
 	None: "catalog.value.none",
+	"150ml/bottle (≈ 0.150 Kg)": "catalog.value.shoeWeight",
 	"No minimum order quantity, you pay the cost of each item sold and keep the profit": "catalog.value.noMoq",
 	"Sourcing, international shipping, warehousing, fulfillment and handling": "catalog.value.covers",
 	"Air freight to Lebanon averages around $15/kg, and varies by shipment": "catalog.value.airFreight",
@@ -676,7 +697,12 @@ const catalogI18n = Object.fromEntries(Object.entries(translations).filter(([k])
 const nichePricing = niches.map((niche) =>
 	Array.from({ length: 4 }, (_, i) => {
 		const pricing = sourced[niche]?.[i]?.pricing ?? PLACEHOLDER;
-		return { name: pricing.name, alibaba: enrichSide(pricing.alibaba), droparabia: enrichSide(pricing.droparabia) };
+		return {
+			name: pricing.name,
+			nameKey: NAME_KEYS[pricing.name],
+			alibaba: enrichSide(pricing.alibaba),
+			droparabia: enrichSide(pricing.droparabia),
+		};
 	}),
 );
 // Display labels only — folder names above (used for image paths) stay in English regardless
@@ -721,11 +747,11 @@ const frameGradient = (a: { light: string; color: string; dark: string }) =>
 		 cluster below already carry their own `relative`. -->
 	<div class="relative z-10 mb-12 max-w-3xl lg:mb-16">
 		<h2 data-i18n="catalog.heading" class="text-center font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-4xl md:text-5xl dark:text-white">
-			A huge catalog of proven <span class="text-primary">winning products</span>
+			A huge catalog of proven <span class="text-primary">winning products</span> in Lebanon
 		</h2>
 		<p data-i18n="catalog.subheading" class="mt-4 text-center font-helvetica text-base font-normal text-neutral-900 sm:text-lg dark:text-white">
-			You don't need to buy bulk inventories from China and pay shipping fees or search for hours looking for a
-			product to sell
+			Droparabia sources you the best selling products in Lebanon so you don't need to buy bulk inventories from
+			China and pay shipping fees or search for hours looking for a product to sell
 		</p>
 	</div>
 	<div id="niche-toggle" class="pointer-events-auto relative flex items-center gap-3 rtl:flex-row-reverse sm:gap-4 lg:gap-6">
@@ -810,6 +836,8 @@ const frameGradient = (a: { light: string; color: string; dark: string }) =>
 							<p
 								class="price-name line-clamp-2 min-h-[3.5rem] text-center font-ibrand text-lg text-neutral-900 sm:text-left dark:text-white"
 								title={nichePricing[0][i].name}
+								data-row-en={nichePricing[0][i].name}
+								data-row-key={nichePricing[0][i].nameKey}
 							>
 								{nichePricing[0][i].name}
 							</p>
@@ -1123,6 +1151,8 @@ const frameGradient = (a: { light: string; color: string; dark: string }) =>
 	function applyRowText(root) {
 		(root ?? document).querySelectorAll("[data-row-en]").forEach((el) => {
 			el.textContent = rowText(el);
+			// The product name carries its full text as a tooltip too, since it clamps.
+			if (el.hasAttribute("title")) el.title = el.textContent;
 		});
 	}
 
@@ -1229,8 +1259,11 @@ const frameGradient = (a: { light: string; color: string; dark: string }) =>
 
 		const name = card.querySelector(".price-name");
 		if (name) {
-			name.textContent = pricing.name;
-			name.title = pricing.name;
+			name.dataset.rowEn = pricing.name;
+			if (pricing.nameKey) name.dataset.rowKey = pricing.nameKey;
+			else delete name.dataset.rowKey;
+			name.textContent = rowText(name);
+			name.title = name.textContent;
 		}
 
 		["alibaba", "droparabia"].forEach((side) => {
@@ -1313,7 +1346,12 @@ const frameGradient = (a: { light: string; color: string; dark: string }) =>
 	});
 	// The server renders English; a visitor arriving with another language already selected
 	// needs the rows resolved on load, before any toggle is touched.
-	if (currentLang() !== "en") applyRowText();
+	// The niche label isn't a [data-i18n] element either (it's rewritten per niche), so it
+	// needs the same on-load pass — otherwise an Arabic visitor sees "Kitchen" until they click.
+	if (currentLang() !== "en") {
+		applyRowText();
+		if (label) label.textContent = nicheLabels[index][currentLang()];
+	}
 
 	const SWAP_MS = 420;
 	const STAGGER_MS = 55;

@@ -52,12 +52,9 @@ const sections = [
 							</h2>
 							<ul class="mt-2 flex flex-col gap-1.5">
 								{section.items.map((item, i) => (
-									<li
-										data-i18n={`${section.key}.item${i}`}
-										class="relative pl-5 font-helvetica text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400"
-									>
-										<span class="absolute left-0 font-bold text-primary">•</span>
-										{item}
+									<li class="relative ps-5 font-helvetica text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400">
+										<span class="absolute start-0 font-bold text-primary">•</span>
+										<span data-i18n={`${section.key}.item${i}`}>{item}</span>
 									</li>
 								))}
 							</ul>

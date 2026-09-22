@@ -159,7 +159,10 @@ const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 						{tool.description.paragraph}
 					</p>
 
-					<div class="mt-10 w-full">
+					{/* Phones: -mx-4 eats into the section px-6, leaving the same 8px gutter the tool
+						 pages leave, so the screenshot is wider than the text column without touching the
+						 screen edges. Square corners on phones. */}
+					<div class="mt-10 -mx-4 w-[calc(100%+2rem)] max-w-none sm:mx-0 sm:w-full">
 						{/* The source screenshots are ~1900px wide but render at ~364px on a phone, which
 							was the single largest image over-download on the page. */}
 						<img
@@ -169,7 +172,7 @@ const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 							width="1899"
 							height="879"
 							alt={tool.label}
-							class="tool-image mx-auto w-full rounded-xl object-contain shadow-[0_0_30px_8px_rgba(0,0,0,0.2)] dark:shadow-[0_0_30px_8px_rgba(0,0,0,0.3)]"
+							class="tool-image mx-auto w-full rounded-none object-contain sm:rounded-xl shadow-[0_0_30px_8px_rgba(0,0,0,0.2)] dark:shadow-[0_0_30px_8px_rgba(0,0,0,0.3)]"
 						/>
 					</div>
 				</div>

@@ -11,7 +11,7 @@ import HexBackground from "../HexBackground.astro";
 
 	<!-- relative + z-10: HexBackground's canvas is absolutely positioned, so a static
 		 sibling after it still paints underneath. This lifts the content above it. -->
-	<div class="relative z-10 mx-auto grid w-full max-w-[1320px] items-center gap-8 rtl:lg:[direction:ltr] lg:grid-cols-[auto_1fr] lg:gap-6">
+	<div class="relative z-10 mx-auto grid w-full max-w-[1320px] grid-cols-1 items-center gap-8 rtl:lg:[direction:ltr] lg:grid-cols-[auto_1fr] lg:gap-6">
 		<!-- Mobile only: centers the headline/subheadline/CTA block within roughly the first
 			 screen instead of leaving it pinned near the top under the fixed mobile header.
 			 Reverts to plain top-aligned flow at sm+ (unchanged from before). -->
@@ -42,7 +42,7 @@ import HexBackground from "../HexBackground.astro";
 				<span class="block text-[clamp(0.8rem,7.25vw_-_2.32px,1.8rem)] leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">e-commerce store in Lebanon</span>
 			</h1>
 			<p data-i18n="hero.subheadline" class="mt-6 max-w-[30rem] font-helvetica text-sm font-normal leading-relaxed text-neutral-900 sm:text-base sm:[-webkit-text-stroke:0.3px_currentColor] dark:text-white">
-				Droparabia is an e-commerce platform for dropshipping that helps you find winning products and deliver them to your customer's doorstep without spending a single dollar on inventory
+				Droparabia allows you to start dropshipping in Lebanon by helping you find winning products and deliver them to your customer's doorstep without spending a single dollar on inventory
 			</p>
 			<div class="mt-8 flex w-full max-w-xs flex-col items-stretch gap-4 sm:w-auto sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center lg:justify-start">
 			<a
@@ -71,10 +71,11 @@ import HexBackground from "../HexBackground.astro";
 			 -me- (margin-inline-end), not -mr-: in RTL the grid mirrors, so the screenshot moves
 			 to the left column and has to bleed off the LEFT edge. A physical -mr- kept pulling it
 			 rightwards there, straight over the Arabic copy. -->
-		<!-- -mx-4 below sm eats into the section's px-6 so the screenshot renders wider on a phone
-			 (a block element with width:auto grows by its negative margins). It stops 8px short of
-			 the viewport edge on each side so the rounded corners and shadow still read. -->
-		<div class="relative -mx-4 sm:mx-0 lg:-mr-[40vw] lg:w-[64rem] lg:max-w-none">
+		<!-- Phones: the screenshot starts 8px in from the leading edge (-ms-4 eats into the
+			 section's px-6) and is twice the width it has left, so exactly half of it runs off the
+			 trailing edge and is clipped by the section. Logical margin, so in Arabic it mirrors
+			 and bleeds off the left, the same way the lg layout does. -->
+		<div class="relative -ms-4 w-[calc(200vw-16px)] max-w-none sm:mx-0 sm:w-auto lg:-mr-[40vw] lg:w-[64rem] lg:max-w-none">
 			<!-- This is the LCP image on the homepage. It was shipping its full 1600px / 95 KiB self
 				 to phones rendering it at ~364px — roughly 90 KiB spent on the one request that sets
 				 LCP. srcset lets the browser take a width that matches, and `sizes` tells it which
@@ -82,13 +83,13 @@ import HexBackground from "../HexBackground.astro";
 			<img
 				src={ik("/hero-app.webp", "w-1024,q-80")}
 				srcset={ikSrcSet("/hero-app.webp", [400, 560, 640, 720, 828, 1024, 1280, 1600])}
-				sizes="(min-width: 1024px) 64rem, 100vw"
+				sizes="(min-width: 1024px) 64rem, (min-width: 640px) 100vw, 200vw"
 				width="1600"
 				height="741"
 				alt="The Droparabia dashboard's Find Products page: a searchable grid of products showing cost and delivery estimates."
 				fetchpriority="high"
 				decoding="async"
-				class="w-full rounded-[0.7rem] shadow-[0_40px_90px_-30px_rgba(0,0,0,0.3)] sm:rounded-[0.8rem]"
+				class="w-full rounded-none shadow-[0_40px_90px_-30px_rgba(0,0,0,0.3)] sm:rounded-[0.8rem]"
 			/>
 		</div>
 	</div>

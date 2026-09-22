@@ -30,9 +30,9 @@ export const translations: Record<string, Record<Lang, string>> = {
 		fr: `<span class="block text-2xl leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">Tout ce qu'il vous faut pour une boutique e-commerce</span><span class="hero-gradient-text block text-3xl leading-[1.3] sm:text-4xl md:text-[3.3rem] md:whitespace-nowrap rtl:-mt-[0.38em] rtl:leading-[1.85]">performante et très rentable</span><span class="block text-2xl leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">au Liban</span>`,
 	},
 	"hero.subheadline": {
-		en: `Droparabia is an e-commerce platform for dropshipping that helps you find winning products and deliver them to your customer's doorstep without spending a single dollar on inventory`,
-		ar: `دروب أرابيا هي منصة تجارة إلكترونية للدروبشيبينغ تساعدك على إيجاد المنتجات الرابحة وتوصيلها إلى باب عميلك دون إنفاق دولار واحد على المخزون`,
-		fr: `Droparabia est une plateforme e-commerce de dropshipping qui vous aide à trouver des produits gagnants et à les livrer directement chez vos clients sans dépenser un seul dollar en stock`,
+		en: `Droparabia allows you to start dropshipping in Lebanon by helping you find winning products and deliver them to your customer's doorstep without spending a single dollar on inventory`,
+		ar: `يتيح لك دروب أرابيا بدء الدروبشيبينغ في لبنان من خلال مساعدتك على إيجاد المنتجات الرابحة وتوصيلها إلى باب عميلك دون إنفاق دولار واحد على المخزون`,
+		fr: `Droparabia vous permet de vous lancer dans le dropshipping au Liban en vous aidant à trouver des produits gagnants et à les livrer directement chez vos clients sans dépenser un seul dollar en stock`,
 	},
 
 	"cta.getStarted": { en: "Get Started", ar: "ابدأ الآن", fr: "Commencer" },
@@ -74,14 +74,14 @@ export const translations: Record<string, Record<Lang, string>> = {
 	// is now a plain sentence, and the section would otherwise be the only one on the page
 	// with no brand colour in its title block.
 	"catalog.heading": {
-		en: 'A huge catalog of proven <span class="text-primary">winning products</span>',
-		ar: 'كتالوج ضخم من <span class="text-primary">المنتجات الرابحة</span> المثبتة',
-		fr: 'Un immense catalogue de <span class="text-primary">produits gagnants</span> éprouvés',
+		en: 'A huge catalog of proven <span class="text-primary">winning products</span> in Lebanon',
+		ar: 'كتالوج ضخم من <span class="text-primary">المنتجات الرابحة</span> المثبتة في لبنان',
+		fr: 'Un immense catalogue de <span class="text-primary">produits gagnants</span> éprouvés au Liban',
 	},
 	"catalog.subheading": {
-		en: "You don't need to buy bulk inventories from China and pay shipping fees or search for hours looking for a product to sell",
-		ar: "لست بحاجة إلى شراء مخزون بالجملة من الصين ودفع رسوم الشحن، أو البحث لساعات عن منتج لبيعه",
-		fr: "Vous n'avez pas besoin d'acheter du stock en gros depuis la Chine et de payer des frais de livraison, ni de chercher pendant des heures un produit à vendre",
+		en: "Droparabia sources you the best selling products in Lebanon so you don't need to buy bulk inventories from China and pay shipping fees or search for hours looking for a product to sell",
+		ar: "يوفّر لك دروب أرابيا المنتجات الأكثر مبيعًا في لبنان، فلا تحتاج إلى شراء مخزون بالجملة من الصين ودفع رسوم الشحن، أو البحث لساعات عن منتج لبيعه",
+		fr: "Droparabia vous source les produits les plus vendus au Liban : plus besoin d'acheter du stock en gros depuis la Chine et de payer des frais de livraison, ni de chercher pendant des heures un produit à vendre",
 	},
 
 	"howitworks.heading": {
@@ -185,34 +185,34 @@ export const translations: Record<string, Record<Lang, string>> = {
 		fr: `Accédez à des <span class="text-primary">outils avancés et révolutionnaires</span>`,
 	},
 	"tool.find-products.tagline": {
-		en: "Search a huge catalog of winning products",
-		ar: "ابحث في كتالوج ضخم من المنتجات الرابحة",
-		fr: "Explorez un immense catalogue de produits gagnants",
+		en: "A catalog of in-demand & proven winning products",
+		ar: "كتالوج من المنتجات الرابحة المطلوبة والمثبتة",
+		fr: "Un catalogue de produits gagnants, demandés et éprouvés",
 	},
 	"tool.ai-winning-products.tagline": {
-		en: "Let AI surface today's best-selling picks",
-		ar: "دع الذكاء الاصطناعي يبرز الأكثر مبيعًا اليوم",
-		fr: "Laissez l'IA révéler les meilleures ventes du jour",
+		en: "Not sure what to sell? AI will help you decide",
+		ar: "لست متأكدًا مما تبيعه؟ سيساعدك الذكاء الاصطناعي على القرار",
+		fr: "Vous ne savez pas quoi vendre ? L'IA vous aide à décider",
 	},
 	"tool.ai-studio.tagline": {
-		en: "Generate product creatives in seconds",
-		ar: "أنشئ تصاميم منتجاتك في ثوانٍ",
-		fr: "Générez vos visuels produits en quelques secondes",
+		en: "Generate your ads in few seconds with AI Studio",
+		ar: "أنشئ إعلاناتك في ثوانٍ مع AI Studio",
+		fr: "Générez vos publicités en quelques secondes avec AI Studio",
 	},
 	"tool.branding.tagline": {
-		en: "Build a store identity buyers trust",
-		ar: "ابنِ هوية متجر يثق بها المشترون",
-		fr: "Construisez une identité de boutique qui inspire confiance",
+		en: "Build your own brand identity and stand out from the competition",
+		ar: "ابنِ هوية علامتك التجارية الخاصة وتميّز عن المنافسين",
+		fr: "Construisez votre propre identité de marque et démarquez-vous de la concurrence",
 	},
 	"tool.product-request.tagline": {
-		en: "Ask us to source anything you need",
-		ar: "اطلب منا توفير أي منتج تحتاجه",
-		fr: "Demandez-nous de sourcer tout ce dont vous avez besoin",
+		en: "Looking for a certain product? we'll find it for you",
+		ar: "تبحث عن منتج معيّن؟ سنجده لك",
+		fr: "Vous cherchez un produit précis ? Nous le trouvons pour vous",
 	},
 	"tool.leader-board.tagline": {
-		en: "See how you rank against top sellers",
-		ar: "اطّلع على ترتيبك مقارنة بأفضل البائعين",
-		fr: "Voyez votre classement face aux meilleurs vendeurs",
+		en: "Build your profitable online store while climbing the ranks",
+		ar: "ابنِ متجرك الإلكتروني المربح وأنت تتصدّر الترتيب",
+		fr: "Construisez votre boutique en ligne rentable tout en grimpant au classement",
 	},
 
 	"dropvault.courses.heading": {
@@ -606,9 +606,9 @@ export const translations: Record<string, Record<Lang, string>> = {
 		fr: "Abandonner après avoir perdu toutes vos économies",
 	},
 	"about.mission.closing": {
-		en: "Droparabia is proving to be the best e-commerce platform in Lebanon for online selling, as it protects sellers in Lebanon from burning their budget on beginners' mistakes and meaningless friction left behind by traditional e-commerce and old dropshipping.",
-		ar: "يثبت دروب أرابيا أنه أفضل منصة تجارة إلكترونية في لبنان للبيع عبر الإنترنت، إذ يحمي البائعين في لبنان من إهدار ميزانيتهم على أخطاء المبتدئين والعقبات غير المجدية التي خلفتها التجارة الإلكترونية التقليدية والدروبشيبينغ القديم.",
-		fr: "Droparabia s'impose comme la meilleure plateforme e-commerce au Liban pour la vente en ligne, car elle protège les vendeurs au Liban contre le gaspillage de leur budget en erreurs de débutant et en frictions inutiles héritées du e-commerce traditionnel et de l'ancien dropshipping.",
+		en: "If you want to start dropshipping in Lebanon or even start an e-commerce store in Lebanon, Droparabia is here to help with that, as it protects you from burning your budget on beginners' mistakes and meaningless friction, like upfront investments in inventory that might not sell.",
+		ar: "إذا كنت تريد بدء الدروبشيبينغ في لبنان أو حتى إطلاق متجر إلكتروني في لبنان، فدروب أرابيا هنا لمساعدتك في ذلك، إذ يحميك من إهدار ميزانيتك على أخطاء المبتدئين والعقبات غير المجدية، مثل الاستثمار المسبق في مخزون قد لا يُباع.",
+		fr: "Si vous souhaitez vous lancer dans le dropshipping au Liban, ou même ouvrir une boutique e-commerce au Liban, Droparabia est là pour vous y aider, car il vous protège du gaspillage de votre budget en erreurs de débutant et en frictions inutiles, comme les investissements initiaux dans un stock qui pourrait ne pas se vendre.",
 	},
 
 	"about.operation.heading": {
@@ -617,9 +617,9 @@ export const translations: Record<string, Record<Lang, string>> = {
 		fr: `Comment ça <span class="text-primary">fonctionne</span>`,
 	},
 	"about.operation.paragraph": {
-		en: "We have our own unique logistics network in Deir Qoubel, Mount Lebanon Governorate and our own infrastructure that allows us to deliver safely all over Lebanon, as well as our own supplier partners locally and from China, and dropshipping suppliers in Lebanon, to make sure we're reliably and swiftly sourcing you only the highest quality of products at the best price possible.",
-		ar: "لدينا شبكة لوجستية خاصة بنا في دير قوبل، محافظة جبل لبنان، وبنية تحتية تتيح لنا التوصيل الآمن في جميع أنحاء لبنان، إضافة إلى شركاء موردين محليين ومن الصين، وموردي دروبشيبينغ في لبنان، لضمان توفير منتجات عالية الجودة بأفضل الأسعار وبسرعة وموثوقية.",
-		fr: "Nous disposons de notre propre réseau logistique à Deir Qoubel, dans le gouvernorat du Mont-Liban, et de notre propre infrastructure qui nous permet de livrer en toute sécurité dans tout le Liban, ainsi que de nos propres fournisseurs partenaires, locaux et en Chine, et de fournisseurs de dropshipping au Liban, afin de vous fournir rapidement et de manière fiable uniquement des produits de la plus haute qualité au meilleur prix possible.",
+		en: "We have our own unique logistics network in Deir Qoubel, Mount Lebanon Governorate and our own delivery drivers that allows us to deliver safely all over Lebanon and send you the payment on each successful delivery, as well as our own supplier partners locally and from China, and dropshipping suppliers in Lebanon, to make sure we're reliably and swiftly sourcing you only the highest quality of products at the best price possible.",
+		ar: "لدينا شبكة لوجستية خاصة بنا في دير قوبل، محافظة جبل لبنان، وسائقو توصيل خاصون بنا يتيحون لنا التوصيل الآمن في جميع أنحاء لبنان وإرسال المبلغ إليك عند كل عملية توصيل ناجحة، إضافة إلى شركاء موردين محليين ومن الصين، وموردي دروبشيبينغ في لبنان، لضمان توفير منتجات عالية الجودة بأفضل الأسعار وبسرعة وموثوقية.",
+		fr: "Nous disposons de notre propre réseau logistique à Deir Qoubel, dans le gouvernorat du Mont-Liban, et de nos propres livreurs, ce qui nous permet de livrer en toute sécurité dans tout le Liban et de vous envoyer le paiement à chaque livraison réussie, ainsi que de nos propres fournisseurs partenaires, locaux et en Chine, et de fournisseurs de dropshipping au Liban, afin de vous fournir rapidement et de manière fiable uniquement des produits de la plus haute qualité au meilleur prix possible.",
 	},
 
 	"about.founder.label": { en: "Founder of Droparabia", ar: "مؤسس دروب أرابيا", fr: "Fondateur de Droparabia" },
@@ -627,6 +627,934 @@ export const translations: Record<string, Record<Lang, string>> = {
 		en: "Majd Abdulsalam, a digital marketing expert and 6-figure entrepreneur, created Droparabia, shaped from all the obstacles, trials, and errors during his journey building his own e-com brands, now using that expertise to help others build successful e-com and dropshipping stores.",
 		ar: "مجد عبدالسلام، خبير تسويق رقمي ورائد أعمال بأرباح ست أرقام، أسّس دروب أرابيا انطلاقًا من كل العقبات والتجارب والأخطاء التي واجهها خلال بناء علاماته التجارية الإلكترونية، ويستخدم الآن تلك الخبرة لمساعدة الآخرين على بناء متاجر إلكترونية ودروبشيبينغ ناجحة.",
 		fr: "Majd Abdulsalam, expert en marketing digital et entrepreneur à 6 chiffres, a créé Droparabia à partir de tous les obstacles, essais et erreurs rencontrés en construisant ses propres marques e-commerce, et met aujourd'hui cette expertise au service des autres pour les aider à bâtir des boutiques e-commerce et dropshipping performantes.",
+	},
+
+
+	// --- Header Tools dropdown: one-line descriptions. Separate from tool.*.tagline because the
+	// dropdown's copy (Header.astro) is shorter and worded differently from the tool pages'. ---
+	"nav.tool.find-products.description": { en: "Search a huge catalog of winning products", ar: "ابحث في كتالوج ضخم من المنتجات الرابحة", fr: "Explorez un immense catalogue de produits gagnants" },
+	"nav.tool.ai-winning-products.description": { en: "Let AI surface today's best-selling picks", ar: "دع الذكاء الاصطناعي يبرز الأكثر مبيعًا اليوم", fr: "Laissez l'IA révéler les meilleures ventes du jour" },
+	"nav.tool.ai-studio.description": { en: "Generate product creatives in seconds", ar: "أنشئ تصاميم منتجاتك في ثوانٍ", fr: "Générez vos visuels produits en quelques secondes" },
+	"nav.tool.branding.description": { en: "Build a store identity buyers trust", ar: "ابنِ هوية متجر يثق بها المشترون", fr: "Construisez une identité de boutique qui inspire confiance" },
+	"nav.tool.product-request.description": { en: "Ask us to source anything you need", ar: "اطلب منا توفير أي منتج تحتاجه", fr: "Demandez-nous de sourcer tout ce dont vous avez besoin" },
+	"nav.tool.leader-board.description": { en: "See how you rank against top sellers", ar: "اطّلع على ترتيبك مقارنة بأفضل البائعين", fr: "Voyez votre classement face aux meilleurs vendeurs" },
+
+	"blog.newbies.cta": { en: "See what our sellers are saying", ar: "شاهد ما يقوله بائعونا", fr: "Découvrez ce que disent nos vendeurs" },
+	"blog.exists.cta": { en: "Join the Dropvault community", ar: "انضم إلى مجتمع Dropvault", fr: "Rejoindre la communauté Dropvault" },
+	// --- Catalog: product names and the one prose weight value ---
+	"catalog.product.milkFrother": { en: "Electric milk frother", ar: "خفّاقة حليب كهربائية", fr: "Mousseur à lait électrique" },
+	"catalog.product.blender": { en: "2 in 1 Portable Blender & Cup", ar: "خلاط وكوب محمول 2 في 1", fr: "Blender portable et gobelet 2 en 1" },
+	"catalog.product.crepeMaker": { en: "Multifunction Crepe Maker", ar: "صانعة كريب متعددة الوظائف", fr: "Crêpière multifonction" },
+	"catalog.product.garlicMachine": { en: "Mini Electric Garlic Machine", ar: "آلة ثوم كهربائية صغيرة", fr: "Mini hachoir à ail électrique" },
+	"catalog.product.eyebrowTrimmer": { en: "2 in 1 eyebrow trimmer", ar: "مشذّب حواجب 2 في 1", fr: "Tondeuse à sourcils 2 en 1" },
+	"catalog.product.hairOilApplicator": { en: "2 in 1 Electric Hair Oil Applicator and Scalp Massager", ar: "جهاز كهربائي 2 في 1 لتوزيع زيت الشعر وتدليك فروة الرأس", fr: "Applicateur d'huile capillaire et masseur du cuir chevelu électrique 2 en 1" },
+	"catalog.product.hairCurler": { en: "Cordless Automatic Hair Curler", ar: "مجعّد شعر أوتوماتيكي لاسلكي", fr: "Boucleur automatique sans fil" },
+	"catalog.product.wrinkleRemover": { en: "Neck and face wrinkle remover", ar: "جهاز إزالة تجاعيد الرقبة والوجه", fr: "Appareil anti-rides pour le cou et le visage" },
+	"catalog.product.gunMassager": { en: "Gun Massager", ar: "مسدس تدليك", fr: "Pistolet de massage" },
+	"catalog.product.galaxyProjector": { en: "Astronaut Galaxy Sky Projector Rechargeable with Bluetooth Speaker", ar: "جهاز عرض سماء المجرّة على شكل رائد فضاء، قابل للشحن مع مكبّر صوت بلوتوث", fr: "Projecteur de ciel galactique astronaute rechargeable avec enceinte Bluetooth" },
+	"catalog.product.rainCloud": { en: "RGB Raining Humidifier Rain Cloud", ar: "مرطّب هواء سحابة ممطرة RGB", fr: "Humidificateur nuage de pluie RGB" },
+	"catalog.product.spaceshipHumidifier": { en: "Astronaut Spaceship Aromatherapy Air Humidifier Purifier", ar: "مرطّب ومنقّي هواء بالعلاج العطري على شكل سفينة فضاء", fr: "Humidificateur purificateur d'air aromathérapie, vaisseau spatial astronaute" },
+	"catalog.product.solarLamp": { en: "Outdoor Waterproof LED Floor Lamp Solar", ar: "مصباح أرضي LED خارجي بالطاقة الشمسية ومقاوم للماء", fr: "Lampe de sol LED solaire extérieure étanche" },
+	"catalog.product.flameDiffuser": { en: "Flame Diffuser Night Light Gift Set Decor Fire Flame Humidifier", ar: "مرطّب وناشر روائح بتأثير اللهب مع ضوء ليلي، طقم هدية للديكور", fr: "Diffuseur effet flamme et veilleuse, humidificateur déco en coffret cadeau" },
+	"catalog.product.lintRemover": { en: "Lint Remover", ar: "مزيل الوبر", fr: "Rasoir anti-bouloches" },
+	"catalog.product.shoeCleaner": { en: "Shoe cleaner", ar: "منظّف الأحذية", fr: "Nettoyant pour chaussures" },
+	"catalog.value.shoeWeight": { en: "150ml/bottle (≈ 0.150 Kg)", ar: "150ml/عبوة (≈ 0.150 Kg)", fr: "150 ml/flacon (≈ 0,150 Kg)" },
+
+	// --- Blog: shared chrome ---
+	"blog.ui.pageContents": { en: "Page Contents", ar: "محتويات الصفحة", fr: "Sommaire" },
+	"blog.ui.updated": { en: "Updated", ar: "تم التحديث", fr: "Mis à jour" },
+
+	// --- Blog: article bodies. Keys are positional (b0, b1, …) in source order; the English
+	// here is the text extracted from each post, so edit a post's copy and its entry together. ---
+	"blog.newbies.b0": {
+		en: `Dropshipping is one of the best business models beginners in the world of e-commerce can pick up, especially for Lebanese with a very limited budget who want to start their own online hustle regardless of their experience in digital marketing or whether they're currently living in Lebanon or abroad as a student outside the country.`,
+		ar: `الدروبشيبينغ من أفضل نماذج الأعمال التي يمكن للمبتدئين في عالم التجارة الإلكترونية البدء بها، خاصةً للّبنانيين ذوي الميزانية المحدودة جدًا الذين يريدون بدء مشروعهم الخاص عبر الإنترنت، بغض النظر عن خبرتهم في التسويق الرقمي، وسواء كانوا يعيشون حاليًا في لبنان أو في الخارج كطلاب خارج البلاد.`,
+		fr: `Le dropshipping est l'un des meilleurs modèles économiques que les débutants en e-commerce puissent adopter, en particulier pour les Libanais disposant d'un budget très limité qui veulent lancer leur propre activité en ligne, quelle que soit leur expérience en marketing digital, qu'ils vivent actuellement au Liban ou à l'étranger en tant qu'étudiants.`,
+	},
+	"blog.newbies.b1": {
+		en: `What is Dropshipping`,
+		ar: `ما هو الدروبشيبينغ`,
+		fr: `Qu'est-ce que le dropshipping`,
+	},
+	"blog.newbies.b2": {
+		en: `But before we dive into our topic of how Lebanese can successfully start their own dropshipping business, let's address the elephant in the room.`,
+		ar: `لكن قبل أن نخوض في موضوعنا حول كيف يمكن للّبنانيين بدء مشروع دروبشيبينغ ناجح، دعونا نتطرّق إلى السؤال الأهم.`,
+		fr: `Mais avant d'aborder notre sujet — comment les Libanais peuvent réussir à lancer leur propre activité de dropshipping —, parlons de l'éléphant dans la pièce.`,
+	},
+	"blog.newbies.b3": {
+		en: `What is dropshipping?`,
+		ar: `ما هو الدروبشيبينغ؟`,
+		fr: `Qu'est-ce que le dropshipping ?`,
+	},
+	"blog.newbies.b4": {
+		en: `Dropshipping is the process of acting as the middle man between the supplier or the manufacturer of a product and the consumer who purchases the product, meaning you're selling these products without even touching or owning them. You help sell these products, the supplier deducts the cost of their product from a successful sale, and you get to keep the profit. Simple, isn't it?`,
+		ar: `الدروبشيبينغ هو أن تكون الوسيط بين المورّد أو مُصنّع المنتج وبين المستهلك الذي يشتريه، أي أنك تبيع هذه المنتجات دون أن تلمسها أو تمتلكها. أنت تساعد في بيع هذه المنتجات، والمورّد يقتطع تكلفة منتجه من عملية البيع الناجحة، وأنت تحتفظ بالربح. بسيط، أليس كذلك؟`,
+		fr: `Le dropshipping consiste à jouer l'intermédiaire entre le fournisseur ou le fabricant d'un produit et le consommateur qui l'achète : vous vendez ces produits sans jamais les toucher ni les posséder. Vous aidez à les vendre, le fournisseur déduit le coût de son produit de chaque vente réussie, et vous gardez le bénéfice. Simple, non ?`,
+	},
+	"blog.newbies.b5": {
+		en: `Why Choose Dropshipping`,
+		ar: `لماذا تختار الدروبشيبينغ`,
+		fr: `Pourquoi choisir le dropshipping`,
+	},
+	"blog.newbies.b6": {
+		en: `Unlike e-commerce, where you need a huge budget of at least $3,000 to cover testing and trying different products, purchasing products in bulk uncertain if they'll sell, and keeping you stuck with an inventory, that's not the case with dropshipping:`,
+		ar: `على عكس التجارة الإلكترونية، حيث تحتاج إلى ميزانية ضخمة لا تقل عن 3,000 دولار لتغطية تجربة واختبار منتجات مختلفة، وشراء منتجات بالجملة دون أن تعرف إن كانت ستُباع، ثم تبقى عالقًا مع مخزون، فالأمر مختلف مع الدروبشيبينغ:`,
+		fr: `Contrairement au e-commerce, où il vous faut un budget conséquent d'au moins 3 000 $ pour tester différents produits, acheter en gros sans savoir s'ils se vendront et vous retrouver coincé avec du stock, ce n'est pas le cas avec le dropshipping :`,
+	},
+	"blog.newbies.b7": {
+		en: `This is the exact model multi billion dollar brands like Gymshark and Wayfair used to build their businesses without owning inventory and risking their budgets in their starting phase!`,
+		ar: `هذا هو النموذج نفسه الذي استخدمته علامات تجارية بمليارات الدولارات مثل Gymshark وWayfair لبناء أعمالها دون امتلاك مخزون ودون المجازفة بميزانياتها في مرحلة البداية!`,
+		fr: `C'est exactement le modèle qu'ont utilisé des marques valant des milliards comme Gymshark et Wayfair pour bâtir leur activité sans posséder de stock ni risquer leur budget au démarrage !`,
+	},
+	"blog.newbies.b8": {
+		en: `What will you learn?`,
+		ar: `ماذا ستتعلّم؟`,
+		fr: `Qu'allez-vous apprendre ?`,
+	},
+	"blog.newbies.b9": {
+		en: `In this article, you're going to learn:`,
+		ar: `في هذا المقال، ستتعلّم:`,
+		fr: `Dans cet article, vous allez apprendre :`,
+	},
+	"blog.newbies.b10": {
+		en: `Deciding the niche`,
+		ar: `اختيار المجال`,
+		fr: `Choisir sa niche`,
+	},
+	"blog.newbies.b11": {
+		en: `This is one of the most important steps that usually gets overlooked by almost everyone who wants to start dropshipping.`,
+		ar: `هذه من أهم الخطوات التي يتجاهلها عادةً كل من يريد بدء الدروبشيبينغ تقريبًا.`,
+		fr: `C'est l'une des étapes les plus importantes, et presque tous ceux qui veulent se lancer dans le dropshipping la négligent.`,
+	},
+	"blog.newbies.b12": {
+		en: `"Why sell only fitness products when I can also sell beauty products and car products?"`,
+		ar: `"لماذا أبيع منتجات اللياقة فقط بينما يمكنني أيضًا بيع منتجات التجميل ومنتجات السيارات؟"`,
+		fr: `« Pourquoi vendre uniquement des produits de fitness alors que je peux aussi vendre des produits de beauté et des produits pour voiture ? »`,
+	},
+	"blog.newbies.b13": {
+		en: `Unless you want to look like a generic dollar store that signals "cheap" and "low quality" and doesn't demonstrate a clear purpose, go ahead, no one is stopping you :)`,
+		ar: `إلا إذا أردت أن تبدو كمتجر عادي يبيع كل شيء بدولار، يوحي بأنه "رخيص" و"منخفض الجودة" ولا يُظهر هدفًا واضحًا، فتفضّل، لا أحد يمنعك :)`,
+		fr: `À moins que vous vouliez ressembler à un bazar générique qui respire le « pas cher » et la « mauvaise qualité », sans aucun positionnement clair — allez-y, personne ne vous en empêche :)`,
+	},
+	"blog.newbies.b14": {
+		en: `Here's why choosing a niche is a must:`,
+		ar: `إليك لماذا يُعدّ اختيار المجال أمرًا ضروريًا:`,
+		fr: `Voici pourquoi choisir une niche est indispensable :`,
+	},
+	"blog.newbies.b15": {
+		en: `The most profitable niches you can choose from are:`,
+		ar: `أكثر المجالات ربحية التي يمكنك الاختيار منها هي:`,
+		fr: `Les niches les plus rentables parmi lesquelles choisir sont :`,
+	},
+	"blog.newbies.b16": {
+		en: `But please, and I'm saying this for your own good, do NOT under any circumstances go for dangerous, hazardous items or contraband like:`,
+		ar: `لكن أرجوك، وأقول هذا لمصلحتك، لا تتّجه تحت أي ظرف من الظروف إلى المنتجات الخطرة أو الممنوعة مثل:`,
+		fr: `Mais s'il vous plaît, et je vous le dis pour votre bien : ne vous tournez EN AUCUN CAS vers des articles dangereux ou de la contrebande, comme :`,
+	},
+	"blog.newbies.b17": {
+		en: `Qualifying a product`,
+		ar: `تقييم المنتج`,
+		fr: `Qualifier un produit`,
+	},
+	"blog.newbies.b18": {
+		en: `So you took my advice and decided on your niche, splendid for you!`,
+		ar: `إذًا أخذت بنصيحتي واخترت مجالك، رائع!`,
+		fr: `Vous avez donc suivi mon conseil et choisi votre niche — bravo !`,
+	},
+	"blog.newbies.b19": {
+		en: `Now let's learn about the factors that will allow you to almost instantly identify whether a product is a seller or a loser.`,
+		ar: `الآن لنتعرّف على العوامل التي ستتيح لك أن تعرف فورًا تقريبًا ما إذا كان المنتج رابحًا أم خاسرًا.`,
+		fr: `Voyons maintenant les critères qui vous permettront de savoir presque instantanément si un produit va se vendre ou non.`,
+	},
+	"blog.newbies.b20": {
+		en: `1st: Does it solve a real problem?`,
+		ar: `أولًا: هل يحلّ مشكلة حقيقية؟`,
+		fr: `1er critère : résout-il un vrai problème ?`,
+	},
+	"blog.newbies.b21": {
+		en: `This is really important because not everyone is willing to spend their money on some useless junk (unless it has a wow factor, which we will discuss in a moment).`,
+		ar: `هذا مهم جدًا لأن ليس كل شخص مستعدًا لإنفاق ماله على أشياء عديمة الفائدة (إلا إذا كان فيها عامل إبهار، وسنتحدث عنه بعد قليل).`,
+		fr: `C'est très important, car tout le monde n'est pas prêt à dépenser son argent pour un gadget inutile (sauf s'il a un effet « waouh », dont nous parlerons dans un instant).`,
+	},
+	"blog.newbies.b22": {
+		en: `Take, for example, a fidget spinner. What problems does it solve?`,
+		ar: `خذ على سبيل المثال لعبة "فيدجت سبينر". ما المشاكل التي تحلّها؟`,
+		fr: `Prenons par exemple le hand spinner. Quels problèmes résout-il ?`,
+	},
+	"blog.newbies.b23": {
+		en: `...`,
+		ar: `...`,
+		fr: `...`,
+	},
+	"blog.newbies.b24": {
+		en: `That's right.`,
+		ar: `بالضبط.`,
+		fr: `Exactement.`,
+	},
+	"blog.newbies.b25": {
+		en: `Nothing.`,
+		ar: `لا شيء.`,
+		fr: `Aucun.`,
+	},
+	"blog.newbies.b26": {
+		en: `This is a mere distracting toy that became a fad, especially in 2018, specifically during the time when all schools in Lebanon were preparing for their final exams.`,
+		ar: `إنها مجرد لعبة مُلهية تحوّلت إلى موضة، خاصةً في عام 2018، وتحديدًا في الفترة التي كانت فيها جميع مدارس لبنان تستعد للامتحانات النهائية.`,
+		fr: `Ce n'est qu'un jouet distrayant devenu une mode, surtout en 2018, précisément à l'époque où toutes les écoles du Liban préparaient leurs examens de fin d'année.`,
+	},
+	"blog.newbies.b27": {
+		en: `How about a lotion that removes wrinkles?`,
+		ar: `ماذا عن كريم يزيل التجاعيد؟`,
+		fr: `Et une lotion qui efface les rides ?`,
+	},
+	"blog.newbies.b28": {
+		en: `Now this is a real problem-solving product that people, especially women in their 40s, have no choice but to buy.`,
+		ar: `هذا منتج يحلّ مشكلة حقيقية فعلًا، ولا يملك الناس، خاصةً النساء في الأربعينيات، خيارًا سوى شرائه.`,
+		fr: `Voilà un vrai produit qui résout un problème, que les gens — en particulier les femmes dans la quarantaine — n'ont d'autre choix que d'acheter.`,
+	},
+	"blog.newbies.b29": {
+		en: `Always ask yourself this question: Does this product solve a real problem? If yes, then sell it.`,
+		ar: `اسأل نفسك دائمًا هذا السؤال: هل يحلّ هذا المنتج مشكلة حقيقية؟ إن كان الجواب نعم، فبِعه.`,
+		fr: `Posez-vous toujours cette question : ce produit résout-il un vrai problème ? Si oui, vendez-le.`,
+	},
+	"blog.newbies.b30": {
+		en: `If no, either pass on it, or consider selling it if it's part of a very strong ongoing trend that's currently happening, from which you can make good money.`,
+		ar: `وإن كان الجواب لا، فإما أن تتجاوزه، أو تفكّر في بيعه إن كان جزءًا من موجة رائجة وقوية جدًا تحدث حاليًا ويمكنك تحقيق ربح جيد منها.`,
+		fr: `Si non, passez votre chemin, ou envisagez de le vendre uniquement s'il fait partie d'une tendance très forte en ce moment, dont vous pouvez tirer un bon profit.`,
+	},
+	"blog.newbies.b31": {
+		en: `2nd: Does it have a good profit margin?`,
+		ar: `ثانيًا: هل لديه هامش ربح جيد؟`,
+		fr: `2e critère : offre-t-il une bonne marge ?`,
+	},
+	"blog.newbies.b32": {
+		en: `You want a selling price much higher than the supplier cost, usually a 3x markup or more. A skincare gadget sourced at $8 and sold for $30 works well. A phone charger cable sourced at $4 that only sells for $6 doesn't, since after ad costs you make almost nothing.`,
+		ar: `تريد سعر بيع أعلى بكثير من تكلفة المورّد، عادةً ثلاثة أضعاف أو أكثر. أداة عناية بالبشرة بتكلفة 8 دولارات وتُباع بـ30 دولارًا خيار ممتاز. أما كابل شاحن هاتف بتكلفة 4 دولارات ولا يُباع إلا بـ6 دولارات فلا، لأنك بعد تكاليف الإعلانات لن تربح شيئًا تقريبًا.`,
+		fr: `Vous voulez un prix de vente bien supérieur au coût fournisseur, généralement 3 fois plus ou davantage. Un accessoire de soin de la peau acheté 8 $ et vendu 30 $ fonctionne bien. Un câble de chargeur acheté 4 $ qui ne se vend que 6 $, non : après les frais publicitaires, vous ne gagnez presque rien.`,
+	},
+	"blog.newbies.b33": {
+		en: `3rd: Is it lightweight?`,
+		ar: `ثالثًا: هل هو خفيف الوزن؟`,
+		fr: `3e critère : est-il léger ?`,
+	},
+	"blog.newbies.b34": {
+		en: `Light products mean cheaper shipping, better margins, and faster delivery. Aim for items under about 1 kg, like jewelry, phone cases, watches, or small beauty tools. Anything heavy, like a 5 kg appliance or a piece of furniture, eats into your profit through shipping and slows delivery.`,
+		ar: `المنتجات الخفيفة تعني شحنًا أرخص وهوامش أفضل وتوصيلًا أسرع. استهدف منتجات يقل وزنها عن كيلوغرام تقريبًا، مثل المجوهرات وأغطية الهواتف والساعات وأدوات التجميل الصغيرة. أما أي شيء ثقيل، كجهاز بوزن 5 كيلوغرامات أو قطعة أثاث، فيستنزف ربحك عبر الشحن ويبطئ التوصيل.`,
+		fr: `Des produits légers, c'est une livraison moins chère, de meilleures marges et des délais plus courts. Visez des articles de moins d'environ 1 kg, comme des bijoux, des coques de téléphone, des montres ou de petits accessoires de beauté. Tout ce qui est lourd, comme un appareil de 5 kg ou un meuble, grignote votre bénéfice avec les frais de livraison et ralentit les délais.`,
+	},
+	"blog.newbies.b35": {
+		en: `4th: Is it a retainer?`,
+		ar: `رابعًا: هل يتكرّر شراؤه؟`,
+		fr: `4e critère : incite-t-il au rachat ?`,
+	},
+	"blog.newbies.b36": {
+		en: `This doesn't necessarily determine whether a product is a winner or not, but is rather an optional consideration.`,
+		ar: `هذا لا يحدد بالضرورة ما إذا كان المنتج رابحًا أم لا، بل هو اعتبار اختياري.`,
+		fr: `Ce critère ne détermine pas forcément si un produit est gagnant ou non ; c'est plutôt un point optionnel à considérer.`,
+	},
+	"blog.newbies.b37": {
+		en: `A good example of a retainer product is a container of health benefit supplement gummies. Once they finish the container, they're going to order a new one.`,
+		ar: `من الأمثلة الجيدة على المنتجات التي يتكرّر شراؤها علبة حلوى المكمّلات الغذائية الصحية. بمجرد أن ينهي العميل العلبة، سيطلب واحدة جديدة.`,
+		fr: `Un bon exemple de produit à rachat est un pot de gummies de compléments alimentaires. Une fois le pot terminé, le client en commandera un nouveau.`,
+	},
+	"blog.newbies.b38": {
+		en: `An example of a non-retainer product is a shaving machine, which could last a lifetime for them unless they break it or lose it.`,
+		ar: `ومن أمثلة المنتجات التي لا يتكرّر شراؤها ماكينة الحلاقة، التي قد تدوم مدى الحياة ما لم تنكسر أو تضيع.`,
+		fr: `À l'inverse, une tondeuse de rasage est un produit sans rachat : elle peut durer toute une vie, sauf si le client la casse ou la perd.`,
+	},
+	"blog.newbies.b39": {
+		en: `The old way of dropshipping`,
+		ar: `الطريقة القديمة في الدروبشيبينغ`,
+		fr: `L'ancienne façon de faire du dropshipping`,
+	},
+	"blog.newbies.b40": {
+		en: `The old and traditional way of dropshipping had many cons that caused almost everyone to label dropshipping as a "dead" or "terrible" business model.`,
+		ar: `كانت للطريقة التقليدية والقديمة في الدروبشيبينغ عيوب كثيرة جعلت الجميع تقريبًا يصف الدروبشيبينغ بأنه نموذج عمل "ميت" أو "سيئ".`,
+		fr: `L'ancienne méthode, traditionnelle, du dropshipping avait de nombreux inconvénients qui ont poussé presque tout le monde à qualifier le dropshipping de modèle « mort » ou « nul ».`,
+	},
+	"blog.newbies.b41": {
+		en: `And these cons are:`,
+		ar: `وهذه العيوب هي:`,
+		fr: `Et ces inconvénients sont :`,
+	},
+	"blog.newbies.b42": {
+		en: `How Droparabia reshaped digital retail`,
+		ar: `كيف أعاد دروب أرابيا تشكيل التجارة الرقمية`,
+		fr: `Comment Droparabia a transformé le commerce en ligne`,
+	},
+	"blog.newbies.b43": {
+		en: `Because of these major cons left by the old dropshipping model and traditional e-commerce, Droparabia, the first dropshipping platform in Lebanon, was born.`,
+		ar: `بسبب هذه العيوب الكبيرة التي خلّفها نموذج الدروبشيبينغ القديم والتجارة الإلكترونية التقليدية، وُلد دروب أرابيا، أول منصة دروبشيبينغ في لبنان.`,
+		fr: `C'est à cause de ces inconvénients majeurs laissés par l'ancien modèle de dropshipping et le e-commerce traditionnel qu'est né Droparabia, la première plateforme de dropshipping au Liban.`,
+	},
+	"blog.newbies.b44": {
+		en: `With this platform, you no longer have to search for hours for a product to sell, find or deal with suppliers, or ever worry about delivering the products to your customers' doorsteps.`,
+		ar: `مع هذه المنصة، لم يعد عليك البحث لساعات عن منتج لبيعه، أو إيجاد الموردين والتعامل معهم، أو القلق يومًا بشأن توصيل المنتجات إلى أبواب عملائك.`,
+		fr: `Avec cette plateforme, vous n'avez plus à chercher pendant des heures un produit à vendre, à trouver des fournisseurs ou à traiter avec eux, ni à vous soucier de livrer les produits jusqu'à la porte de vos clients.`,
+	},
+	"blog.newbies.b45": {
+		en: `Droparabia finds and sources for you a wide variety of catalog products consisting only of winning products with real market demand in the Lebanese market!`,
+		ar: `يجد لك دروب أرابيا ويوفّر كتالوجًا متنوعًا من المنتجات، يتكوّن فقط من منتجات رابحة عليها طلب حقيقي في السوق اللبناني!`,
+		fr: `Droparabia trouve et source pour vous un large catalogue composé uniquement de produits gagnants, avec une vraie demande sur le marché libanais !`,
+	},
+	"blog.newbies.b46": {
+		en: `With its one-of-a-kind and advanced logistics network and infrastructure, you pick the product you want to sell by connecting your Shopify store to Droparabia through its own app extension, and add the product directly to your store with the click of a button.`,
+		ar: `بفضل شبكته اللوجستية وبنيته التحتية المتطوّرة والفريدة من نوعها، تختار المنتج الذي تريد بيعه عبر ربط متجرك على شوبيفاي بدروب أرابيا من خلال إضافته الخاصة، وتضيف المنتج مباشرة إلى متجرك بنقرة زر.`,
+		fr: `Grâce à son réseau logistique et à son infrastructure avancés et uniques, vous choisissez le produit que vous voulez vendre en connectant votre boutique Shopify à Droparabia via sa propre extension, puis vous l'ajoutez directement à votre boutique en un clic.`,
+	},
+	"blog.newbies.b47": {
+		en: `And Droparabia will handle the packaging and order delivery for you as soon as a customer places an order on your Shopify store!`,
+		ar: `ويتولى دروب أرابيا التغليف وتوصيل الطلب نيابةً عنك فور أن يضع العميل طلبًا على متجرك في شوبيفاي!`,
+		fr: `Et Droparabia s'occupe de l'emballage et de la livraison dès qu'un client passe commande sur votre boutique Shopify !`,
+	},
+	"blog.newbies.b48": {
+		en: `You don't own or manage inventory, you don't stress over deliveries and order fulfillment, and you only pay for the product's cost while keeping the profit!`,
+		ar: `لا تمتلك مخزونًا ولا تديره، ولا تقلق بشأن التوصيل وتجهيز الطلبات، وتدفع فقط تكلفة المنتج وتحتفظ بالربح!`,
+		fr: `Vous ne possédez ni ne gérez de stock, vous ne stressez pas pour les livraisons et la préparation des commandes, et vous ne payez que le coût du produit en gardant le bénéfice !`,
+	},
+	"blog.newbies.b49": {
+		en: `On top of all that, if a certain product you wanted to sell is not present on Droparabia, all you have to do is provide a screenshot and details of this product in the "request product" feature on Droparabia, and the platform will find and source it for you!`,
+		ar: `وفوق كل ذلك، إذا لم يكن منتج معيّن تريد بيعه متوفرًا على دروب أرابيا، فكل ما عليك فعله هو تقديم لقطة شاشة وتفاصيل هذا المنتج عبر ميزة "طلب منتج" على دروب أرابيا، وستجده المنصة وتوفّره لك!`,
+		fr: `En plus de tout cela, si un produit que vous voulez vendre n'est pas disponible sur Droparabia, il vous suffit de fournir une capture d'écran et les détails de ce produit via la fonctionnalité « Demande de produit » de Droparabia, et la plateforme le trouvera et le sourcera pour vous !`,
+	},
+	"blog.newbies.b50": {
+		en: `Summary`,
+		ar: `الخلاصة`,
+		fr: `En résumé`,
+	},
+	"blog.newbies.b51": {
+		en: `How much you can earn from your dropshipping business depends on several factors, such as:`,
+		ar: `يعتمد مقدار ما يمكنك كسبه من مشروع الدروبشيبينغ على عدة عوامل، مثل:`,
+		fr: `Ce que vous pouvez gagner avec votre activité de dropshipping dépend de plusieurs facteurs, comme :`,
+	},
+	"blog.newbies.b52": {
+		en: `But I'm not going to leave you hanging without an answer. Instead, I'll let these guys answer the question for you.`,
+		ar: `لكنني لن أتركك دون إجابة. بدلًا من ذلك، سأدع هؤلاء يجيبون عن السؤال نيابةً عني.`,
+		fr: `Mais je ne vais pas vous laisser sans réponse. Je vais plutôt laisser ces personnes répondre à la question pour vous.`,
+	},
+	"blog.newbies.b53": {
+		en: `You need only a small budget to get started`,
+		ar: `لا تحتاج إلا إلى ميزانية صغيرة للبدء`,
+		fr: `Il ne vous faut qu'un petit budget pour démarrer`,
+	},
+	"blog.newbies.b54": {
+		en: `No managing or owning inventory`,
+		ar: `لا إدارة ولا امتلاك للمخزون`,
+		fr: `Aucun stock à gérer ni à posséder`,
+	},
+	"blog.newbies.b55": {
+		en: `You focus only on marketing and advertising`,
+		ar: `تركّز فقط على التسويق والإعلان`,
+		fr: `Vous vous concentrez uniquement sur le marketing et la publicité`,
+	},
+	"blog.newbies.b56": {
+		en: `How to decide on your store's niche`,
+		ar: `كيف تختار مجال متجرك`,
+		fr: `Comment choisir la niche de votre boutique`,
+	},
+	"blog.newbies.b57": {
+		en: `How to find winning products`,
+		ar: `كيف تجد المنتجات الرابحة`,
+		fr: `Comment trouver des produits gagnants`,
+	},
+	"blog.newbies.b58": {
+		en: `Factors that qualify a winning product`,
+		ar: `العوامل التي تجعل المنتج رابحًا`,
+		fr: `Les critères d'un produit gagnant`,
+	},
+	"blog.newbies.b59": {
+		en: `Cons of dropshipping`,
+		ar: `عيوب الدروبشيبينغ`,
+		fr: `Les inconvénients du dropshipping`,
+	},
+	"blog.newbies.b60": {
+		en: `How Droparabia addresses these cons`,
+		ar: `كيف يعالج دروب أرابيا هذه العيوب`,
+		fr: `Comment Droparabia y remédie`,
+	},
+	"blog.newbies.b61": {
+		en: `It helps you build a brand that has a clear purpose and demonstrates expertise in a certain niche, which can help you earn the complete trust of a certain audience`,
+		ar: `يساعدك على بناء علامة تجارية ذات هدف واضح تُظهر خبرة في مجال معيّن، ما يساعدك على كسب ثقة جمهور معيّن بالكامل`,
+		fr: `Elle vous aide à bâtir une marque avec une vraie raison d'être, qui démontre une expertise dans une niche précise, ce qui vous permet de gagner la pleine confiance d'une audience donnée`,
+	},
+	"blog.newbies.b62": {
+		en: `It allows you to position yourself as a problem solver rather than someone who sells "products"`,
+		ar: `يتيح لك تقديم نفسك كمن يحلّ المشاكل بدلًا من شخص يبيع "منتجات"`,
+		fr: `Elle vous permet de vous positionner comme quelqu'un qui résout des problèmes, et non comme quelqu'un qui vend des « produits »`,
+	},
+	"blog.newbies.b63": {
+		en: `It helps you identify your target audience so you can empathize with their problems and pain points and speak directly to them`,
+		ar: `يساعدك على تحديد جمهورك المستهدف لتتفهّم مشاكلهم ونقاط ألمهم وتخاطبهم مباشرة`,
+		fr: `Elle vous aide à identifier votre public cible afin de comprendre ses problèmes et ses points de douleur, et de lui parler directement`,
+	},
+	"blog.newbies.b64": {
+		en: `Health and beauty`,
+		ar: `الصحة والجمال`,
+		fr: `Santé et beauté`,
+	},
+	"blog.newbies.b65": {
+		en: `Fitness and wellness`,
+		ar: `اللياقة والعافية`,
+		fr: `Fitness et bien-être`,
+	},
+	"blog.newbies.b66": {
+		en: `Cars`,
+		ar: `السيارات`,
+		fr: `Automobile`,
+	},
+	"blog.newbies.b67": {
+		en: `Pets`,
+		ar: `الحيوانات الأليفة`,
+		fr: `Animaux de compagnie`,
+	},
+	"blog.newbies.b68": {
+		en: `Kitchenware`,
+		ar: `أدوات المطبخ`,
+		fr: `Ustensiles de cuisine`,
+	},
+	"blog.newbies.b69": {
+		en: `Electronics`,
+		ar: `الإلكترونيات`,
+		fr: `Électronique`,
+	},
+	"blog.newbies.b70": {
+		en: `And many more niches you can find on Droparabia`,
+		ar: `والكثير من المجالات الأخرى التي يمكنك إيجادها على دروب أرابيا`,
+		fr: `Et bien d'autres niches que vous trouverez sur Droparabia`,
+	},
+	"blog.newbies.b71": {
+		en: `Weapons`,
+		ar: `الأسلحة`,
+		fr: `Les armes`,
+	},
+	"blog.newbies.b72": {
+		en: `Adult products`,
+		ar: `منتجات البالغين`,
+		fr: `Les produits pour adultes`,
+	},
+	"blog.newbies.b73": {
+		en: `Unknown or unauthorized medicines`,
+		ar: `الأدوية المجهولة أو غير المرخّصة`,
+		fr: `Les médicaments inconnus ou non autorisés`,
+	},
+	"blog.newbies.b74": {
+		en: `Having to search for hours for a product to sell`,
+		ar: `الاضطرار إلى البحث لساعات عن منتج لبيعه`,
+		fr: `Devoir chercher pendant des heures un produit à vendre`,
+	},
+	"blog.newbies.b75": {
+		en: `Finding reliable suppliers who hopefully have the product you want to sell`,
+		ar: `إيجاد موردين موثوقين يملكون، على أمل، المنتج الذي تريد بيعه`,
+		fr: `Trouver des fournisseurs fiables qui, avec un peu de chance, ont le produit que vous voulez vendre`,
+	},
+	"blog.newbies.b76": {
+		en: `Finding a reliable delivery company to deliver the product to the customer as soon as possible`,
+		ar: `إيجاد شركة توصيل موثوقة لتوصيل المنتج إلى العميل في أسرع وقت ممكن`,
+		fr: `Trouver une société de livraison fiable pour livrer le produit au client le plus vite possible`,
+	},
+	"blog.newbies.b77": {
+		en: `No control over product quality, which could lead to customers demanding a refund`,
+		ar: `لا تحكّم في جودة المنتج، ما قد يدفع العملاء إلى المطالبة باسترداد أموالهم`,
+		fr: `Aucun contrôle sur la qualité du produit, ce qui peut pousser les clients à exiger un remboursement`,
+	},
+	"blog.newbies.b78": {
+		en: `How much effort are you willing to put into this business?`,
+		ar: `ما مقدار الجهد الذي أنت مستعد لبذله في هذا المشروع؟`,
+		fr: `Quel effort êtes-vous prêt à investir dans cette activité ?`,
+	},
+	"blog.newbies.b79": {
+		en: `Are you willing to bounce back from trials and errors?`,
+		ar: `هل أنت مستعد للنهوض من جديد بعد التجارب والأخطاء؟`,
+		fr: `Êtes-vous prêt à rebondir après vos essais et vos erreurs ?`,
+	},
+	"blog.newbies.b80": {
+		en: `Do you treat dropshipping as a business model or a get-rich-quick scheme?`,
+		ar: `هل تتعامل مع الدروبشيبينغ كنموذج عمل أم كمخطط للثراء السريع؟`,
+		fr: `Considérez-vous le dropshipping comme un modèle économique ou comme un plan pour devenir riche rapidement ?`,
+	},
+	"blog.dead.b0": {
+		en: `If you spend enough time on social media, especially where the algorithm has been feeding you lots of products about businesses and stuff, you probably came across at least one of these topics: "Dropshipping is dead" or "Dropshipping is the worst model you can start this year." Or perhaps you came across a tier list video ranking different business models and dropshipping was rated an F tier.`,
+		ar: `إذا كنت تقضي وقتًا كافيًا على وسائل التواصل الاجتماعي، خاصةً حيث تغذّيك الخوارزمية بالكثير من المحتوى عن الأعمال وما شابه، فمن المحتمل أنك صادفت واحدًا على الأقل من هذه المواضيع: "الدروبشيبينغ مات" أو "الدروبشيبينغ أسوأ نموذج يمكنك البدء به هذا العام." أو ربما صادفت فيديو تصنيف يرتّب نماذج الأعمال المختلفة، وقد حصل فيه الدروبشيبينغ على أدنى تصنيف.`,
+		fr: `Si vous passez assez de temps sur les réseaux sociaux, surtout là où l'algorithme vous abreuve de contenus sur le business et compagnie, vous êtes sûrement tombé sur au moins l'un de ces sujets : « Le dropshipping est mort » ou « Le dropshipping est le pire modèle à lancer cette année. » Ou peut-être avez-vous vu une vidéo de classement des modèles économiques où le dropshipping était relégué tout en bas, au rang F.`,
+	},
+	"blog.dead.b1": {
+		en: `What's this article about?`,
+		ar: `عمّ يتحدث هذا المقال؟`,
+		fr: `De quoi parle cet article ?`,
+	},
+	"blog.dead.b2": {
+		en: `But why?`,
+		ar: `لكن لماذا؟`,
+		fr: `Mais pourquoi ?`,
+	},
+	"blog.dead.b3": {
+		en: `Are they true? Or are they just some excuses creators and course sellers use to justify your need to purchase their coaching programs?`,
+		ar: `هل هي صحيحة؟ أم أنها مجرد أعذار يستخدمها صنّاع المحتوى وبائعو الدورات لتبرير حاجتك إلى شراء برامجهم التدريبية؟`,
+		fr: `Est-ce vrai ? Ou s'agit-il simplement d'excuses que les créateurs et les vendeurs de formations utilisent pour justifier que vous achetiez leurs programmes de coaching ?`,
+	},
+	"blog.dead.b4": {
+		en: `That's exactly what we're going to discuss in this article.`,
+		ar: `هذا بالضبط ما سنناقشه في هذا المقال.`,
+		fr: `C'est exactement ce dont nous allons parler dans cet article.`,
+	},
+	"blog.dead.b5": {
+		en: `Where did this myth come from?`,
+		ar: `من أين جاءت هذه الخرافة؟`,
+		fr: `D'où vient ce mythe ?`,
+	},
+	"blog.dead.b6": {
+		en: `There are two origins for the "dropshipping is dead" myth.`,
+		ar: `هناك مصدران لخرافة "الدروبشيبينغ مات".`,
+		fr: `Le mythe du « dropshipping est mort » a deux origines.`,
+	},
+	"blog.dead.b7": {
+		en: `Origin A: Failed Case Studies`,
+		ar: `المصدر أ: دراسات الحالة الفاشلة`,
+		fr: `Origine A : les cas d'échec`,
+	},
+	"blog.dead.b8": {
+		en: `These are the people who were sold luxurious dreams by those influencers showcasing their wealth, their Rolex watches, their multi-thousand sports cars...`,
+		ar: `هؤلاء هم الأشخاص الذين بيعت لهم أحلام فاخرة من قِبَل المؤثرين الذين يستعرضون ثراءهم، وساعات رولكس، وسياراتهم الرياضية التي تُقدَّر بآلاف الدولارات...`,
+		fr: `Ce sont les personnes à qui des influenceurs ont vendu des rêves de luxe en exhibant leur richesse, leurs montres Rolex, leurs voitures de sport à plusieurs milliers de dollars...`,
+	},
+	"blog.dead.b9": {
+		en: `And of course it's in our human nature to be attracted to these things and the desire to obtain them, should the method behind them actually exist.`,
+		ar: `وبالطبع، من طبيعتنا البشرية أن تجذبنا هذه الأشياء وأن نرغب في الحصول عليها، إن كانت الطريقة التي تقف وراءها موجودة فعلًا.`,
+		fr: `Et bien sûr, il est dans notre nature humaine d'être attirés par ces choses et de vouloir les obtenir, si tant est que la méthode derrière existe vraiment.`,
+	},
+	"blog.dead.b10": {
+		en: `So here's what usually happens:`,
+		ar: `إليك ما يحدث عادةً:`,
+		fr: `Voici donc ce qui se passe généralement :`,
+	},
+	"blog.dead.b11": {
+		en: `They purchase a course from the same influencers and gurus who sold them the dream, or learn about dropshipping from free tutorials.`,
+		ar: `يشترون دورة من المؤثرين والخبراء المزعومين أنفسهم الذين باعوهم الحلم، أو يتعلّمون الدروبشيبينغ من دروس مجانية.`,
+		fr: `Ils achètent une formation auprès des mêmes influenceurs et gourous qui leur ont vendu le rêve, ou apprennent le dropshipping grâce à des tutoriels gratuits.`,
+	},
+	"blog.dead.b12": {
+		en: `They start their first dropshipping business, pick the product, run the advertisements and lay in their beds, already picturing the amount of sales they're going to make and constantly thinking about what they want to buy first with the money they're going to make.`,
+		ar: `يبدؤون مشروع الدروبشيبينغ الأول، ويختارون المنتج، ويطلقون الإعلانات ويستلقون في أسرّتهم، متخيّلين مسبقًا حجم المبيعات التي سيحققونها، ويفكرون باستمرار فيما يريدون شراءه أولًا بالمال الذي سيجنونه.`,
+		fr: `Ils lancent leur première boutique de dropshipping, choisissent le produit, lancent les publicités puis s'allongent dans leur lit en imaginant déjà le volume de ventes qu'ils vont faire, et en pensant sans cesse à ce qu'ils s'achèteront en premier avec l'argent gagné.`,
+	},
+	"blog.dead.b13": {
+		en: `Only to be surprised the next day that not a single order came, and this so-called "earn your financial freedom" business model didn't deliver on its promise like the influencers said.`,
+		ar: `ليتفاجؤوا في اليوم التالي بأن ولا طلب واحد قد وصل، وأن نموذج العمل الذي يُسمّى "احصل على حريتك المالية" لم يفِ بوعده كما قال المؤثرون.`,
+		fr: `Pour découvrir, surpris, le lendemain qu'aucune commande n'est arrivée, et que ce fameux modèle « gagnez votre liberté financière » n'a pas tenu sa promesse comme l'affirmaient les influenceurs.`,
+	},
+	"blog.dead.b14": {
+		en: `This is the part where 80% of them would entirely quit this model and go rant on the internet about how dropshipping is a "scheme" that doesn't work.`,
+		ar: `وهنا يترك 80% منهم هذا النموذج تمامًا ويذهبون للتذمّر على الإنترنت من أن الدروبشيبينغ "احتيال" لا ينجح.`,
+		fr: `C'est à ce moment-là que 80 % d'entre eux abandonnent complètement ce modèle et vont se plaindre sur internet que le dropshipping est une « arnaque » qui ne marche pas.`,
+	},
+	"blog.dead.b15": {
+		en: `Origin B: Career Course and Mentorship Sellers`,
+		ar: `المصدر ب: بائعو الدورات والإرشاد المهني`,
+		fr: `Origine B : les vendeurs de formations et de mentorat`,
+	},
+	"blog.dead.b16": {
+		en: `Whenever someone wants to sell you a course on social media about something you can use to make money online, like e-commerce, affiliate marketing, Amazon FBA, high-ticket sales... dropshipping is always their favorite punching bag.`,
+		ar: `كلما أراد أحدهم أن يبيعك دورة على وسائل التواصل الاجتماعي حول شيء يمكنك استخدامه لكسب المال عبر الإنترنت، مثل التجارة الإلكترونية، أو التسويق بالعمولة، أو Amazon FBA، أو المبيعات عالية القيمة... يكون الدروبشيبينغ دائمًا هدفهم المفضّل للهجوم.`,
+		fr: `Chaque fois que quelqu'un veut vous vendre sur les réseaux sociaux une formation pour gagner de l'argent en ligne — e-commerce, affiliation, Amazon FBA, vente high-ticket... —, le dropshipping est toujours son souffre-douleur préféré.`,
+	},
+	"blog.dead.b17": {
+		en: `"Don't do dropshipping, buy my course/mentorship instead"`,
+		ar: `"لا تعمل في الدروبشيبينغ، بل اشترِ دورتي/برنامج الإرشاد الخاص بي بدلًا من ذلك"`,
+		fr: `« Ne faites pas de dropshipping, achetez plutôt ma formation / mon mentorat »`,
+	},
+	"blog.dead.b18": {
+		en: `Let me ask you something, did any of these guys ever:`,
+		ar: `دعني أسألك شيئًا، هل قام أيٌّ من هؤلاء يومًا بـ:`,
+		fr: `Laissez-moi vous poser une question : l'un d'entre eux a-t-il déjà :`,
+	},
+	"blog.dead.b19": {
+		en: `Of course they didn't.`,
+		ar: `بالطبع لم يفعلوا.`,
+		fr: `Bien sûr que non.`,
+	},
+	"blog.dead.b20": {
+		en: `They're just using the hate directed toward the model to market their own offers, and it works most of the time.`,
+		ar: `إنهم يستغلون فقط الكراهية الموجّهة إلى هذا النموذج لتسويق عروضهم الخاصة، وينجح ذلك في معظم الأحيان.`,
+		fr: `Ils se contentent d'exploiter la haine envers ce modèle pour vendre leurs propres offres, et ça marche la plupart du temps.`,
+	},
+	"blog.dead.b21": {
+		en: `Why is dropshipping hated so much?`,
+		ar: `لماذا يُكره الدروبشيبينغ إلى هذا الحد؟`,
+		fr: `Pourquoi le dropshipping est-il autant détesté ?`,
+	},
+	"blog.dead.b22": {
+		en: `There's a valid reason why dropshipping is hated the way it is right now, and there are two people to blame for that:`,
+		ar: `هناك سبب وجيه لكراهية الدروبشيبينغ بالشكل الحالي، وهناك طرفان يتحمّلان المسؤولية:`,
+		fr: `Il y a une vraie raison pour laquelle le dropshipping est autant détesté aujourd'hui, et deux coupables :`,
+	},
+	"blog.dead.b23": {
+		en: `Most of the time, these gurus know nothing about dropshipping, or they somehow got lucky with a few products they sold, then they realized they could make a fortune by selling these courses to people who are desperate to become rich quickly without putting in any effort.`,
+		ar: `في معظم الأحيان، لا يعرف هؤلاء الخبراء المزعومون شيئًا عن الدروبشيبينغ، أو حالفهم الحظ بطريقة ما مع بعض المنتجات التي باعوها، ثم أدركوا أن بإمكانهم جني ثروة من بيع هذه الدورات لأشخاص يائسين يريدون الثراء بسرعة دون بذل أي جهد.`,
+		fr: `La plupart du temps, ces gourous ne connaissent rien au dropshipping, ou ont eu un coup de chance avec quelques produits vendus, puis se sont rendu compte qu'ils pouvaient faire fortune en vendant ces formations à des gens désespérés de devenir riches rapidement sans fournir le moindre effort.`,
+	},
+	"blog.dead.b24": {
+		en: `So those who enter the dropshipping world thinking they're about to become rich overnight end up becoming dropshipping's worst case studies ever.`,
+		ar: `فينتهي الحال بمن يدخل عالم الدروبشيبينغ معتقدًا أنه سيصبح ثريًا بين ليلة وضحاها إلى أن يصبح من أسوأ دراسات الحالة في تاريخ الدروبشيبينغ.`,
+		fr: `Ainsi, ceux qui se lancent dans le dropshipping en pensant devenir riches du jour au lendemain finissent par devenir les pires exemples de l'histoire du dropshipping.`,
+	},
+	"blog.dead.b25": {
+		en: `So is dropshipping dead?`,
+		ar: `إذًا، هل مات الدروبشيبينغ؟`,
+		fr: `Alors, le dropshipping est-il mort ?`,
+	},
+	"blog.dead.b26": {
+		en: `Now to finally answer the question we've all been waiting for: is dropshipping dead?`,
+		ar: `والآن لنجيب أخيرًا عن السؤال الذي كنا جميعًا ننتظره: هل مات الدروبشيبينغ؟`,
+		fr: `Il est enfin temps de répondre à la question que nous attendions tous : le dropshipping est-il mort ?`,
+	},
+	"blog.dead.b27": {
+		en: `And the answer is... yes and no.`,
+		ar: `والجواب هو... نعم ولا.`,
+		fr: `Et la réponse est... oui et non.`,
+	},
+	"blog.dead.b28": {
+		en: `Yes, the golden age that made dropshipping explode is long dead. It happened during the corona outbreak, which prevented people from leaving their homes and forced them to resort to online shopping, creating a great business opportunity for almost everyone.`,
+		ar: `نعم، العصر الذهبي الذي جعل الدروبشيبينغ ينفجر قد انتهى منذ زمن. لقد حدث خلال تفشّي كورونا، الذي منع الناس من مغادرة منازلهم وأجبرهم على اللجوء إلى التسوّق عبر الإنترنت، ما خلق فرصة تجارية كبيرة للجميع تقريبًا.`,
+		fr: `Oui, l'âge d'or qui a fait exploser le dropshipping est bel et bien terminé. Il a eu lieu pendant l'épidémie de coronavirus, qui empêchait les gens de sortir de chez eux et les a forcés à se tourner vers les achats en ligne, créant une formidable opportunité pour presque tout le monde.`,
+	},
+	"blog.dead.b29": {
+		en: `You can no longer just grab a random product, slam it on your Shopify store and expect it to print you money like in the old days.`,
+		ar: `لم يعد بإمكانك أن تأخذ منتجًا عشوائيًا، وتضعه على متجرك في شوبيفاي، وتتوقّع أن يدرّ عليك المال كما في الأيام الخوالي.`,
+		fr: `Vous ne pouvez plus prendre un produit au hasard, le mettre sur votre boutique Shopify et vous attendre à ce qu'il vous fasse gagner de l'argent comme au bon vieux temps.`,
+	},
+	"blog.dead.b30": {
+		en: `That said, there are people making 5 figures in revenue per month through dropshipping, but that's because they treat it like a real business model with risks and losses, not a gamble to speedrun their way into wealth.`,
+		ar: `ومع ذلك، هناك أشخاص يحققون إيرادات من خمس خانات شهريًا عبر الدروبشيبينغ، لكن ذلك لأنهم يتعاملون معه كنموذج عمل حقيقي فيه مخاطر وخسائر، لا كمقامرة لبلوغ الثراء بأسرع طريق.`,
+		fr: `Cela dit, certaines personnes génèrent un chiffre d'affaires à 5 chiffres par mois grâce au dropshipping, mais c'est parce qu'elles le traitent comme un vrai modèle économique, avec ses risques et ses pertes, et non comme un pari pour s'enrichir au plus vite.`,
+	},
+	"blog.dead.b31": {
+		en: `They make sure to study the market's demand, explore communities and listen to people's problems before deciding which product is best to sell. After they find the product, they create the perfect advertisements to attract the people who are ready to buy a solution from them, not just a mere product.`,
+		ar: `إنهم يحرصون على دراسة طلب السوق، واستكشاف المجتمعات، والاستماع إلى مشاكل الناس قبل تحديد المنتج الأنسب للبيع. وبعد أن يجدوا المنتج، يصنعون الإعلانات المثالية لجذب الأشخاص المستعدين لشراء حلّ منهم، لا مجرد منتج.`,
+		fr: `Elles prennent soin d'étudier la demande du marché, d'explorer les communautés et d'écouter les problèmes des gens avant de choisir le meilleur produit à vendre. Une fois le produit trouvé, elles créent les publicités parfaites pour attirer les personnes prêtes à leur acheter une solution, et pas seulement un produit.`,
+	},
+	"blog.dead.b32": {
+		en: `Now, how do you find the perfect product to sell in Lebanon? How do you create the advertisements? How do you come up with an offer that speaks to people's needs?`,
+		ar: `والآن، كيف تجد المنتج المثالي للبيع في لبنان؟ كيف تصنع الإعلانات؟ كيف تبتكر عرضًا يلبّي احتياجات الناس؟`,
+		fr: `Alors, comment trouver le produit parfait à vendre au Liban ? Comment créer les publicités ? Comment construire une offre qui répond aux besoins des gens ?`,
+	},
+	"blog.dead.b33": {
+		en: `That's exactly why Droparabia came into existence.`,
+		ar: `ولهذا بالضبط وُجد دروب أرابيا.`,
+		fr: `C'est exactement pour cela que Droparabia a vu le jour.`,
+	},
+	"blog.dead.b34": {
+		en: `We created a platform to help everyone succeed — not just in dropshipping, but also those who want to get into e-commerce without burning their budget on beginners' mistakes and meaningless friction like shipping fees and overspending on inventory that isn't guaranteed to sell.`,
+		ar: `أنشأنا منصة لمساعدة الجميع على النجاح — ليس فقط في الدروبشيبينغ، بل أيضًا لمن يريد دخول التجارة الإلكترونية دون إهدار ميزانيته على أخطاء المبتدئين والعقبات غير المجدية، مثل رسوم الشحن والإنفاق المفرط على مخزون ليس مضمونًا أن يُباع.`,
+		fr: `Nous avons créé une plateforme pour aider tout le monde à réussir — pas seulement en dropshipping, mais aussi ceux qui veulent se lancer dans le e-commerce sans griller leur budget en erreurs de débutant et en frictions inutiles, comme les frais de livraison et les dépenses excessives dans un stock dont la vente n'est pas garantie.`,
+	},
+	"blog.dead.b35": {
+		en: `And we also make perfectly clear to all our users before they sign up with Droparabia that this is a business model that requires a real amount of effort and a consistent mentality, not a path to quick wealth.`,
+		ar: `كما نوضّح تمامًا لجميع مستخدمينا قبل تسجيلهم في دروب أرابيا أن هذا نموذج عمل يتطلب قدرًا حقيقيًا من الجهد وعقلية ثابتة، وليس طريقًا للثراء السريع.`,
+		fr: `Et nous précisons aussi très clairement à tous nos utilisateurs, avant qu'ils ne s'inscrivent sur Droparabia, qu'il s'agit d'un modèle économique qui demande un vrai effort et un état d'esprit constant, et non d'un chemin vers la richesse rapide.`,
+	},
+	"blog.dead.b36": {
+		en: `Explain to you what dropshipping is?`,
+		ar: `شرح لك ما هو الدروبشيبينغ؟`,
+		fr: `Vous expliquer ce qu'est le dropshipping ?`,
+	},
+	"blog.dead.b37": {
+		en: `Explain "why" you should avoid this model?`,
+		ar: `شرح "لماذا" يجب أن تتجنّب هذا النموذج؟`,
+		fr: `Vous expliquer « pourquoi » vous devriez éviter ce modèle ?`,
+	},
+	"blog.dead.b38": {
+		en: `Or at least give you a valid reason to back their claims?`,
+		ar: `أو على الأقل قدّم لك سببًا وجيهًا يدعم ادعاءاته؟`,
+		fr: `Ou au moins vous donner une raison valable pour appuyer ses affirmations ?`,
+	},
+	"blog.dead.b39": {
+		en: `The gurus who sold this dream as a "get-rich-quick"`,
+		ar: `الخبراء المزعومون الذين باعوا هذا الحلم على أنه "طريق للثراء السريع"`,
+		fr: `Les gourous qui ont vendu ce rêve comme un moyen de « devenir riche rapidement »`,
+	},
+	"blog.dead.b40": {
+		en: `And the people who treated it as a scheme rather than a legit business model`,
+		ar: `والأشخاص الذين تعاملوا معه كمخطط احتيالي بدلًا من نموذج عمل مشروع`,
+		fr: `Et les personnes qui l'ont traité comme une combine plutôt que comme un modèle économique légitime`,
+	},
+	"blog.exists.b0": {
+		en: `It started from a goal of helping loved ones and redirecting efforts to where they'd actually pay off, into building an infrastructure that will help everyone enter the e-commerce and dropshipping space without facing the same obstacles that could cause most people to quit from day 1.`,
+		ar: `بدأ الأمر بهدف مساعدة الأحبّة وتوجيه الجهود إلى حيث تُثمر فعلًا، ثم تحوّل إلى بناء بنية تحتية تساعد الجميع على دخول مجال التجارة الإلكترونية والدروبشيبينغ دون مواجهة العقبات نفسها التي قد تدفع معظم الناس إلى الاستسلام من اليوم الأول.`,
+		fr: `Tout est parti d'un objectif : aider des proches et réorienter les efforts là où ils portent vraiment leurs fruits, pour aboutir à la construction d'une infrastructure qui aide chacun à se lancer dans le e-commerce et le dropshipping sans affronter les mêmes obstacles qui poussent la plupart des gens à abandonner dès le premier jour.`,
+	},
+	"blog.exists.b1": {
+		en: `The struggle`,
+		ar: `المعاناة`,
+		fr: `Le combat`,
+	},
+	"blog.exists.b2": {
+		en: `Our founder Majd faced multiple obstacles while building his own e-commerce and dropshipping businesses, obstacles that came with the traditional ways of these two models:`,
+		ar: `واجه مؤسسنا مجد عقبات متعددة أثناء بناء مشاريعه الخاصة في التجارة الإلكترونية والدروبشيبينغ، وهي عقبات رافقت الطرق التقليدية لهذين النموذجين:`,
+		fr: `Notre fondateur, Majd, a fait face à de multiples obstacles en construisant ses propres activités de e-commerce et de dropshipping, des obstacles propres aux méthodes traditionnelles de ces deux modèles :`,
+	},
+	"blog.exists.b3": {
+		en: `He started to understand why a lot of people who enter the dropshipping and e-commerce space often fail instantly.`,
+		ar: `بدأ يفهم لماذا يفشل الكثير ممن يدخلون مجال الدروبشيبينغ والتجارة الإلكترونية فورًا في أغلب الأحيان.`,
+		fr: `Il a commencé à comprendre pourquoi tant de personnes qui se lancent dans le dropshipping et le e-commerce échouent souvent immédiatement.`,
+	},
+	"blog.exists.b4": {
+		en: `And it's not because of a lack of experience or technical skills.`,
+		ar: `وليس ذلك بسبب نقص الخبرة أو المهارات التقنية.`,
+		fr: `Et ce n'est pas par manque d'expérience ou de compétences techniques.`,
+	},
+	"blog.exists.b5": {
+		en: `But because of these meaningless yet costly obstacles that shouldn't exist in the first place.`,
+		ar: `بل بسبب هذه العقبات غير المجدية والمكلفة في الوقت نفسه، والتي ما كان يجب أن توجد أصلًا.`,
+		fr: `Mais à cause de ces obstacles aussi inutiles que coûteux, qui ne devraient même pas exister.`,
+	},
+	"blog.exists.b6": {
+		en: `"Why should I purchase products in bulk from China without confirming if they could sell?"`,
+		ar: `"لماذا عليّ شراء منتجات بالجملة من الصين دون التأكد من أنها ستُباع؟"`,
+		fr: `« Pourquoi devrais-je acheter des produits en gros en Chine sans être sûr qu'ils se vendront ? »`,
+	},
+	"blog.exists.b7": {
+		en: `"What if I could test with a few samples to gauge their demand first before ordering a stock?"`,
+		ar: `"ماذا لو استطعت الاختبار ببعض العيّنات لقياس الطلب عليها أولًا قبل طلب مخزون؟"`,
+		fr: `« Et si je pouvais tester avec quelques échantillons pour mesurer la demande avant de commander du stock ? »`,
+	},
+	"blog.exists.b8": {
+		en: `The solution`,
+		ar: `الحل`,
+		fr: `La solution`,
+	},
+	"blog.exists.b9": {
+		en: `And this is when the idea of Droparabia was born.`,
+		ar: `وهنا وُلدت فكرة دروب أرابيا.`,
+		fr: `C'est alors qu'est née l'idée de Droparabia.`,
+	},
+	"blog.exists.b10": {
+		en: `A system which both dropshippers and e-commerce owners can use.`,
+		ar: `نظام يمكن لكل من الدروبشيبرز وأصحاب المتاجر الإلكترونية استخدامه.`,
+		fr: `Un système que les dropshippers comme les propriétaires de boutiques en ligne peuvent utiliser.`,
+	},
+	"blog.exists.b11": {
+		en: `Instead of searching for hours for a product to sell, or risking your budget ordering products in bulk only to end up with a stock that didn't sell, you have a platform that can help you find your own winning products across multiple niches and categories and sell them directly to your customers without ever owning inventory.`,
+		ar: `بدلًا من البحث لساعات عن منتج لبيعه، أو المجازفة بميزانيتك بطلب منتجات بالجملة لينتهي بك الأمر بمخزون لم يُبَع، لديك منصة تساعدك على إيجاد منتجاتك الرابحة عبر مجالات وفئات متعددة وبيعها مباشرة لعملائك دون أن تمتلك أي مخزون.`,
+		fr: `Au lieu de chercher pendant des heures un produit à vendre, ou de risquer votre budget en commandant en gros pour vous retrouver avec un stock invendu, vous disposez d'une plateforme qui vous aide à trouver vos propres produits gagnants dans de nombreuses niches et catégories, et à les vendre directement à vos clients sans jamais posséder de stock.`,
+	},
+	"blog.exists.b12": {
+		en: `And the best part is, you don't need to deal with suppliers yourself anymore, because this platform already has its own supplier partners it can trust to source only the best quality products at the best price possible.`,
+		ar: `والأفضل من ذلك، أنك لم تعد بحاجة إلى التعامل مع الموردين بنفسك، لأن هذه المنصة لديها بالفعل شركاؤها من الموردين الموثوقين لتوفير أفضل المنتجات جودةً بأفضل سعر ممكن.`,
+		fr: `Et le meilleur, c'est que vous n'avez plus besoin de traiter vous-même avec les fournisseurs, car la plateforme a déjà ses propres fournisseurs partenaires de confiance pour sourcer uniquement des produits de la meilleure qualité, au meilleur prix possible.`,
+	},
+	"blog.exists.b13": {
+		en: `Sounds cool right?`,
+		ar: `رائع، أليس كذلك؟`,
+		fr: `Plutôt cool, non ?`,
+	},
+	"blog.exists.b14": {
+		en: `How it works`,
+		ar: `كيف يعمل`,
+		fr: `Comment ça marche`,
+	},
+	"blog.exists.b15": {
+		en: `The Droparabia infrastructure covers both the logistical and the technical sides.`,
+		ar: `تغطي البنية التحتية لدروب أرابيا الجانبين اللوجستي والتقني.`,
+		fr: `L'infrastructure de Droparabia couvre à la fois les aspects logistiques et techniques.`,
+	},
+	"blog.exists.b16": {
+		en: `Droparabia's advanced logistics network`,
+		ar: `الشبكة اللوجستية المتطوّرة لدروب أرابيا`,
+		fr: `Le réseau logistique avancé de Droparabia`,
+	},
+	"blog.exists.b17": {
+		en: `The platform has its own logistics network located in Deir Qoubel, Mount Lebanon Governorate, along with its own delivery system to make sure each product is packaged and safely delivered to the customer within a period of 5 to 7 days all over Lebanon.`,
+		ar: `تمتلك المنصة شبكتها اللوجستية الخاصة في دير قوبل، محافظة جبل لبنان، إلى جانب نظام توصيل خاص بها لضمان تغليف كل منتج وتوصيله بأمان إلى العميل خلال فترة 5 إلى 7 أيام في جميع أنحاء لبنان.`,
+		fr: `La plateforme dispose de son propre réseau logistique situé à Deir Qoubel, dans le gouvernorat du Mont-Liban, ainsi que de son propre système de livraison, pour que chaque produit soit emballé et livré en toute sécurité au client dans un délai de 5 à 7 jours partout au Liban.`,
+	},
+	"blog.exists.b18": {
+		en: `Along with partnerships with both local and Chinese suppliers, which allows Droparabia to supply the products requested by its users.`,
+		ar: `إضافةً إلى شراكات مع موردين محليين وصينيين، ما يتيح لدروب أرابيا توفير المنتجات التي يطلبها مستخدموه.`,
+		fr: `À cela s'ajoutent des partenariats avec des fournisseurs locaux et chinois, qui permettent à Droparabia de fournir les produits demandés par ses utilisateurs.`,
+	},
+	"blog.exists.b19": {
+		en: `Advanced and game changing tools`,
+		ar: `أدوات متطوّرة تُحدث فرقًا`,
+		fr: `Des outils avancés qui changent la donne`,
+	},
+	"blog.exists.b20": {
+		en: `Droparabia offers lots of useful features, especially to absolute newbies to the world of dropshipping and e-commerce, from:`,
+		ar: `يقدّم دروب أرابيا الكثير من الميزات المفيدة، خاصةً للمبتدئين تمامًا في عالم الدروبشيبينغ والتجارة الإلكترونية، من:`,
+		fr: `Droparabia propose de nombreuses fonctionnalités utiles, surtout pour les grands débutants du dropshipping et du e-commerce, notamment :`,
+	},
+	"blog.exists.b21": {
+		en: `And more features are added periodically, often requested by the users themselves!`,
+		ar: `وتُضاف ميزات جديدة بشكل دوري، غالبًا بطلب من المستخدمين أنفسهم!`,
+		fr: `Et de nouvelles fonctionnalités sont ajoutées régulièrement, souvent à la demande des utilisateurs eux-mêmes !`,
+	},
+	"blog.exists.b22": {
+		en: `Dropvault Community`,
+		ar: `مجتمع Dropvault`,
+		fr: `La communauté Dropvault`,
+	},
+	"blog.exists.b23": {
+		en: `Of course, no one will be able to immediately catch up to this platform without the requirement of a guiding hand, right?`,
+		ar: `بالطبع، لن يتمكن أحد من مواكبة هذه المنصة فورًا دون الحاجة إلى يد مرشدة، أليس كذلك؟`,
+		fr: `Bien sûr, personne ne peut maîtriser cette plateforme du jour au lendemain sans être guidé, n'est-ce pas ?`,
+	},
+	"blog.exists.b24": {
+		en: `That's exactly what the Dropvault community is for.`,
+		ar: `وهذا بالضبط هو دور مجتمع Dropvault.`,
+		fr: `C'est exactement à cela que sert la communauté Dropvault.`,
+	},
+	"blog.exists.b25": {
+		en: `Inside it, not only will you be guided on how to use the platform, but you're also joining a community of passionate sellers like you.`,
+		ar: `في داخله، لن تُرشَد فقط إلى كيفية استخدام المنصة، بل ستنضم أيضًا إلى مجتمع من البائعين الشغوفين مثلك.`,
+		fr: `À l'intérieur, vous serez non seulement guidé dans l'utilisation de la plateforme, mais vous rejoindrez aussi une communauté de vendeurs passionnés comme vous.`,
+	},
+	"blog.exists.b26": {
+		en: `And a team of experienced advisors with a digital marketing background, ready to help you build a successful and high-earning dropshipping store!`,
+		ar: `وفريق من المستشارين ذوي الخبرة في التسويق الرقمي، مستعدين لمساعدتك في بناء متجر دروبشيبينغ ناجح وعالي الربح!`,
+		fr: `Ainsi qu'une équipe de conseillers expérimentés, issus du marketing digital, prêts à vous aider à construire une boutique de dropshipping performante et très rentable !`,
+	},
+	"blog.exists.b27": {
+		en: `It's the place where you'll get:`,
+		ar: `إنه المكان الذي ستحصل فيه على:`,
+		fr: `C'est l'endroit où vous obtiendrez :`,
+	},
+	"blog.exists.b28": {
+		en: `Why Droparabia beats traditional e-commerce and old dropshipping`,
+		ar: `لماذا يتفوّق دروب أرابيا على التجارة الإلكترونية التقليدية والدروبشيبينغ القديم`,
+		fr: `Pourquoi Droparabia surpasse le e-commerce traditionnel et l'ancien dropshipping`,
+	},
+	"blog.exists.b29": {
+		en: `It is thanks to all the cons left by both traditional e-commerce and old dropshipping that led to the creation of Droparabia.`,
+		ar: `إن كل العيوب التي خلّفتها التجارة الإلكترونية التقليدية والدروبشيبينغ القديم هي ما أدّى إلى إنشاء دروب أرابيا.`,
+		fr: `Ce sont tous les inconvénients du e-commerce traditionnel et de l'ancien dropshipping qui ont conduit à la création de Droparabia.`,
+	},
+	"blog.exists.b30": {
+		en: `With the traditional e-commerce model:`,
+		ar: `مع نموذج التجارة الإلكترونية التقليدية:`,
+		fr: `Avec le modèle du e-commerce traditionnel :`,
+	},
+	"blog.exists.b31": {
+		en: `With the old dropshipping model:`,
+		ar: `مع نموذج الدروبشيبينغ القديم:`,
+		fr: `Avec l'ancien modèle de dropshipping :`,
+	},
+	"blog.exists.b32": {
+		en: `As demonstrated earlier, none of that is the case with Droparabia.`,
+		ar: `وكما أوضحنا سابقًا، لا شيء من ذلك موجود مع دروب أرابيا.`,
+		fr: `Comme nous l'avons montré plus haut, rien de tout cela n'existe avec Droparabia.`,
+	},
+	"blog.exists.b33": {
+		en: `Summary`,
+		ar: `الخلاصة`,
+		fr: `En résumé`,
+	},
+	"blog.exists.b34": {
+		en: `So if you're someone who wants to get into the dropshipping or e-commerce space but you have no experience, or you're afraid to risk your hard earned savings for nothing in return...`,
+		ar: `لذا، إن كنت شخصًا يريد دخول مجال الدروبشيبينغ أو التجارة الإلكترونية لكن ليست لديك خبرة، أو تخشى المجازفة بمدّخراتك التي جنيتها بجهدك دون أي مقابل...`,
+		fr: `Alors si vous voulez vous lancer dans le dropshipping ou le e-commerce mais que vous n'avez aucune expérience, ou que vous avez peur de risquer vos économies durement gagnées pour rien...`,
+	},
+	"blog.exists.b35": {
+		en: `Droparabia and the Dropvault community both welcome you.`,
+		ar: `فإن دروب أرابيا ومجتمع Dropvault يرحّبان بك.`,
+		fr: `Droparabia et la communauté Dropvault vous accueillent tous les deux.`,
+	},
+	"blog.exists.b36": {
+		en: `Ordering products in bulk from China without a guarantee that they'd sell in the Lebanese market`,
+		ar: `طلب منتجات بالجملة من الصين دون ضمان أنها ستُباع في السوق اللبناني`,
+		fr: `Commander des produits en gros en Chine sans garantie qu'ils se vendent sur le marché libanais`,
+	},
+	"blog.exists.b37": {
+		en: `Paying huge fees to ship them to Lebanon`,
+		ar: `دفع رسوم ضخمة لشحنها إلى لبنان`,
+		fr: `Payer des frais énormes pour les expédier au Liban`,
+	},
+	"blog.exists.b38": {
+		en: `No control over the quality of the products`,
+		ar: `لا تحكّم في جودة المنتجات`,
+		fr: `Aucun contrôle sur la qualité des produits`,
+	},
+	"blog.exists.b39": {
+		en: `No payment gateway for customers to pay (since PayPal and Stripe aren't available in Lebanon)`,
+		ar: `لا بوابة دفع ليدفع العملاء من خلالها (بما أن PayPal وStripe غير متاحين في لبنان)`,
+		fr: `Aucune passerelle de paiement pour les clients (PayPal et Stripe n'étant pas disponibles au Liban)`,
+	},
+	"blog.exists.b40": {
+		en: `No reliable delivery system to deliver the products to customers safely and on time`,
+		ar: `لا نظام توصيل موثوق لإيصال المنتجات إلى العملاء بأمان وفي الوقت المحدد`,
+		fr: `Aucun système de livraison fiable pour livrer les produits aux clients en toute sécurité et à temps`,
+	},
+	"blog.exists.b41": {
+		en: `Weekly updated catalog of winning products and their analysis`,
+		ar: `كتالوج منتجات رابحة يُحدَّث أسبوعيًا مع تحليلها`,
+		fr: `Un catalogue de produits gagnants mis à jour chaque semaine, avec leur analyse`,
+	},
+	"blog.exists.b42": {
+		en: `AI built to assist and analyze products and their buyer avatars`,
+		ar: `ذكاء اصطناعي مصمّم للمساعدة في تحليل المنتجات وشخصيات مشتريها`,
+		fr: `Une IA conçue pour vous aider à analyser les produits et leurs personas d'acheteurs`,
+	},
+	"blog.exists.b43": {
+		en: `Laser machine to brand and print logos on products to create a unique brand and stand out from the competition`,
+		ar: `آلة ليزر لتخصيص المنتجات وطباعة الشعارات عليها لإنشاء علامة تجارية فريدة والتميّز عن المنافسين`,
+		fr: `Une machine laser pour personnaliser les produits et y graver des logos, afin de créer une marque unique et de vous démarquer de la concurrence`,
+	},
+	"blog.exists.b44": {
+		en: `Shopify and Whish Money integration`,
+		ar: `تكامل مع شوبيفاي وWhish Money`,
+		fr: `Intégration Shopify et Whish Money`,
+	},
+	"blog.exists.b45": {
+		en: `AI studio for generating video ads`,
+		ar: `AI Studio لإنشاء إعلانات الفيديو`,
+		fr: `AI Studio pour générer des publicités vidéo`,
+	},
+	"blog.exists.b46": {
+		en: `Access to +20 hours of FREE courses and recorded tutorials`,
+		ar: `الوصول إلى أكثر من 20 ساعة من الدورات والدروس المسجّلة المجانية`,
+		fr: `Accès à plus de 20 heures de formations et de tutoriels enregistrés GRATUITS`,
+	},
+	"blog.exists.b47": {
+		en: `Weekly coaching calls`,
+		ar: `جلسات تدريب أسبوعية`,
+		fr: `Des sessions de coaching hebdomadaires`,
+	},
+	"blog.exists.b48": {
+		en: `Dedicated WhatsApp group to get support whenever you need it`,
+		ar: `مجموعة واتساب مخصّصة للحصول على الدعم متى احتجت إليه`,
+		fr: `Un groupe WhatsApp dédié pour obtenir de l'aide dès que vous en avez besoin`,
+	},
+	"blog.exists.b49": {
+		en: `Chance to participate in giveaways and events`,
+		ar: `فرصة المشاركة في المسابقات والفعاليات`,
+		fr: `La possibilité de participer à des concours et à des événements`,
+	},
+	"blog.exists.b50": {
+		en: `You would need at least $3,000 as an upfront investment`,
+		ar: `ستحتاج إلى 3,000 دولار على الأقل كاستثمار مسبق`,
+		fr: `Il vous faudrait au moins 3 000 $ d'investissement initial`,
+	},
+	"blog.exists.b51": {
+		en: `Forced to purchase products in bulk because of the Alibaba minimum quantity purchase rule, and pay huge shipping fees`,
+		ar: `الاضطرار إلى شراء المنتجات بالجملة بسبب قاعدة الحد الأدنى للكمية على علي بابا، ودفع رسوم شحن ضخمة`,
+		fr: `L'obligation d'acheter en gros à cause de la règle de quantité minimum d'Alibaba, et de payer d'énormes frais de livraison`,
+	},
+	"blog.exists.b52": {
+		en: `Huge risk of getting stuck with an inventory that didn't sell`,
+		ar: `خطر كبير في أن تبقى عالقًا مع مخزون لم يُبَع`,
+		fr: `Un risque énorme de vous retrouver coincé avec un stock invendu`,
+	},
+	"blog.exists.b53": {
+		en: `You have no control over the quality`,
+		ar: `لا تحكّم لديك في الجودة`,
+		fr: `Vous n'avez aucun contrôle sur la qualité`,
+	},
+	"blog.exists.b54": {
+		en: `You'd find your winning product but never the reliable supplier in most cases`,
+		ar: `ستجد منتجك الرابح لكن لن تجد المورّد الموثوق في معظم الحالات`,
+		fr: `Vous trouveriez votre produit gagnant, mais presque jamais le fournisseur fiable`,
+	},
+	"blog.exists.b55": {
+		en: `You're selling the same product as everyone else`,
+		ar: `تبيع المنتج نفسه الذي يبيعه الجميع`,
+		fr: `Vous vendez le même produit que tout le monde`,
 	},
 
 	// --- FAQ page: questions and answers, indexed to match src/data/faqs.ts ---

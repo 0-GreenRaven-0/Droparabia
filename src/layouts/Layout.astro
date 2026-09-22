@@ -9,14 +9,28 @@ interface Props {
 	description?: string;
 	/** Extra JSON-LD for this page (Article, FAQPage, …). Merged into the @graph below. */
 	schema?: Record<string, unknown>[];
+	/** Robots directive for pages that must stay out of the index, e.g. "noindex, follow". */
+	robots?: string;
+	/** Social preview image. Falls back to the logo for pages without one of their own. */
+	image?: string;
+	/** og:type — "article" for blog posts, "website" everywhere else. */
+	ogType?: "website" | "article";
 }
 const {
 	title = "Build a high-earning e-commerce store without owning inventory",
 	titleKey,
 	description = "Droparabia allows Lebanese entrepreneurs to build a successful e-commerce business without burning their budget on inventory, product shipping, or beginner mistakes.",
 	schema = [],
+	robots,
+	image,
+	ogType = "website",
 } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// Derived from `site` rather than written out, so the entity ids can never drift from the
+// host the canonicals use.
+const origin = new URL(Astro.site!).origin;
+const logo = ik("/Droparabia.webp", "w-512,q-90");
+const socialImage = image ?? ik("/Droparabia.webp", "w-512,q-80");
 
 // Entity definition for answer engines. This does not "rank" anything — Google states
 // plainly that schema is not required for its AI features. What it does is pin down who
@@ -28,17 +42,15 @@ const jsonLd = {
 	"@graph": [
 		{
 			"@type": "Organization",
-			"@id": "https://droparabia.com/#organization",
+			"@id": `${origin}/#organization`,
 			name: "Droparabia",
-			url: "https://droparabia.com",
-			logo: ik("/Droparabia.webp", "w-512,q-90"),
+			url: `${origin}/`,
+			logo,
+			// Taken verbatim from the first FAQ answer. The previous description promised payouts
+			// "within 24 hours of delivery", which appears nowhere on the site.
 			description:
-				"Dropshipping platform built for Lebanon and the MENA market: a catalog of vetted products, an owned delivery fleet, and payouts to the seller's wallet within 24 hours of delivery.",
-			founder: {
-				"@type": "Person",
-				name: "Majd Abdulsalam",
-				jobTitle: "Founder",
-			},
+				"Droparabia is an e-commerce platform built specifically for Lebanon, designed to remove the biggest obstacles that make starting an online business difficult.",
+			founder: { "@id": `${origin}/#founder` },
 			areaServed: {
 				"@type": "Country",
 				name: "Lebanon",
@@ -55,11 +67,22 @@ const jsonLd = {
 		},
 		{
 			"@type": "WebSite",
-			"@id": "https://droparabia.com/#website",
-			url: "https://droparabia.com",
+			"@id": `${origin}/#website`,
+			url: `${origin}/`,
 			name: "Droparabia",
-			publisher: { "@id": "https://droparabia.com/#organization" },
+			publisher: { "@id": `${origin}/#organization` },
 			inLanguage: "en",
+		},
+		// Its own node so the Organization (founder) and every blog post (author) can point at
+		// one entity by @id instead of each restating him. Facts are from the About page and
+		// the FAQ ("our founder, Majd"); the photo is the one the About page shows.
+		{
+			"@type": "Person",
+			"@id": `${origin}/#founder`,
+			name: "Majd Abdulsalam",
+			jobTitle: "Founder",
+			worksFor: { "@id": `${origin}/#organization` },
+			image: ik("/mj.jpeg", "w-800,q-80"),
 		},
 		...schema,
 	],
@@ -75,6 +98,7 @@ const jsonLd = {
 		<title id="page-title" data-title-key={titleKey}>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalURL} />
+		{robots && <meta name="robots" content={robots} />}
 		<link rel="preconnect" href="https://ik.imagekit.io" />
 
 		<!-- Every webfont is self-hosted now (see the @font-face block in global.css), so the two
@@ -85,15 +109,16 @@ const jsonLd = {
 			 isn't discovered until global.css has been fetched and parsed, which measured ~500ms
 			 in. Preloading starts it alongside the CSS instead. -->
 		<link rel="preload" href="/fonts/ibrand/ibrand.woff2" as="font" type="font/woff2" crossorigin />
-		<meta property="og:type" content="website" />
+		<meta property="og:type" content={ogType} />
 		<meta property="og:site_name" content="Droparabia" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonicalURL} />
-		<meta property="og:image" content={ik("/Droparabia.webp", "w-512,q-80")} />
+		<meta property="og:image" content={socialImage} />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={socialImage} />
 		<!-- is:inline keeps Astro from treating this as a module to process/bundle — it is data,
 			 not code. -->
 		<script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
