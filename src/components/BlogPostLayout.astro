@@ -4,7 +4,14 @@ import Header from "./Header.astro";
 import Footer from "./Footer.astro";
 
 interface Props {
+	/** The article's headline — the <h1> on the page, and the BlogPosting headline. */
 	title: string;
+	/**
+	 * Search-result title, for <title>/og:title/twitter:title. Optional: a post that doesn't
+	 * set one falls back to its headline. Kept separate so the heading a reader sees and the
+	 * title a searcher sees can be worded differently.
+	 */
+	metaTitle?: string;
 	description: string;
 	/** Human-readable published date shown on the page, e.g. "January 30, 2026". */
 	date: string;
@@ -28,7 +35,7 @@ interface Props {
 	// key: i18n key for the label — the same one as the heading the entry links to.
 	toc: { id: string; label: string; key?: string }[];
 }
-const { title, description, date, datePublished, dateModified, readTime, image, toc, titleKey, dateKey, readTimeKey } =
+const { title, metaTitle, description, date, datePublished, dateModified, readTime, image, toc, titleKey, dateKey, readTimeKey } =
 	Astro.props;
 const hasBannerSlot = Astro.slots.has("banner");
 const modified = dateModified ?? datePublished;
@@ -68,7 +75,7 @@ const breadcrumbSchema = {
 ---
 
 <Layout
-	title={title}
+	title={metaTitle ?? title}
 	description={description}
 	schema={[articleSchema, breadcrumbSchema]}
 	ogType="article"

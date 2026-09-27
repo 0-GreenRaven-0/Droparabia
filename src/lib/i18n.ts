@@ -2223,9 +2223,9 @@ export const translations: Record<string, Record<Lang, string>> = {
 	},
 	"privacy.section6.heading": { en: "6. Your Rights", ar: "6. حقوقك", fr: "6. Vos droits" },
 	"privacy.section6.paragraph": {
-		en: 'You can request to access, correct, or delete your data at any time by reaching out to us on Instagram at <a href="https://www.instagram.com/mjbusinessofficial" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:opacity-80">@mjbusinessofficial</a>.',
-		ar: 'يمكنك طلب الوصول إلى بياناتك أو تصحيحها أو حذفها في أي وقت من خلال التواصل معنا على إنستغرام على <a href="https://www.instagram.com/mjbusinessofficial" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:opacity-80">@mjbusinessofficial</a>.',
-		fr: `Vous pouvez demander à consulter, corriger ou supprimer vos données à tout moment en nous contactant sur Instagram à l'adresse <a href="https://www.instagram.com/mjbusinessofficial" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:opacity-80">@mjbusinessofficial</a>.`,
+		en: "You can request to access, correct, or delete your data at any time by reaching out to us at <a href=\"mailto:support@droparabia.com\" class=\"text-primary underline hover:opacity-80\">support@droparabia.com</a>.",
+		ar: "يمكنك طلب الوصول إلى بياناتك أو تصحيحها أو حذفها في أي وقت من خلال التواصل معنا على <a href=\"mailto:support@droparabia.com\" class=\"text-primary underline hover:opacity-80\">support@droparabia.com</a>.",
+		fr: "Vous pouvez demander à consulter, corriger ou supprimer vos données à tout moment en nous contactant à l'adresse <a href=\"mailto:support@droparabia.com\" class=\"text-primary underline hover:opacity-80\">support@droparabia.com</a>.",
 	},
 	"privacy.section7.heading": { en: "7. Policy Updates", ar: "7. تحديثات السياسة", fr: "7. Mises à jour de la politique" },
 	"privacy.section7.paragraph1": {
@@ -2234,9 +2234,9 @@ export const translations: Record<string, Record<Lang, string>> = {
 		fr: "Cette politique de confidentialité peut évoluer de temps à autre. La version la plus récente sera toujours publiée sur cette page.",
 	},
 	"privacy.section7.paragraph2": {
-		en: 'If you have questions, please reach out to us on Instagram at <a href="https://www.instagram.com/mjbusinessofficial" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:opacity-80">@mjbusinessofficial</a>.',
-		ar: 'إذا كانت لديك أسئلة، يرجى التواصل معنا على إنستغرام على <a href="https://www.instagram.com/mjbusinessofficial" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:opacity-80">@mjbusinessofficial</a>.',
-		fr: `Si vous avez des questions, contactez-nous sur Instagram à l'adresse <a href="https://www.instagram.com/mjbusinessofficial" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:opacity-80">@mjbusinessofficial</a>.`,
+		en: "If you have questions, please reach out to us at <a href=\"mailto:support@droparabia.com\" class=\"text-primary underline hover:opacity-80\">support@droparabia.com</a>.",
+		ar: "إذا كانت لديك أسئلة، يرجى التواصل معنا على <a href=\"mailto:support@droparabia.com\" class=\"text-primary underline hover:opacity-80\">support@droparabia.com</a>.",
+		fr: "Si vous avez des questions, contactez-nous à l'adresse <a href=\"mailto:support@droparabia.com\" class=\"text-primary underline hover:opacity-80\">support@droparabia.com</a>.",
 	},
 
 	// --- Terms & Conditions ---
@@ -2271,9 +2271,9 @@ export const translations: Record<string, Record<Lang, string>> = {
 		fr: "Nous nous réservons le droit de suspendre ou de révoquer définitivement l'accès à la plateforme, sans remboursement, en cas de violation de l'une de ces conditions — y compris, sans s'y limiter, l'utilisation abusive du contenu, un comportement inapproprié ou le partage de compte.",
 	},
 	"terms.contact": {
-		en: 'For any questions or concerns, please reach out to us on Instagram at <a href="https://www.instagram.com/mjbusinessofficial" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:opacity-80">@mjbusinessofficial</a>.',
-		ar: 'لأي أسئلة أو استفسارات، يرجى التواصل معنا على إنستغرام على <a href="https://www.instagram.com/mjbusinessofficial" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:opacity-80">@mjbusinessofficial</a>.',
-		fr: `Pour toute question ou préoccupation, contactez-nous sur Instagram à l'adresse <a href="https://www.instagram.com/mjbusinessofficial" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:opacity-80">@mjbusinessofficial</a>.`,
+		en: "For any questions or concerns, please reach out to us at <a href=\"mailto:support@droparabia.com\" class=\"text-primary underline hover:opacity-80\">support@droparabia.com</a>.",
+		ar: "لأي أسئلة أو استفسارات، يرجى التواصل معنا على <a href=\"mailto:support@droparabia.com\" class=\"text-primary underline hover:opacity-80\">support@droparabia.com</a>.",
+		fr: "Pour toute question ou préoccupation, contactez-nous à l'adresse <a href=\"mailto:support@droparabia.com\" class=\"text-primary underline hover:opacity-80\">support@droparabia.com</a>.",
 	},
 
 	// Feature-tab copy for Branding, Product Request and Leader Board. These three tools
