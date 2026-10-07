@@ -630,6 +630,75 @@ export const translations: Record<string, Record<Lang, string>> = {
 	},
 
 
+	"nav.catalog": { en: "Catalog", ar: "الكتالوج", fr: "Catalogue" },
+	"page.catalog": { en: "Catalog", ar: "الكتالوج", fr: "Catalogue" },
+	"catalogpage.heading": {
+		en: `Carefully picked <span class="text-primary">catalog</span>`,
+		ar: `<span class="text-primary">كتالوج</span> منتقى بعناية`,
+		fr: `Un <span class="text-primary">catalogue</span> trié sur le volet`,
+	},
+	"catalogpage.subheading": {
+		en: "Every product here is already sourced, stocked and ready to deliver across Lebanon. You add it to your store, we handle the rest.",
+		ar: "كل منتج هنا تم توريده وتخزينه وجاهز للتوصيل في جميع أنحاء لبنان. أنت تضيفه إلى متجرك، ونحن نتولى الباقي.",
+		fr: "Chaque produit ici est déjà sourcé, stocké et prêt à être livré partout au Liban. Vous l'ajoutez à votre boutique, nous nous occupons du reste.",
+	},
+	"catalogpage.winners.heading": {
+		en: `Winning <span class="text-primary">right now</span>`,
+		ar: `<span class="text-primary">الأكثر رواجًا</span> الآن`,
+		fr: `Ce qui <span class="text-primary">cartonne en ce moment</span>`,
+	},
+	"catalogpage.winners.sub": {
+		en: "Scored on Google Trends, TikTok demand and how many sellers are already advertising each product.",
+		ar: "يتم التقييم بناءً على Google Trends والطلب على تيك توك وعدد البائعين الذين يعلنون عن كل منتج بالفعل.",
+		fr: "Notés selon Google Trends, la demande sur TikTok et le nombre de vendeurs qui font déjà la publicité de chaque produit.",
+	},
+	"catalogpage.filterLabel": { en: "Filter by category", ar: "تصفية حسب الفئة", fr: "Filtrer par catégorie" },
+	"catalogpage.winners.chipAll": { en: "All winners", ar: "كل المنتجات الرابحة", fr: "Tous les gagnants" },
+	"catalogpage.winners.empty": {
+		en: "No winning products in this category yet.",
+		ar: "لا توجد منتجات رابحة في هذه الفئة بعد.",
+		fr: "Aucun produit gagnant dans cette catégorie pour l'instant.",
+	},
+	"catalogpage.request.heading": {
+		en: "Didn't find what you're looking for?",
+		ar: "لم تجد ما تبحث عنه؟",
+		fr: "Vous n'avez pas trouvé ce que vous cherchez ?",
+	},
+	"catalogpage.request.sub": {
+		en: "Once you access the Droparabia platform, you can send a request for any product you're looking for through the platform and we'll supply it for you.",
+		ar: "بمجرد دخولك إلى منصة دروب أرابيا، يمكنك إرسال طلب لأي منتج تبحث عنه عبر المنصة وسنقوم بتوفيره لك.",
+		fr: "Une fois sur la plateforme Droparabia, vous pouvez envoyer une demande pour n'importe quel produit recherché et nous vous le fournirons.",
+	},
+	"catalogpage.all.heading": {
+		en: `Every <span class="text-primary">product</span>`,
+		ar: `كل <span class="text-primary">المنتجات</span>`,
+		fr: `Tous les <span class="text-primary">produits</span>`,
+	},
+	"catalogpage.all.sub": {
+		en: "Sourced, stocked and ready to add to your store. Filter by category to find what fits your niche.",
+		ar: "مورَّدة ومخزَّنة وجاهزة لإضافتها إلى متجرك. صفّها حسب الفئة لتجد ما يناسب مجالك.",
+		fr: "Sourcés, stockés et prêts à être ajoutés à votre boutique. Filtrez par catégorie pour trouver ce qui correspond à votre niche.",
+	},
+
+	// --- Catalog page: card labels, filter chips and search (shared by both sections) ---
+	"winners.heading": {
+		en: `Explore the <span class="text-primary">Droparabia catalog</span>`,
+		ar: `استكشف <span class="text-primary">كتالوج دروب أرابيا</span>`,
+		fr: `Explorez le <span class="text-primary">catalogue Droparabia</span>`,
+	},
+	"winners.subheading": {
+		en: "Every product is sourced, stocked and scored on Google Trends, TikTok demand and how many sellers are already advertising it. Start with what's winning, or browse by category.",
+		ar: "كل منتج يتم توريده وتخزينه وتقييمه بناءً على Google Trends والطلب على تيك توك وعدد البائعين الذين يعلنون عنه بالفعل. ابدأ بالأكثر رواجًا، أو تصفّح حسب الفئة.",
+		fr: "Chaque produit est sourcé, stocké et noté selon Google Trends, la demande sur TikTok et le nombre de vendeurs qui en font déjà la publicité. Commencez par ce qui cartonne, ou parcourez par catégorie.",
+	},
+	"winners.chipWinning": { en: "Winning now", ar: "الأكثر رواجًا", fr: "Qui cartonne" },
+	"winners.chipAll": { en: "All products", ar: "كل المنتجات", fr: "Tous les produits" },
+	"winners.trend": { en: "demand", ar: "الطلب", fr: "de demande" },
+	"winners.sell": { en: "Sells for", ar: "سعر البيع", fr: "Prix de vente" },
+	"winners.profit": { en: "Est. profit", ar: "الربح المتوقع", fr: "Bénéfice estimé" },
+	"winners.more": { en: "Load more", ar: "عرض المزيد", fr: "Voir plus" },
+	"catalogpage.all.empty": { en: "No products in this category yet.", ar: "لا توجد منتجات في هذه الفئة بعد.", fr: "Aucun produit dans cette catégorie pour l'instant." },
+
 	// --- Header Tools dropdown: one-line descriptions. Separate from tool.*.tagline because the
 	// dropdown's copy (Header.astro) is shorter and worded differently from the tool pages'. ---
 	"nav.tool.find-products.description": { en: "Search a huge catalog of winning products", ar: "ابحث في كتالوج ضخم من المنتجات الرابحة", fr: "Explorez un immense catalogue de produits gagnants" },

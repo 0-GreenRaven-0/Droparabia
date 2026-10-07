@@ -10,17 +10,12 @@ export default defineConfig({
 	// canonicals, og:url, the sitemap, JSON-LD ids — has to name the host that actually
 	// returns 200, or every one of them points at a redirect.
 	site: 'https://www.droparabia.com',
-	// Legacy URLs from the previous site. On a static build these emit an instant
-	// meta-refresh page (noindex, with a canonical to the target), which is a fallback only:
-	// a true 301 has to come from the nginx vhost, which lives in CloudPanel rather than in
-	// this repo. Server rules take precedence over these files once added.
-	redirects: {
-		'/collections/all': '/',
-		// No archived copy of the original survives, so the specific article it held can't be
-		// recovered. The homepage blog section lists every current post — the closest thing
-		// to a blog index, since /blog/ itself has no page.
-		'/blog/6': '/#blog',
-	},
+	// Legacy URLs from the previous site are NOT listed here. Astro's `redirects` emit a
+	// meta-refresh page carrying `noindex`, and that tag is what lands them in Search
+	// Console's "Excluded by noindex" report rather than letting them consolidate into their
+	// target. They're hand-written stubs in public/ instead — same instant refresh, plus a
+	// canonical, minus the noindex. A real 301 would still be better, but it has to come from
+	// the nginx vhost in CloudPanel, which is out of scope for this repo.
 	integrations: [
 		sitemap({
 			// Review submission is for existing users and is noindex — it has no business in

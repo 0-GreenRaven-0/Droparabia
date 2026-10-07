@@ -1,0 +1,246 @@
+---
+// Every product in the catalog, filterable by category and searchable.
+//
+// The first page is rendered at build time so the section is never empty on arrival and has
+// something for crawlers; each filter, search and "load more" after that goes to the API from
+// the browser. 563 products with their galleries is far too much JSON to inline.
+import { getCatalogCategories, getCatalogPage } from "../../lib/winners";
+import { renderCard, fromCatalogRow, isRenderable } from "../../lib/productCard";
+
+const PAGE_SIZE = 12;
+const { categories } = await getCatalogCategories();
+const firstPage = await getCatalogPage(PAGE_SIZE, 1);
+
+const initial = firstPage.rows.filter(isRenderable).map(fromCatalogRow).map(renderCard).join("");
+
+const arrowBtn =
+	"flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center transition-transform duration-150 ease-out active:scale-90";
+
+const chip =
+	"catalog-chip shrink-0 cursor-pointer rounded-full px-3.5 py-1.5 font-ibrand text-xs whitespace-nowrap transition-colors duration-200 ease-out sm:px-4 sm:text-sm";
+---
+
+{
+	initial.length > 0 && (
+		<section id="catalog-all" class="px-6 py-12 sm:py-16 lg:px-16">
+			<div class="mx-auto max-w-6xl">
+				<h2
+					data-i18n="catalogpage.all.heading"
+					class="font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-3xl md:text-4xl dark:text-white"
+				>
+					Every <span class="text-primary">product</span>
+				</h2>
+				<p
+					data-i18n="catalogpage.all.sub"
+					class="mt-3 max-w-3xl font-helvetica text-sm text-neutral-600 sm:text-base dark:text-neutral-400"
+				>
+					Sourced, stocked and ready to add to your store. Filter by category to find what fits your niche.
+				</p>
+
+				{/* Fifteen chips don't fit a phone, so below sm the same filter is the arrow
+					toggle from the homepage catalog. */}
+				<div class="mt-6">
+					<div
+						class="flex items-center justify-center gap-3 rtl:flex-row-reverse sm:hidden"
+						role="group"
+						aria-labelledby="catalog-filter-label"
+					>
+						<span id="catalog-filter-label" class="sr-only" data-i18n="catalogpage.filterLabel">
+							Filter by category
+						</span>
+						<button type="button" data-cat-prev="true" aria-label="Previous category" class={arrowBtn}>
+							<svg width="34" height="34" viewBox="0 0 24 24" style={{ transform: "rotate(225deg)" }}>
+								<defs>
+									<linearGradient id="catalog-arrow-prev" x1="0%" y1="0%" x2="100%" y2="100%">
+										<stop offset="0%" stop-color="#2745ff" />
+										<stop offset="100%" stop-color="#000c66" />
+									</linearGradient>
+								</defs>
+								<path d="M3 11l19-9-9 19-2-8-8-2z" fill="url(#catalog-arrow-prev)" />
+							</svg>
+						</button>
+						<span
+							data-cat-label
+							class="min-w-0 flex-1 text-center font-ibrand text-lg text-neutral-900 transition-opacity duration-200 ease-out dark:text-white"
+						>
+							All products
+						</span>
+						<button type="button" data-cat-next="true" aria-label="Next category" class={arrowBtn}>
+							<svg width="34" height="34" viewBox="0 0 24 24" style={{ transform: "rotate(45deg)" }}>
+								<defs>
+									<linearGradient id="catalog-arrow-next" x1="0%" y1="0%" x2="100%" y2="100%">
+										<stop offset="0%" stop-color="#2745ff" />
+										<stop offset="100%" stop-color="#000c66" />
+									</linearGradient>
+								</defs>
+								<path d="M3 11l19-9-9 19-2-8-8-2z" fill="url(#catalog-arrow-next)" />
+							</svg>
+						</button>
+					</div>
+
+					<div class="hidden gap-2 sm:flex sm:flex-wrap">
+						<button type="button" class={chip} data-filter="all" aria-pressed="true">
+							<span data-i18n="winners.chipAll">All products</span>
+						</button>
+						{categories.map((c) => (
+							<button type="button" class={chip} data-filter="category" data-category-id={c.id} aria-pressed="false">
+								{c.name} <span class="opacity-60">{c.total}</span>
+							</button>
+						))}
+					</div>
+				</div>
+
+				<div
+					id="catalog-all-grid"
+					aria-busy="false"
+					class="cards-grid mt-8 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4 lg:gap-6"
+					set:html={initial}
+				/>
+
+				<p
+					id="catalog-all-empty"
+					hidden
+					data-i18n="catalogpage.all.empty"
+					class="mt-10 text-center font-helvetica text-sm text-neutral-500 dark:text-neutral-400"
+				>
+					No products in this category yet.
+				</p>
+
+				<div class="mt-8 flex justify-center">
+					<button
+						id="catalog-all-more"
+						type="button"
+						class="cursor-pointer rounded-full border-[3px] border-primary bg-white px-6 py-2.5 font-ibrand text-sm text-neutral-900 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)] dark:bg-neutral-900 dark:text-white"
+					>
+						<span data-i18n="winners.more">Load more</span>
+					</button>
+				</div>
+			</div>
+		</section>
+	)
+}
+
+<style>
+	.catalog-chip {
+		background: rgba(0, 0, 0, 0.06);
+		color: rgb(64 64 64);
+	}
+	:global(.dark) .catalog-chip {
+		background: rgba(255, 255, 255, 0.1);
+		color: rgb(212 212 212);
+	}
+	.catalog-chip[aria-pressed="true"] {
+		background: #001eff;
+		color: #ffffff;
+		box-shadow: 0 6px 16px -6px rgba(0, 30, 255, 0.6);
+	}
+</style>
+
+<script>
+	import { renderCard, fromCatalogRow, isRenderable } from "../../lib/productCard";
+
+	const grid = document.getElementById("catalog-all-grid");
+	if (grid) {
+		const ENDPOINT = "https://backend.droparabia.com/api/metrics/all/products";
+		const PAGE_SIZE = 12;
+		const moreBtn = document.getElementById("catalog-all-more") as HTMLButtonElement | null;
+		const empty = document.getElementById("catalog-all-empty");
+		const chips = Array.from(document.querySelectorAll<HTMLButtonElement>(".catalog-chip"));
+		const catLabel = document.querySelector<HTMLElement>("#catalog-all [data-cat-label]");
+
+		// The build rendered page 1 of the unfiltered catalog; the state starts there so
+		// "Load more" continues from page 2 without re-fetching what's already on screen.
+		const state = { categoryId: null as number | null, page: 1, lastPage: 2 };
+
+		const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+		async function load(append: boolean) {
+			grid!.setAttribute("aria-busy", "true");
+			// A filter change fades the grid out while the request is in flight; "Load more"
+			// leaves what's on screen alone and appends underneath it.
+			if (!append && !still) {
+				grid!.classList.add("cards-swapping");
+				catLabel?.classList.add("cat-label-swapping");
+			}
+			// The fade needs to be seen even when the response comes back in 40ms.
+			const settled = still ? null : new Promise((r) => window.setTimeout(r, 140));
+			try {
+				const url = new URL(ENDPOINT);
+				url.searchParams.set("limit", String(PAGE_SIZE));
+				url.searchParams.set("page", String(state.page));
+				if (state.categoryId) url.searchParams.set("category_id", String(state.categoryId));
+
+				const res = await fetch(url);
+				if (!res.ok) throw new Error(String(res.status));
+				const json = await res.json();
+				const rows: any[] = json.products?.data ?? [];
+				state.lastPage = Number(json.products?.last_page) || 1;
+
+				const html = rows.filter(isRenderable).map(fromCatalogRow).map(renderCard).join("");
+				if (settled) await settled;
+				// insertAdjacentHTML rather than `innerHTML +=`: the latter rebuilds every card
+				// already on screen, which would re-run the deal-in animation on all of them.
+				if (append) grid!.insertAdjacentHTML("beforeend", html);
+				else grid!.innerHTML = html;
+				if (empty) empty.hidden = grid!.querySelectorAll(".winners-card").length > 0;
+				if (moreBtn) moreBtn.hidden = state.page >= state.lastPage;
+			} catch {
+				// A failed request leaves what's already on screen rather than blanking the grid.
+				if (!append && empty) {
+					grid!.innerHTML = "";
+					empty.hidden = false;
+				}
+				if (moreBtn) moreBtn.hidden = true;
+			} finally {
+				grid!.setAttribute("aria-busy", "false");
+				grid!.classList.remove("cards-swapping");
+				catLabel?.classList.remove("cat-label-swapping");
+			}
+		}
+
+		const select = (btn: HTMLButtonElement | undefined) =>
+			chips.forEach((c) => c.setAttribute("aria-pressed", String(c === btn)));
+
+		// The arrow toggle and the chips are one filter: the chips hold the state and the toggle
+		// just steps through them, so the two can never disagree. The label is copied from the
+		// active chip, which also means the language toggle translates it for free.
+		const chipText = (btn: HTMLButtonElement) => (btn.textContent || "").replace(/\s+/g, " ").trim();
+		const syncLabel = () => {
+			const active = chips.find((c) => c.getAttribute("aria-pressed") === "true");
+			if (catLabel && active) catLabel.textContent = chipText(active);
+		};
+
+		const applyChip = (btn: HTMLButtonElement) => {
+			if (btn.getAttribute("aria-pressed") === "true") return;
+			select(btn);
+			// Behind the fade, so the name changes with the cards rather than before them.
+			window.setTimeout(syncLabel, still ? 0 : 140);
+			state.categoryId = btn.dataset.categoryId ? Number(btn.dataset.categoryId) : null;
+			state.page = 1;
+			load(false);
+		};
+
+		chips.forEach((btn) => btn.addEventListener("click", () => applyChip(btn)));
+
+		// Wraps around at both ends, like the homepage toggle.
+		const step = (delta: number) => {
+			const i = chips.findIndex((c) => c.getAttribute("aria-pressed") === "true");
+			applyChip(chips[(Math.max(i, 0) + delta + chips.length) % chips.length]);
+		};
+		document.querySelector("#catalog-all [data-cat-prev]")?.addEventListener("click", () => step(-1));
+		document.querySelector("#catalog-all [data-cat-next]")?.addEventListener("click", () => step(1));
+
+		moreBtn?.addEventListener("click", () => {
+			if (state.page >= state.lastPage) return;
+			state.page += 1;
+			load(true);
+		});
+
+		// Card labels come from renderCard, not [data-i18n] elements, so repaint on a language
+		// change — page 1 included, which the build rendered in English.
+		window.addEventListener("droparabia:lang-changed", () => {
+			syncLabel();
+			load(false);
+		});
+	}
+</script>

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Redirecting to the Droparabia catalog</title>
+		<!-- A legacy URL from the previous site. This repo builds static files, so there is no
+			 server here to answer with a 301; an instant meta refresh plus a canonical is the
+			 strongest signal a static file can send, and Google treats it as a permanent
+			 redirect. There is deliberately no robots exclusion tag here — that tag is what put
+			 these URLs in Search Console's "Excluded" report instead of letting them consolidate
+			 into the target. -->
+		<link rel="canonical" href="https://www.droparabia.com/catalog/" />
+		<meta http-equiv="refresh" content="0; url=https://www.droparabia.com/catalog/" />
+	</head>
+	<body>
+		<p><a href="https://www.droparabia.com/catalog/">Continue to the Droparabia catalog</a></p>
+	</body>
+</html>

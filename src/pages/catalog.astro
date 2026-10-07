@@ -1,0 +1,69 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import CatalogWinners from "../components/sections/CatalogWinners.astro";
+import CatalogAll from "../components/sections/CatalogAll.astro";
+import Footer from "../components/Footer.astro";
+
+// Home > Catalog. Both items resolve, so the trail is accurate.
+const origin = new URL(Astro.site!).origin;
+const breadcrumbSchema = {
+	"@type": "BreadcrumbList",
+	itemListElement: [
+		{ "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+		{ "@type": "ListItem", position: 2, name: "Catalog", item: new URL(Astro.url.pathname, Astro.site).href },
+	],
+};
+---
+
+<Layout
+	title="Catalog"
+	titleKey="page.catalog"
+	description="Browse the Droparabia catalog — hundreds of products sourced, stocked and delivered in Lebanon, with the ones scored as winning right now at the top."
+	schema={[breadcrumbSchema]}
+>
+	<Header />
+
+	<section class="px-6 pt-32 pb-4 text-center sm:pt-40 lg:px-16">
+		<div class="mx-auto max-w-3xl">
+			<h1
+				data-i18n="catalogpage.heading"
+				class="font-ibrand text-4xl leading-[1.1] text-neutral-900 sm:text-5xl lg:text-6xl dark:text-white"
+			>
+				Carefully picked <span class="text-primary">catalog</span>
+			</h1>
+			<p
+				data-i18n="catalogpage.subheading"
+				class="mt-4 font-helvetica text-sm text-neutral-600 sm:mt-6 sm:text-lg dark:text-neutral-400"
+			>
+				Every product here is already sourced, stocked and ready to deliver across Lebanon. You add it to your
+				store, we handle the rest.
+			</p>
+		</div>
+	</section>
+
+	<CatalogWinners />
+	<CatalogAll />
+
+	{/* The catalog isn't the ceiling: anything missing can be requested from inside the
+		platform, which is worth saying to someone who just scrolled all of it. */}
+	<section id="catalog-request" class="px-6 pb-20 sm:pb-24 lg:px-16">
+		<div class="mx-auto max-w-3xl rounded-3xl bg-black/[0.03] px-6 py-12 text-center sm:px-12 dark:bg-white/[0.04]">
+			<h2
+				data-i18n="catalogpage.request.heading"
+				class="font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-3xl md:text-4xl dark:text-white"
+			>
+				Didn't find what you're looking for?
+			</h2>
+			<p
+				data-i18n="catalogpage.request.sub"
+				class="mx-auto mt-5 max-w-2xl font-helvetica text-base leading-relaxed text-neutral-700 dark:text-neutral-300"
+			>
+				Once you access the Droparabia platform, you can send a request for any product you're looking for
+				through the platform and we'll supply it for you.
+			</p>
+		</div>
+	</section>
+
+	<Footer />
+</Layout>

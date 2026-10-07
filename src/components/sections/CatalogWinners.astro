@@ -1,0 +1,250 @@
+---
+// "Winning now" — every product the backend currently scores as winning, newest check first.
+//
+// All of them are fetched at build time and normalised down to the eight fields a card shows
+// (~25 KB for 127 products), then embedded in the page. "Show more" reveals the next batch
+// from that array instead of calling the API again: the list has to be de-duplicated and
+// sorted across all 7 API pages before it means anything, so paging it live would show the
+// wrong products.
+import { getWinners } from "../../lib/winners";
+import { renderCard, type CardProduct } from "../../lib/productCard";
+
+const BATCH = 12;
+const winners = await getWinners(Number.MAX_SAFE_INTEGER);
+
+const cards: CardProduct[] = winners.map((w) => ({
+	name: w.name,
+	category: w.category,
+	image: w.image,
+	score: w.score,
+	trendPercentage: w.trendPercentage,
+	trendUp: w.trendUp,
+	sellingPrice: w.sellingPrice,
+	profit: w.profit,
+}));
+
+// The winners endpoint ignores category_id (and limit, and search — every parameter returns
+// the same 131 rows), so filtering happens here instead. Every winner carries its own
+// category, and the whole list is already in the page, so a chip is an instant array filter
+// rather than a request.
+const winnerCategories = [...cards.reduce((m, c) => m.set(c.category || "", (m.get(c.category || "") || 0) + 1), new Map())]
+	.filter(([name]) => name)
+	.map(([name, total]) => ({ name, total }))
+	.sort((a, b) => b.total - a.total);
+
+const initial = cards.slice(0, BATCH).map(renderCard).join("");
+
+const arrowBtn =
+	"flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center transition-transform duration-150 ease-out active:scale-90";
+
+const chip =
+	"winner-chip shrink-0 cursor-pointer rounded-full px-3.5 py-1.5 font-ibrand text-xs whitespace-nowrap transition-colors duration-200 ease-out sm:px-4 sm:text-sm";
+---
+
+{
+	cards.length > 0 && (
+		<section id="catalog-winners" class="px-6 py-12 sm:py-16 lg:px-16">
+			<div class="mx-auto max-w-6xl">
+				<h2
+					data-i18n="catalogpage.winners.heading"
+					class="font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-3xl md:text-4xl dark:text-white"
+				>
+					Winning <span class="text-primary">right now</span>
+				</h2>
+				<p
+					data-i18n="catalogpage.winners.sub"
+					class="mt-3 max-w-3xl font-helvetica text-sm text-neutral-600 sm:text-base dark:text-neutral-400"
+				>
+					Scored on Google Trends, TikTok demand and how many sellers are already advertising each product.
+				</p>
+
+				{/* Same filter twice: an arrow toggle on a phone, chips once there's room to wrap. */}
+				<div class="mt-6">
+					<div
+						class="flex items-center justify-center gap-3 rtl:flex-row-reverse sm:hidden"
+						role="group"
+						aria-labelledby="winners-filter-label"
+					>
+						<span id="winners-filter-label" class="sr-only" data-i18n="catalogpage.filterLabel">
+							Filter by category
+						</span>
+						<button type="button" data-cat-prev="true" aria-label="Previous category" class={arrowBtn}>
+							<svg width="34" height="34" viewBox="0 0 24 24" style={{ transform: "rotate(225deg)" }}>
+								<defs>
+									<linearGradient id="winners-arrow-prev" x1="0%" y1="0%" x2="100%" y2="100%">
+										<stop offset="0%" stop-color="#2745ff" />
+										<stop offset="100%" stop-color="#000c66" />
+									</linearGradient>
+								</defs>
+								<path d="M3 11l19-9-9 19-2-8-8-2z" fill="url(#winners-arrow-prev)" />
+							</svg>
+						</button>
+						<span
+							data-cat-label
+							class="min-w-0 flex-1 text-center font-ibrand text-lg text-neutral-900 transition-opacity duration-200 ease-out dark:text-white"
+						>
+							All winners
+						</span>
+						<button type="button" data-cat-next="true" aria-label="Next category" class={arrowBtn}>
+							<svg width="34" height="34" viewBox="0 0 24 24" style={{ transform: "rotate(45deg)" }}>
+								<defs>
+									<linearGradient id="winners-arrow-next" x1="0%" y1="0%" x2="100%" y2="100%">
+										<stop offset="0%" stop-color="#2745ff" />
+										<stop offset="100%" stop-color="#000c66" />
+									</linearGradient>
+								</defs>
+								<path d="M3 11l19-9-9 19-2-8-8-2z" fill="url(#winners-arrow-next)" />
+							</svg>
+						</button>
+					</div>
+
+					<div class="hidden gap-2 sm:flex sm:flex-wrap">
+						<button type="button" class={chip} data-winner-filter="" aria-pressed="true">
+							<span data-i18n="catalogpage.winners.chipAll">All winners</span>
+						</button>
+						{winnerCategories.map((c) => (
+							<button type="button" class={chip} data-winner-filter={c.name} aria-pressed="false">
+								{c.name} <span class="opacity-60">{c.total}</span>
+							</button>
+						))}
+					</div>
+				</div>
+
+				<div
+					id="catalog-winners-grid"
+					class="cards-grid mt-8 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4 lg:gap-6"
+					set:html={initial}
+				/>
+
+				<p
+					id="catalog-winners-empty"
+					hidden
+					data-i18n="catalogpage.winners.empty"
+					class="mt-10 text-center font-helvetica text-sm text-neutral-500 dark:text-neutral-400"
+				>
+					No winning products in this category yet.
+				</p>
+
+				{cards.length > BATCH && (
+					<div class="mt-8 flex justify-center">
+						<button
+							id="catalog-winners-more"
+							type="button"
+							class="cursor-pointer rounded-full border-[3px] border-primary bg-white px-6 py-2.5 font-ibrand text-sm text-neutral-900 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)] dark:bg-neutral-900 dark:text-white"
+						>
+							<span data-i18n="winners.more">Show more</span>
+						</button>
+					</div>
+				)}
+			</div>
+
+			{/* Data as JSON rather than define:vars, so the script below can stay a bundled module
+				and share the card renderer with the catalog section. */}
+			<script is:inline id="catalog-winners-data" type="application/json" set:html={JSON.stringify(cards)} />
+		</section>
+	)
+}
+
+<style>
+	.winner-chip {
+		background: rgba(0, 0, 0, 0.06);
+		color: rgb(64 64 64);
+	}
+	:global(.dark) .winner-chip {
+		background: rgba(255, 255, 255, 0.1);
+		color: rgb(212 212 212);
+	}
+	.winner-chip[aria-pressed="true"] {
+		background: #001eff;
+		color: #ffffff;
+		box-shadow: 0 6px 16px -6px rgba(0, 30, 255, 0.6);
+	}
+</style>
+
+<script>
+	import { renderCard, type CardProduct } from "../../lib/productCard";
+
+	const grid = document.getElementById("catalog-winners-grid");
+	const data = document.getElementById("catalog-winners-data");
+	if (grid && data) {
+		const BATCH = 12;
+		const all: CardProduct[] = JSON.parse(data.textContent || "[]");
+		const moreBtn = document.getElementById("catalog-winners-more");
+		const empty = document.getElementById("catalog-winners-empty");
+		const chips = Array.from(document.querySelectorAll<HTMLButtonElement>(".winner-chip"));
+		const catLabel = document.querySelector<HTMLElement>("#catalog-winners [data-cat-label]");
+		let category = "";
+		let shown = Math.min(BATCH, all.length);
+
+		const visible = () => (category ? all.filter((p) => p.category === category) : all);
+
+		const SWAP_MS = 140;
+		const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+		// `grown` appends only the cards past the ones already on screen, so "Show more" deals
+		// in the new row instead of re-animating every card above it.
+		const paint = (grown = false) => {
+			const list = visible();
+			const have = grid.childElementCount;
+			if (grown) grid.insertAdjacentHTML("beforeend", list.slice(have, shown).map(renderCard).join(""));
+			else grid.innerHTML = list.slice(0, shown).map(renderCard).join("");
+			if (moreBtn) moreBtn.hidden = shown >= list.length;
+			if (empty) empty.hidden = list.length > 0;
+		};
+
+		// Fade the old set out, swap underneath, let the cards deal themselves back in.
+		const swap = (fn: () => void) => {
+			if (still) return fn();
+			grid.classList.add("cards-swapping");
+			catLabel?.classList.add("cat-label-swapping");
+			window.setTimeout(() => {
+				fn();
+				grid.classList.remove("cards-swapping");
+				catLabel?.classList.remove("cat-label-swapping");
+			}, SWAP_MS);
+		};
+
+		// The arrow toggle and the chips are one filter: the chips hold the state and the toggle
+		// steps through them. The label is copied from the active chip, so the language toggle
+		// translates it for free.
+		const chipText = (btn: HTMLButtonElement) => (btn.textContent || "").replace(/\s+/g, " ").trim();
+		const syncLabel = () => {
+			const active = chips.find((c) => (c.dataset.winnerFilter || "") === category);
+			if (catLabel && active) catLabel.textContent = chipText(active);
+		};
+
+		const applyCategory = (name: string) => {
+			if (name === category) return;
+			chips.forEach((c) => c.setAttribute("aria-pressed", String((c.dataset.winnerFilter || "") === name)));
+			category = name;
+			// Back to the first batch, or a narrow category would open already "expanded".
+			shown = BATCH;
+			swap(() => {
+				syncLabel();
+				paint();
+			});
+		};
+
+		chips.forEach((btn) => btn.addEventListener("click", () => applyCategory(btn.dataset.winnerFilter || "")));
+
+		// Wraps around at both ends, like the homepage toggle.
+		const step = (delta: number) => {
+			const i = chips.findIndex((c) => (c.dataset.winnerFilter || "") === category);
+			applyCategory(chips[(Math.max(i, 0) + delta + chips.length) % chips.length].dataset.winnerFilter || "");
+		};
+		document.querySelector("#catalog-winners [data-cat-prev]")?.addEventListener("click", () => step(-1));
+		document.querySelector("#catalog-winners [data-cat-next]")?.addEventListener("click", () => step(1));
+
+		moreBtn?.addEventListener("click", () => {
+			shown = Math.min(shown + BATCH, visible().length);
+			paint(true);
+		});
+
+		// Card labels are built by renderCard, not [data-i18n] elements, so the global applier
+		// can't reach them — repaint on a language change.
+		window.addEventListener("droparabia:lang-changed", () => {
+			syncLabel();
+			paint();
+		});
+	}
+</script>

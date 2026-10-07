@@ -2,6 +2,7 @@
 import { ik } from "../lib/imagekit";
 
 const navLinks = [
+	{ label: "Catalog", href: "/catalog" },
 	{ label: "Tools", href: "/tools" },
 	{ label: "Resources", href: "/resources" },
 	{ label: "Reviews", href: "/reviews" },
@@ -659,6 +660,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 		</div>
 
 		<div class="flex flex-col gap-1 py-2">
+			<a href="/catalog" data-i18n="nav.catalog" class="rounded-2xl py-3 font-ibrand text-neutral-900 transition-colors hover:bg-black/[0.07] dark:text-white dark:hover:bg-white/10">Catalog</a>
 			<a href="/reviews" data-i18n="nav.reviews" class="rounded-2xl py-3 font-ibrand text-neutral-900 transition-colors hover:bg-black/[0.07] dark:text-white dark:hover:bg-white/10">Reviews</a>
 		<a href="mailto:support@droparabia.com" data-i18n="nav.contact" class="rounded-2xl py-3 font-ibrand text-neutral-900 transition-colors hover:bg-black/[0.07] dark:text-white dark:hover:bg-white/10">Contact</a>
 		</div>
