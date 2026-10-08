@@ -154,6 +154,7 @@ const chip =
 
 <script>
 	import { renderCard, fromCatalogRow, isRenderable } from "../../lib/productCard";
+	import { showUntilImagesSettle } from "../../lib/gridLoader";
 
 	const grid = document.getElementById("catalog-all-grid");
 	if (grid) {
@@ -240,6 +241,10 @@ const chip =
 				catLabel?.classList.remove("cat-label-swapping");
 			}
 		}
+
+		// The build rendered these cards, but not their photos — cover the grid until the
+		// first screenful of images is actually on screen.
+		showUntilImagesSettle(grid, loading, { reducedMotion: still });
 
 		const select = (btn: HTMLButtonElement | undefined) =>
 			chips.forEach((c) => c.setAttribute("aria-pressed", String(c === btn)));

@@ -64,10 +64,20 @@ export function renderCard(p: CardProduct, index = 0): string {
 				? `<p class="mt-1 font-helvetica text-xs font-semibold ${p.trendUp ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}">${p.trendUp ? "↑" : "↓"} ${p.trendPercentage}% <span class="font-normal text-neutral-500 dark:text-neutral-400">${escapeHtml(label("winners.trend", "demand"))}</span></p>`
 				: ""
 		}
-		<dl class="mt-auto space-y-0.5 pt-3 font-helvetica text-xs sm:text-sm">
+		${
+			price || profit
+				? `<dl class="mt-auto space-y-0.5 pt-3 font-helvetica text-xs sm:text-sm">
 			${price ? `<div class="flex items-baseline justify-between gap-2"><dt class="shrink-0 text-neutral-600 dark:text-neutral-400">${escapeHtml(label("winners.sell", "Sells for"))}</dt><dd class="shrink-0 font-semibold text-neutral-900 dark:text-white">${price}</dd></div>` : ""}
 			${profit ? `<div class="flex items-baseline justify-between gap-2"><dt class="shrink-0 text-neutral-600 dark:text-neutral-400">${escapeHtml(label("winners.profit", "Est. profit"))}</dt><dd class="shrink-0 font-bold text-emerald-600 dark:text-emerald-400">${profit}</dd></div>` : ""}
-		</dl>
+		</dl>`
+				: ""
+		}
+		${
+			// Only where a profit is actually quoted — it has nothing to qualify otherwise.
+			profit
+				? `<p class="mt-1.5 font-helvetica text-[0.7rem] font-semibold text-red-600 dark:text-red-400">${escapeHtml(label("catalogpage.winners.disclaimer", "* Not including ads costs"))}</p>`
+				: ""
+		}
 	</div>
 </article>`;
 }
@@ -79,8 +89,6 @@ export function renderCard(p: CardProduct, index = 0): string {
  * "profit = the whole selling price" would be a lie rather than a missing figure.
  */
 export function fromCatalogRow(row: any): CardProduct {
-	const sell = Number.parseFloat(row?.selling_price);
-	const cost = Number.parseFloat(row?.cost);
 	return {
 		name: String(row?.name ?? "").trim(),
 		category: String(row?.category_name ?? "").trim(),
@@ -88,8 +96,12 @@ export function fromCatalogRow(row: any): CardProduct {
 		score: null,
 		trendPercentage: null,
 		trendUp: true,
-		sellingPrice: Number.isFinite(sell) ? sell : null,
-		profit: Number.isFinite(sell) && Number.isFinite(cost) && cost > 0 ? sell - cost : null,
+		// Deliberately withheld. 89 of the 563 catalog products carry no cost, so the profit
+		// line was present on some cards and absent on others; rather than a grid that looks
+		// half-populated, the plain catalog shows none of the figures and the winners section
+		// above it is where the numbers are made.
+		sellingPrice: null,
+		profit: null,
 	};
 }
 

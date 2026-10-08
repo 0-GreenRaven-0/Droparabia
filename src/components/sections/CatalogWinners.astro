@@ -175,6 +175,7 @@ const chip =
 
 <script>
 	import { renderCard, type CardProduct } from "../../lib/productCard";
+	import { showUntilImagesSettle } from "../../lib/gridLoader";
 
 	const grid = document.getElementById("catalog-winners-grid");
 	const data = document.getElementById("catalog-winners-data");
@@ -221,6 +222,10 @@ const chip =
 				catLabel?.classList.remove("cat-label-swapping");
 			}, SWAP_MS);
 		};
+
+		// Same on arrival as on a category change: the cards are in the HTML, the photos are
+		// not, so the loader covers the grid until they land.
+		showUntilImagesSettle(grid, loading, { reducedMotion: still });
 
 		// The arrow toggle and the chips are one filter: the chips hold the state and the toggle
 		// steps through them. The label is copied from the active chip, so the language toggle

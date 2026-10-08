@@ -670,6 +670,7 @@ export const translations: Record<string, Record<Lang, string>> = {
 		fr: "Ce sont des produits gagnants recommandés par l'IA ; ils sont notés selon Google Trends et la demande sur TikTok, et de nombreux vendeurs font déjà la publicité de chaque produit.",
 	},
 	"catalogpage.filterLabel": { en: "Filter by category", ar: "تصفية حسب الفئة", fr: "Filtrer par catégorie" },
+	"catalogpage.winners.disclaimer": { en: "* Not including ads costs", ar: "* لا يشمل تكاليف الإعلانات", fr: "* Hors coûts publicitaires" },
 	"catalogpage.winners.chipAll": { en: "All winners", ar: "كل المنتجات الرابحة", fr: "Tous les gagnants" },
 	"catalogpage.winners.empty": {
 		en: "No winning products in this category yet.",
