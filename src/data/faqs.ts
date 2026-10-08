@@ -99,4 +99,20 @@ export const faqs: Faq[] = [
 		question: "What makes Droparabia different from traditional dropshipping?",
 		answer: `<p>Traditional dropshipping often means spending hours finding products, researching suppliers, negotiating prices, arranging international shipping, and figuring out how to get products to your customers.</p><p>Droparabia brings those pieces together into one system built specifically for the Lebanese market.</p><p>You get:</p><ul><li>Product research</li><li>Supplier relationships</li><li>Product sourcing</li><li>Inventory management</li><li>Fulfillment</li><li>Delivery</li><li>Payment collection</li><li>Shopify integration</li><li>AI tools</li><li>Product branding</li><li>Educational resources</li><li>Advisor support</li><li>A community of other sellers</li></ul><p>So instead of building the entire infrastructure yourself, you can focus on the part that actually grows your business: selling.</p>`,
 	},
+	{
+		question: "How long does it take to get my money after a successful delivery?",
+		answer: `<p>Once our drivers successfully delivered a product and received the payment, the funds are transferred to Droparabia users within 48 hours, which they can withdraw later on to their Whish accounts</p>`,
+	},
+	{
+		question: "How do I withdraw my earnings out of my Droparabia Wallet?",
+		answer: `<p>Our platform is integrated with Whish money, which allows you to receive and withdraw your funds directly to your Whish money account</p>`,
+	},
+	{
+		question: "How does Droparabia protect my store from high Cash on Delivery (COD) return rates?",
+		answer: `<p>Our drivers will first call the recipients to confirm the intention of receiving the order or to re-schedule the delivery to another time that best suits the customer in case they weren't available to receive it at the moment</p>`,
+	},
+	{
+		question: "What if I'm already an e-com owner with my very own Inventory?",
+		answer: `<p>You can easily import your custom stock or external bulk inventory directly into our central Mount Lebanon hub. We will handle the secure storage, precision picking, and doorstep packaging.</p>`,
+	},
 ];

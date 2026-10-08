@@ -1,103 +1,341 @@
 ---
-// "How Droparabia works" — heading on top, steps as big rounded hexagons using the same
-// SVG hex-path technique as the Hero product cluster / header Tools menu (clip-path can't
-// round a polygon's corners, so it's drawn as an SVG path instead), filled with a premium
-// blue gradient. Number + description sit inside, alternating up/down for a zigzag feel.
+// "How Droparabia works" — one row per step: copy on the left, a visual on the right.
+//
+// Step 1's visual is a poker reveal: three store screens sit face down in a stack, fan out
+// across the panel, then flip up one after another. The rest are still placeholder panels
+// (number, icon, brand gradient) — each lives in its own `.how-visual`, so they can be
+// replaced one at a time without touching the row layout.
+import { ik, ikSrcSet } from "../../lib/imagekit";
+
 const steps = [
-	"Integrate your Shopify store into Droparabia, which allows you to add & sell any product directly on your website",
-	"Droparabia keeps track of stock and inventory for every product so you're not managing any inventory",
-	"Our system will handle packaging and order delivery every time a customer orders from your website",
-	"Droparabia charges per sold item only so you only pay for what you sold rather than purchasing stock",
+	{
+		title: "Connect your store",
+		text: "Integrate your Shopify store into Droparabia, which allows you to add & sell any product directly on your website",
+	},
+	{
+		title: "Pick winning products",
+		text: "Choose from a wide variety of carefully studied & proven winning products in the Lebanese market",
+	},
+	{
+		title: "We pack & deliver",
+		text: "Let our advanced logistics network handle packaging and delivery as soon as someone orders from your website",
+	},
+	{
+		title: "Get paid",
+		text: "Receive your profit through your own wallet upon a successful delivery & withdraw the funds through Whish",
+	},
 ];
 
-const HEX_COLORS = ["#2745ff", "#1c35d3", "#1124a8", "#06147c"];
-function shade(hex: string, t: number): string {
-	const n = parseInt(hex.slice(1), 16);
-	const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-	const mix = (c: number) => Math.round(c + ((t > 0 ? 255 : 0) - c) * Math.abs(t));
-	return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
-}
-const HEX_W = 256;
-const HEX_SIZE = HEX_W / Math.sqrt(3);
-const HEX_H = HEX_SIZE * 2;
-const STROKE_PAD = 4;
-const SVG_W = HEX_W + STROKE_PAD * 2;
-const SVG_H = HEX_H + STROKE_PAD * 2;
+// The three store screens, 506x872 originals. Rendered about 180px wide, so the srcset
+// tops out well short of the original rather than shipping 590 KB per card.
+const CARDS = ["/store-1.png", "/store-2.png", "/store-3.png"];
 
-const CORNER_RADIUS = 16;
-const hexPoints: [number, number][] = [
-	[HEX_W / 2, 0],
-	[HEX_W, HEX_H * 0.25],
-	[HEX_W, HEX_H * 0.75],
-	[HEX_W / 2, HEX_H],
-	[0, HEX_H * 0.75],
-	[0, HEX_H * 0.25],
+// Step 2's scatter of real catalog products. Positions are percentages of the 4:3 box;
+// a tile's height is its width x 4/3 in those units, which is what keeps the bottom row
+// from running off the end. The hero tile is listed last so it stacks on top.
+const PICKS = [
+	{ src: "/rain-cloud-humidifier.jpg", left: 1, top: 9, w: 26, r: -8, d: 0 },
+	{ src: "/galaxy-projector.jpg", left: 71, top: 5, w: 24, r: 6, d: 90 },
+	{ src: "/portable-blender-cup.jpeg", left: 5, top: 56, w: 24, r: 7, d: 180 },
+	{ src: "/gun-massager.jpg", left: 73, top: 50, w: 22, r: -6, d: 270 },
+	{ src: "/hair-curler.png", left: 33, top: 26, w: 34, r: -3, d: 400, hero: true },
 ];
-function roundedHexPath(points: [number, number][], radius: number): string {
-	const n = points.length;
-	const lerp = (a: [number, number], b: [number, number], t: number): [number, number] => [
-		a[0] + (b[0] - a[0]) * t,
-		a[1] + (b[1] - a[1]) * t,
-	];
-	const approach: [number, number][] = [];
-	const leave: [number, number][] = [];
-	for (let i = 0; i < n; i++) {
-		const curr = points[i];
-		const prev = points[(i - 1 + n) % n];
-		const next = points[(i + 1) % n];
-		const distPrev = Math.hypot(curr[0] - prev[0], curr[1] - prev[1]);
-		const distNext = Math.hypot(next[0] - curr[0], next[1] - curr[1]);
-		approach.push(lerp(curr, prev, Math.min(radius / distPrev, 0.5)));
-		leave.push(lerp(curr, next, Math.min(radius / distNext, 0.5)));
-	}
-	let d = `M ${leave[n - 1][0]} ${leave[n - 1][1]} `;
-	for (let i = 0; i < n; i++) {
-		d += `L ${approach[i][0]} ${approach[i][1]} Q ${points[i][0]} ${points[i][1]} ${leave[i][0]} ${leave[i][1]} `;
-	}
-	return d + "Z";
-}
-const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
+
 ---
 
-<section id="how-it-works" class="relative px-6 py-24">
+<section id="how-it-works" class="relative px-6 py-20 sm:py-24 lg:px-16">
 	<div class="mx-auto max-w-6xl">
-		<h2 data-i18n="howitworks.heading" class="text-center font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-5xl md:text-6xl dark:text-white">
+		<h2
+			data-i18n="howitworks.heading"
+			class="text-center font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-5xl md:text-6xl dark:text-white"
+		>
 			How <span class="text-primary">Droparabia</span> works
 		</h2>
 
-		<div class="mt-16 flex flex-wrap items-start justify-center gap-6" style={{ perspective: "1200px" }}>
-			{steps.map((description, i) => (
-				<div
-					class={`animate-hex-float relative ${i % 2 === 1 ? "sm:mt-16" : ""}`}
-					style={{
-						width: `${SVG_W}px`,
-						height: `${SVG_H}px`,
-						animationDelay: `${i * 0.3}s`,
-						animationDuration: `${4 + i * 0.4}s`,
-					}}
-				>
-					<div
-						id={`how-hex-flip-${i}`}
-						class="how-hex-flip absolute inset-0"
-						style={{ backfaceVisibility: "hidden", willChange: "transform" }}
-					>
-						<svg width={SVG_W} height={SVG_H} viewBox={`-${STROKE_PAD} -${STROKE_PAD} ${SVG_W} ${SVG_H}`}>
-							<defs>
-								<linearGradient id={`how-hex-${i}`} x1="10%" y1="0%" x2="90%" y2="100%">
-									<stop offset="0%" stop-color={shade(HEX_COLORS[i], 0.55)} />
-									<stop offset="30%" stop-color={shade(HEX_COLORS[i], 0.15)} />
-									<stop offset="60%" stop-color={HEX_COLORS[i]} />
-									<stop offset="100%" stop-color={shade(HEX_COLORS[i], -0.4)} />
-								</linearGradient>
-							</defs>
-							<path d={hexPath} fill={`url(#how-hex-${i})`} />
-						</svg>
-						<div
-							id={`how-hex-text-${i}`}
-							class="absolute inset-0 flex flex-col items-center justify-center gap-1.5 px-11 text-center opacity-0 transition-opacity duration-150"
+		<div class="mt-14 flex flex-col gap-16 sm:gap-20 lg:mt-20 lg:gap-24">
+			{steps.map((step, i) => (
+				<div class="how-row grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-16">
+					{/* Copy. On a phone it always sits under its visual. */}
+					<div class="order-2 lg:order-1">
+						{/* The number carries the sequence on its own; the word "step" alongside it
+							just repeats what the counting already says. */}
+						<span class="block font-ibrand text-5xl leading-none text-primary sm:text-6xl">0{i + 1}</span>
+						<h3
+							data-i18n={`howitworks.title${i}`}
+							class="mt-4 font-ibrand text-2xl leading-tight text-neutral-900 sm:text-3xl dark:text-white"
 						>
-							<span class="-mt-4 font-ibrand text-5xl text-white">0{i + 1}</span>
-							<p data-i18n={`howitworks.step${i}`} class="font-helvetica text-sm leading-snug font-medium text-white">{description}</p>
+							{step.title}
+						</h3>
+						<p
+							data-i18n={`howitworks.step${i}`}
+							class="mt-4 max-w-xl font-helvetica text-base leading-relaxed text-neutral-600 dark:text-neutral-300"
+						>
+							{step.text}
+						</p>
+					</div>
+
+					<div class="order-1 lg:order-2">
+						{/* No panel behind any of these: each visual sits on the page itself, and
+							the box only reserves the space. */}
+						<div class="how-visual relative flex aspect-4/3 w-full items-center justify-center">
+							{i === 0 ? (
+								<div class="poker" aria-hidden="true">
+									{CARDS.map((src, c) => (
+										<img
+											class="poker-card"
+											style={`--c:${c}`}
+											src={ik(src, "w-360,q-80")}
+											srcset={ikSrcSet(src, [220, 360, 500])}
+											sizes="(min-width: 1024px) 180px, 32vw"
+											width="506"
+											height="872"
+											alt=""
+											loading="lazy"
+											decoding="async"
+										/>
+									))}
+
+									{/* Arrives once the cards have finished spreading: the storefronts are what
+										you build, this is the thing you install to get there. */}
+									<div class="app-card">
+										{/* Names where this listing lives. Without it the card is just a
+											product badge; with it, it reads as the App Store. */}
+										<span class="app-source">
+											<span class="app-logo">
+												<img
+													src={ik("/shopify.png", "w-220,q-90")}
+													width="500"
+													height="156"
+													alt="Shopify"
+													loading="lazy"
+													decoding="async"
+												/>
+											</span>
+											<span class="app-store font-helvetica" data-i18n="howitworks.app.store">
+												App Store
+											</span>
+										</span>
+
+										<span class="app-row">
+										<span class="app-icon">
+											<img
+												src={ik("/Droparabia.webp", "w-96,q-90")}
+												width="48"
+												height="48"
+												alt=""
+												loading="lazy"
+												decoding="async"
+											/>
+										</span>
+
+										<span class="app-body">
+											<span class="app-name font-ibrand">Droparabia</span>
+											<span class="app-meta font-helvetica">
+												5.0
+												<svg width="12" height="12" viewBox="0 0 24 24" fill="#1a7f37" aria-hidden="true">
+													<path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9L12 2.6Z" />
+												</svg>
+												<span class="app-count">(7)</span>
+											</span>
+										</span>
+
+										<span class="app-install font-ibrand" data-i18n="howitworks.app.install">
+											Install
+										</span>
+										</span>
+									</div>
+								</div>
+							) : i === 1 ? (
+								<div class="picks" aria-hidden="true">
+									{PICKS.map((p) => (
+										<span
+											class:list={["pick", p.hero && "pick-hero"]}
+											style={`left:${p.left}%;top:${p.top}%;width:${p.w}%;--r:${p.r}deg;--d:${p.d}ms`}
+										>
+											<img
+												src={ik(p.src, "w-320,h-320,q-80")}
+												srcset={ikSrcSet(p.src, [200, 320, 440])}
+												sizes="(min-width: 1024px) 170px, 30vw"
+												width="320"
+												height="320"
+												alt=""
+												loading="lazy"
+												decoding="async"
+											/>
+											{p.hero && (
+												<>
+													{/* Same blue score pill the catalog cards use, so the two
+														read as the same scoring system. */}
+													<span class="pick-score font-ibrand">94</span>
+													<span class="pick-flag font-ibrand" data-i18n="howitworks.pick.winning">
+														Winning
+													</span>
+												</>
+											)}
+										</span>
+									))}
+
+									<span class="pick-trend font-helvetica">
+										<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+											<path d="M12 4l7 9h-4v7h-6v-7H5l7-9Z" />
+										</svg>
+										38%
+										<span class="pick-trend-label" data-i18n="winners.trend">demand</span>
+									</span>
+								</div>
+							) : i === 2 ? (
+								<div class="route" aria-hidden="true">
+									{/* The viewBox is 4:3, the same as the box it sits in, so these user
+										units line up exactly with the percentage positions below. */}
+									<svg class="route-svg" viewBox="0 0 400 300" fill="none">
+										<path
+											class="route-track"
+											d="M56 186 Q 200 114 344 186"
+											stroke="currentColor"
+											stroke-width="3"
+											stroke-linecap="round"
+											stroke-dasharray="2 10"
+										/>
+										{/* pathLength="1" normalises the dash maths, so the draw-on works
+											without hardcoding the real arc length. */}
+										<path
+											class="route-drawn"
+											d="M56 186 Q 200 114 344 186"
+											stroke="url(#route-grad)"
+											stroke-width="4"
+											stroke-linecap="round"
+											pathLength="1"
+										/>
+										{/* Drawn centred on its own origin so the motion path can anchor to
+											its middle, and inside the same SVG so "along the path" means the
+											same thing for both. */}
+										<g class="route-parcel">
+											<rect x="-15" y="-15" width="30" height="30" rx="9" fill="url(#parcel-grad)" />
+											<g
+												transform="translate(-9,-9) scale(0.75)"
+												fill="none"
+												stroke="#ffffff"
+												stroke-width="2.2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											>
+												<path d="M3 8.5 12 4l9 4.5v7L12 20l-9-4.5v-7Z" />
+												<path d="m3 8.5 9 4.5 9-4.5" />
+												<path d="M12 13v7" />
+											</g>
+										</g>
+
+										<defs>
+											<linearGradient id="route-grad" x1="0" y1="0" x2="1" y2="0">
+												<stop offset="0%" stop-color="#2745ff" />
+												<stop offset="100%" stop-color="#06a2d1" />
+											</linearGradient>
+											<linearGradient id="parcel-grad" x1="0" y1="0" x2="1" y2="1">
+												<stop offset="0%" stop-color="#2745ff" />
+												<stop offset="100%" stop-color="#001eff" />
+											</linearGradient>
+										</defs>
+									</svg>
+
+									<span class="route-node route-from">
+										<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+											<path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9.5Z" />
+											<path d="M8 21v-6h8v6" />
+										</svg>
+									</span>
+									<span class="route-node route-to">
+										<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+											<path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9.5Z" />
+											<path d="M10 21v-5h4v5" />
+										</svg>
+									</span>
+
+									<span class="route-chip route-order font-helvetica">
+										<span class="route-dot" />
+										<span data-i18n="howitworks.route.order">New order</span>
+									</span>
+
+									<span class="route-chip route-done font-helvetica">
+										<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+											<path d="m5 13 4.5 4.5L19 7" />
+										</svg>
+										<span data-i18n="howitworks.route.delivered">Delivered</span>
+									</span>
+								</div>
+							) : (
+								<div class="wallet" aria-hidden="true">
+									<div class="wallet-stack">
+									<div class="wallet-bar">
+										<span class="wallet-balance">
+											<span class="wallet-coin">
+												<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+													<ellipse cx="12" cy="7" rx="7.5" ry="3.2" />
+													<path d="M4.5 7v5c0 1.8 3.4 3.2 7.5 3.2s7.5-1.4 7.5-3.2V7" />
+													<path d="M4.5 12v5c0 1.8 3.4 3.2 7.5 3.2s7.5-1.4 7.5-3.2v-5" />
+												</svg>
+											</span>
+											<span class="wallet-balance-text">
+												<span class="wallet-label font-helvetica" data-i18n="howitworks.wallet.balance">BALANCE</span>
+												{/* Both amounts share one grid cell, so the swap can't change the
+													pill's width and nudge the button beside it. */}
+												<span class="wallet-amount font-ibrand">
+													<span class="wallet-amount-old">$0</span>
+													<span class="wallet-amount-new">$1,240</span>
+												</span>
+											</span>
+										</span>
+
+										<span class="wallet-btn font-ibrand">
+											<span data-i18n="howitworks.wallet.withdraw">Withdraw</span>
+											<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+												<path d="m6 9 6 6 6-6" />
+											</svg>
+										</span>
+									</div>
+
+									{/* Opens from the button's top-right corner, the way the real menu does. */}
+									<div class="wallet-menu">
+										<span class="wallet-item" style="--n:0">
+											<span class="wallet-logo">
+												<img
+													src={ik("/whish.png", "w-240,q-90")}
+													width="479"
+													height="105"
+													alt="Whish Money"
+													loading="lazy"
+													decoding="async"
+												/>
+											</span>
+											<svg class="wallet-check" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+												<path d="m5 13 4.5 4.5L19 7" />
+											</svg>
+										</span>
+
+										<span class="wallet-item is-soon" style="--n:1">
+											<span class="wallet-icon">
+												<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+													<rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+													<path d="M2.5 10h19" />
+												</svg>
+											</span>
+											<span class="wallet-item-name font-helvetica" data-i18n="howitworks.wallet.card">Credit card</span>
+											<span class="wallet-soon font-helvetica" data-i18n="howitworks.wallet.soon">Soon</span>
+										</span>
+
+										<span class="wallet-item is-soon" style="--n:2">
+											<span class="wallet-icon">
+												<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+													<path d="M7 19 9.5 5h5.2a3.6 3.6 0 0 1 0 7.2H10" />
+													<path d="M10 22h3.5a3.6 3.6 0 0 0 0-7.2" />
+												</svg>
+											</span>
+											<span class="wallet-item-name font-helvetica">PayPal</span>
+											<span class="wallet-soon font-helvetica" data-i18n="howitworks.wallet.soon">Soon</span>
+										</span>
+									</div>
+									</div>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
@@ -107,68 +345,826 @@ const hexPath = roundedHexPath(hexPoints, CORNER_RADIUS);
 </section>
 
 <style>
-	@keyframes hex-float {
-		0%,
-		100% {
-			transform: translateY(0);
+	/* Each row settles into place as it's reached, rather than all four arriving at once. */
+	.how-row {
+		opacity: 0;
+		transform: translateY(26px);
+		transition:
+			opacity 700ms ease-out,
+			transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.how-row.is-revealed {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	/* ------------------------------------------------------------- the card spread */
+	.poker {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+	}
+
+	/* The cards are face up throughout; the only move is the stack coming apart. */
+	.poker-card {
+		position: absolute;
+		width: 34%;
+		aspect-ratio: 506 / 872;
+		border-radius: 0.75rem;
+		object-fit: cover;
+		/* The last one dealt sits on top, so the spread overlaps like a held hand. */
+		z-index: calc(var(--c) + 1);
+		box-shadow:
+			0 4px 10px -4px rgba(0, 8, 60, 0.35),
+			0 20px 40px -20px rgba(0, 8, 60, 0.55);
+		/* Squared up in the middle, with a slight scatter so it doesn't read as one card. */
+		transform: translateX(calc((var(--c) - 1) * 4px)) rotate(calc((var(--c) - 1) * 2deg));
+		transition: transform 850ms cubic-bezier(0.22, 1.08, 0.36, 1);
+		transition-delay: calc(var(--c) * 130ms);
+	}
+
+	/* Spread: out to either side, each turned a little further than the last. */
+	.how-row.is-revealed .poker-card {
+		transform: translateX(calc((var(--c) - 1) * 96%)) rotate(calc((var(--c) - 1) * 13deg));
+	}
+	/* The middle one rides higher, the way the centre of a fanned hand does. */
+	.how-row.is-revealed .poker-card:nth-child(2) {
+		transform: translateY(-6%);
+	}
+
+	/* ---------------------------------------------------- step 2: the scatter */
+	.picks {
+		position: absolute;
+		inset: 0;
+	}
+
+	.pick {
+		position: absolute;
+		display: block;
+		aspect-ratio: 1;
+		opacity: 0;
+		transform: translateY(16px) scale(0.88) rotate(var(--r));
+		transition:
+			opacity 500ms ease-out,
+			transform 750ms cubic-bezier(0.22, 1.08, 0.36, 1);
+		transition-delay: var(--d);
+	}
+	.how-row.is-revealed .pick {
+		opacity: 1;
+		transform: translateY(0) scale(1) rotate(var(--r));
+	}
+
+	.pick img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		border-radius: 1rem;
+		object-fit: cover;
+		background: #ffffff;
+		box-shadow:
+			0 3px 8px -3px rgba(0, 8, 60, 0.25),
+			0 18px 36px -18px rgba(0, 8, 60, 0.45);
+	}
+	:global(.dark) .pick img {
+		background: rgb(38 38 38);
+	}
+
+	/* The one being singled out: bigger, squarer, and the only one carrying data. */
+	.pick-hero {
+		z-index: 5;
+	}
+	.pick-hero img {
+		border-radius: 1.25rem;
+		box-shadow:
+			0 6px 14px -6px rgba(0, 8, 60, 0.3),
+			0 28px 55px -22px rgba(0, 8, 60, 0.55);
+	}
+
+	/* Badges arrive after every tile has landed, so the scatter reads as settling first
+	   and being judged second. */
+	.pick-score,
+	.pick-flag,
+	.pick-trend {
+		opacity: 0;
+		transform: scale(0.7);
+		transition:
+			opacity 300ms ease-out,
+			transform 450ms cubic-bezier(0.22, 1.4, 0.36, 1);
+	}
+	.how-row.is-revealed .pick-score,
+	.how-row.is-revealed .pick-flag,
+	.how-row.is-revealed .pick-trend {
+		opacity: 1;
+		transform: scale(1);
+	}
+	.how-row.is-revealed .pick-score {
+		transition-delay: 1150ms;
+	}
+	.how-row.is-revealed .pick-flag {
+		transition-delay: 1300ms;
+	}
+	.how-row.is-revealed .pick-trend {
+		transition-delay: 1450ms;
+	}
+
+	.pick-score {
+		position: absolute;
+		top: -0.5rem;
+		inset-inline-end: -0.5rem;
+		border-radius: 999px;
+		background: #001eff;
+		padding: 0.3rem 0.65rem;
+		font-size: 0.8rem;
+		color: #ffffff;
+		box-shadow: 0 6px 14px -4px rgba(0, 30, 255, 0.55);
+	}
+
+	.pick-flag {
+		position: absolute;
+		bottom: -0.6rem;
+		inset-inline-start: -0.4rem;
+		border-radius: 999px;
+		background: #ffffff;
+		padding: 0.3rem 0.7rem;
+		font-size: 0.7rem;
+		color: #001eff;
+		box-shadow: 0 6px 16px -6px rgba(0, 8, 60, 0.4);
+	}
+	:global(.dark) .pick-flag {
+		background: rgb(23 23 23);
+		color: #5c76ff;
+	}
+
+	.pick-trend {
+		position: absolute;
+		top: 2%;
+		left: 36%;
+		z-index: 6;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25rem;
+		border-radius: 999px;
+		background: #ffffff;
+		padding: 0.3rem 0.65rem;
+		font-size: 0.7rem;
+		font-weight: 600;
+		color: #047857;
+		box-shadow: 0 6px 16px -6px rgba(0, 8, 60, 0.4);
+	}
+	:global(.dark) .pick-trend {
+		background: rgb(23 23 23);
+		color: #34d399;
+	}
+	.pick-trend-label {
+		font-weight: 400;
+		color: rgb(115 115 115);
+	}
+	:global(.dark) .pick-trend-label {
+		color: rgb(163 163 163);
+	}
+
+	/* ------------------------------------------------ step 4: the wallet */
+	.wallet {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	/* Right-aligned, so the menu hangs off the Withdraw button's edge the way a real
+	   dropdown does rather than floating centred under the whole bar. */
+	.wallet-stack {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+	}
+
+	.wallet-bar {
+		display: flex;
+		align-items: stretch;
+		gap: 0.75rem;
+		opacity: 0;
+		transform: translateY(0.75rem);
+		transition:
+			opacity 450ms ease-out,
+			transform 600ms cubic-bezier(0.22, 1.08, 0.36, 1);
+	}
+	.how-row.is-revealed .wallet-bar {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.wallet-balance {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		border-radius: 0.9rem;
+		border: 2px solid #f0b429;
+		background: #ffffff;
+		padding: 0.6rem 1.05rem;
+	}
+	:global(.dark) .wallet-balance {
+		background: rgb(23 23 23);
+	}
+	.wallet-coin {
+		color: #f0b429;
+	}
+	.wallet-balance-text {
+		display: flex;
+		flex-direction: column;
+		line-height: 1.1;
+	}
+	.wallet-label {
+		font-size: 0.7rem;
+		letter-spacing: 0.08em;
+		color: rgb(115 115 115);
+	}
+	:global(.dark) .wallet-label {
+		color: rgb(163 163 163);
+	}
+
+	.wallet-amount {
+		display: inline-grid;
+		font-size: 1.25rem;
+		color: rgb(23 23 23);
+	}
+	:global(.dark) .wallet-amount {
+		color: #ffffff;
+	}
+	.wallet-amount-old,
+	.wallet-amount-new {
+		grid-area: 1 / 1;
+		transition:
+			opacity 300ms ease-out,
+			transform 450ms cubic-bezier(0.22, 1.08, 0.36, 1);
+		transition-delay: 700ms;
+	}
+	/* The balance arriving is the whole point of the step, so it lands before anything
+	   else happens. */
+	.wallet-amount-new {
+		opacity: 0;
+		transform: translateY(0.6em);
+		color: #047857;
+	}
+	:global(.dark) .wallet-amount-new {
+		color: #34d399;
+	}
+	.how-row.is-revealed .wallet-amount-old {
+		opacity: 0;
+		transform: translateY(-0.6em);
+	}
+	.how-row.is-revealed .wallet-amount-new {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.wallet-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.3rem;
+		border-radius: 0.9rem;
+		background: linear-gradient(140deg, #2745ff, #001eff);
+		padding: 0.7rem 1.4rem;
+		font-size: 1.05rem;
+		color: #ffffff;
+		box-shadow: 0 8px 20px -8px rgba(0, 30, 255, 0.7);
+	}
+	/* A press, so the menu below has a reason to open. */
+	.how-row.is-revealed .wallet-btn {
+		animation: wallet-press 320ms ease-out 1250ms;
+	}
+	@keyframes wallet-press {
+		40% {
+			transform: scale(0.94);
 		}
-		50% {
-			transform: translateY(-14px);
+		100% {
+			transform: scale(1);
 		}
 	}
-	.animate-hex-float {
-		animation-name: hex-float;
-		animation-timing-function: ease-in-out;
-		animation-iteration-count: infinite;
+
+	.wallet-menu {
+		margin-top: 0.7rem;
+		display: flex;
+		width: min(100%, 17.5rem);
+		flex-direction: column;
+		gap: 0.1rem;
+		border-radius: 1.1rem;
+		border: 1px solid rgba(0, 0, 0, 0.07);
+		background: #ffffff;
+		padding: 0.55rem;
+		box-shadow:
+			0 6px 16px -6px rgba(0, 8, 60, 0.2),
+			0 26px 50px -26px rgba(0, 8, 60, 0.5);
+		opacity: 0;
+		transform: scale(0.9) translateY(-0.4rem);
+		transform-origin: top right;
+		transition:
+			opacity 300ms ease-out,
+			transform 450ms cubic-bezier(0.22, 1.25, 0.36, 1);
+		transition-delay: 1500ms;
+	}
+	:global(.dark) .wallet-menu {
+		border-color: rgba(255, 255, 255, 0.12);
+		background: rgb(23 23 23);
+	}
+	.how-row.is-revealed .wallet-menu {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+
+	.wallet-item {
+		display: flex;
+		align-items: center;
+		gap: 0.7rem;
+		border-radius: 0.75rem;
+		padding: 0.65rem 0.7rem;
+		font-size: 0.95rem;
+		color: rgb(38 38 38);
+		opacity: 0;
+		transform: translateX(-0.4rem);
+		transition:
+			opacity 260ms ease-out,
+			transform 360ms ease-out;
+		transition-delay: calc(1650ms + var(--n) * 110ms);
+	}
+	:global(.dark) .wallet-item {
+		color: rgb(229 229 229);
+	}
+	.how-row.is-revealed .wallet-item {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	/* The one that works is the only one at full strength. */
+	.wallet-item.is-soon {
+		color: rgb(163 163 163);
+	}
+	.wallet-item.is-soon .wallet-icon {
+		opacity: 0.45;
+	}
+
+	/* The Whish logo is the row: it carries the name, so there's no label beside it.
+	   Its own light backing keeps the red mark and grey type legible in dark mode. */
+	.wallet-logo {
+		display: inline-flex;
+		border-radius: 0.3rem;
+		background: #ffffff;
+		padding: 0.15rem 0.3rem;
+	}
+	.wallet-logo img {
+		height: 1.3rem;
+		width: auto;
+	}
+	.wallet-check {
+		margin-inline-start: auto;
+		color: #001eff;
+	}
+	:global(.dark) .wallet-check {
+		color: #5c76ff;
+	}
+
+	.wallet-icon {
+		display: inline-flex;
+		color: rgb(115 115 115);
+	}
+	.wallet-item-name {
+		min-width: 0;
+	}
+	.wallet-soon {
+		margin-inline-start: auto;
+		border-radius: 999px;
+		background: rgba(0, 0, 0, 0.08);
+		padding: 0.15rem 0.6rem;
+		font-size: 0.72rem;
+		color: rgb(115 115 115);
+	}
+	:global(.dark) .wallet-soon {
+		background: rgba(255, 255, 255, 0.12);
+		color: rgb(163 163 163);
+	}
+
+	/* ------------------------------------------- step 3: order to doorstep */
+	.route {
+		position: absolute;
+		inset: 0;
+	}
+	.route-svg {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		color: rgba(0, 12, 102, 0.18);
+	}
+	:global(.dark) .route-svg {
+		color: rgba(255, 255, 255, 0.22);
+	}
+
+	/* Drawn in as the parcel travels: dasharray 1 with pathLength="1" means the offset is
+	   just "how much of the route is left". */
+	/* Linear, like the parcel. An eased draw covers the middle of the route faster than
+	   anything travelling it at a steady rate, which is what made the line outrun the box. */
+	.route-drawn {
+		stroke-dasharray: 1;
+		stroke-dashoffset: 1;
+		transition: stroke-dashoffset 1800ms linear;
+		transition-delay: 600ms;
+	}
+	.how-row.is-revealed .route-drawn {
+		stroke-dashoffset: 0;
+	}
+
+	.route-node {
+		position: absolute;
+		top: 62%;
+		display: flex;
+		height: 2.9rem;
+		width: 2.9rem;
+		align-items: center;
+		justify-content: center;
+		border-radius: 999px;
+		border: 1px solid rgba(0, 0, 0, 0.07);
+		background: #ffffff;
+		color: #001eff;
+		box-shadow:
+			0 4px 10px -4px rgba(0, 8, 60, 0.25),
+			0 16px 32px -16px rgba(0, 8, 60, 0.4);
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.8);
+		transition:
+			opacity 400ms ease-out,
+			transform 550ms cubic-bezier(0.22, 1.3, 0.36, 1);
+	}
+	:global(.dark) .route-node {
+		border-color: rgba(255, 255, 255, 0.12);
+		background: rgb(23 23 23);
+		color: #5c76ff;
+	}
+	.route-from {
+		left: 14%;
+	}
+	.route-to {
+		left: 86%;
+	}
+	.how-row.is-revealed .route-node {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
+	.how-row.is-revealed .route-to {
+		transition-delay: 180ms;
+	}
+
+	/* The parcel is driven by the identical path, and offset-distance measures along the
+	   curve exactly as stroke-dashoffset does — so the box sits on the tip of the line the
+	   whole way instead of drifting behind it. Previously it was five hand-placed keyframes
+	   spaced evenly in time, which is not the same as evenly along a curve, and the easing
+	   was re-applied between every pair, so it surged four times on the way across. */
+	.route-parcel {
+		offset-path: path("M56 186 Q 200 114 344 186");
+		offset-distance: 0%;
+		/* Stays upright rather than banking into the curve. */
+		offset-rotate: 0deg;
+		transform-box: fill-box;
+		transform-origin: 50% 50%;
+		opacity: 0;
+	}
+	.how-row.is-revealed .route-parcel {
+		animation: route-travel 1800ms linear 600ms forwards;
+	}
+	@keyframes route-travel {
+		0% {
+			offset-distance: 0%;
+			opacity: 0;
+		}
+		8% {
+			opacity: 1;
+		}
+		94% {
+			opacity: 1;
+		}
+		100% {
+			offset-distance: 100%;
+			opacity: 0;
+		}
+	}
+
+	.route-chip {
+		position: absolute;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		border-radius: 999px;
+		background: #ffffff;
+		padding: 0.35rem 0.7rem;
+		font-size: 0.72rem;
+		font-weight: 600;
+		white-space: nowrap;
+		box-shadow: 0 6px 16px -6px rgba(0, 8, 60, 0.4);
+		opacity: 0;
+		transform: translate(-50%, 0.5rem);
+		transition:
+			opacity 350ms ease-out,
+			transform 500ms cubic-bezier(0.22, 1.3, 0.36, 1);
+	}
+	:global(.dark) .route-chip {
+		background: rgb(23 23 23);
+	}
+	.how-row.is-revealed .route-chip {
+		opacity: 1;
+		transform: translate(-50%, 0);
+	}
+
+	.route-order {
+		left: 14%;
+		top: 40%;
+		color: rgb(64 64 64);
+	}
+	:global(.dark) .route-order {
+		color: rgb(212 212 212);
+	}
+	.how-row.is-revealed .route-order {
+		transition-delay: 300ms;
+	}
+	/* The live dot is the only thing here that keeps moving, and it's the one thing that
+	   should: an order waiting to be picked up.
+
+	   The ring is a pseudo-element animating transform and opacity, not the dot animating
+	   its own box-shadow. A spreading shadow cannot be composited, so the old version
+	   repainted this corner of the page every frame, forever, which is enough to make a
+	   phone feel sluggish while the section is anywhere in the document. */
+	.route-dot {
+		position: relative;
+		height: 0.45rem;
+		width: 0.45rem;
+		border-radius: 999px;
+		background: #001eff;
+	}
+	.route-dot::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		background: #001eff;
+		animation: route-ping 2s ease-out infinite;
+	}
+	@keyframes route-ping {
+		0% {
+			opacity: 0.5;
+			transform: scale(1);
+		}
+		70%,
+		100% {
+			opacity: 0;
+			transform: scale(3.2);
+		}
+	}
+
+	.route-done {
+		left: 86%;
+		top: 40%;
+		color: #047857;
+	}
+	:global(.dark) .route-done {
+		color: #34d399;
+	}
+	/* 600ms delay + 1800ms travel. */
+	.how-row.is-revealed .route-done {
+		transition-delay: 2400ms;
+	}
+
+	/* ------------------------------------------------- the Shopify listing card */
+	.app-card {
+		position: absolute;
+		bottom: 2%;
+		left: 50%;
+		z-index: 10;
+		display: flex;
+		width: min(94%, 25rem);
+		flex-direction: column;
+		gap: 0.6rem;
+		border-radius: 1rem;
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		background: #ffffff;
+		padding: 0.75rem 0.85rem;
+		box-shadow:
+			0 4px 12px -4px rgba(0, 8, 60, 0.18),
+			0 24px 50px -24px rgba(0, 8, 60, 0.45);
+		/* Starts low and translucent; the -50% keeps it centred through the move. */
+		transform: translate(-50%, 1.25rem);
+		opacity: 0;
+		transition:
+			transform 650ms cubic-bezier(0.22, 1.08, 0.36, 1),
+			opacity 500ms ease-out;
+		/* Waits out the spread: last card leaves at 260ms and travels 850ms. */
+		transition-delay: 1150ms;
+	}
+	:global(.dark) .app-card {
+		border-color: rgba(255, 255, 255, 0.12);
+		background: rgb(23 23 23);
+	}
+	.how-row.is-revealed .app-card {
+		transform: translate(-50%, 0);
+		opacity: 1;
+	}
+
+	/* Header: the Shopify wordmark, then where in Shopify this is. */
+	.app-source {
+		display: flex;
+		align-items: center;
+		gap: 0.45rem;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+		padding-bottom: 0.55rem;
+	}
+	:global(.dark) .app-source {
+		border-bottom-color: rgba(255, 255, 255, 0.1);
+	}
+	/* The wordmark is black type beside a green mark, so it can't be inverted for dark
+	   mode without wrecking the green. It keeps its own light backing instead, which is
+	   invisible against the white card in light mode. */
+	.app-logo {
+		display: inline-flex;
+		border-radius: 0.25rem;
+		background: #ffffff;
+		padding: 0.1rem 0.3rem;
+	}
+	.app-logo img {
+		height: 0.9rem;
+		width: auto;
+	}
+	.app-store {
+		font-size: 0.7rem;
+		color: rgb(115 115 115);
+	}
+	:global(.dark) .app-store {
+		color: rgb(163 163 163);
+	}
+
+	.app-row {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	.app-icon {
+		display: flex;
+		height: 2.75rem;
+		width: 2.75rem;
+		flex-shrink: 0;
+		align-items: center;
+		justify-content: center;
+		border-radius: 0.6rem;
+		background: #0b1c92;
+	}
+	.app-icon img {
+		height: 1.6rem;
+		width: 1.6rem;
+	}
+
+	.app-body {
+		display: flex;
+		min-width: 0;
+		flex-direction: column;
+		gap: 0.1rem;
+	}
+	.app-name {
+		font-size: 0.95rem;
+		line-height: 1.2;
+		color: rgb(23 23 23);
+	}
+	:global(.dark) .app-name {
+		color: #ffffff;
+	}
+
+	.app-meta {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		font-size: 0.75rem;
+		white-space: nowrap;
+		color: rgb(82 82 82);
+	}
+	:global(.dark) .app-meta {
+		color: rgb(190 190 190);
+	}
+	.app-count {
+		color: rgb(130 130 130);
+	}
+
+	/* Shopify's own install button is a black pill; it inverts in dark mode so it keeps
+	   standing out against the card rather than disappearing into it. */
+	.app-install {
+		margin-inline-start: auto;
+		flex-shrink: 0;
+		white-space: nowrap;
+		border-radius: 999px;
+		background: #121212;
+		padding: 0.5rem 1.1rem;
+		font-size: 0.8rem;
+		color: #ffffff;
+	}
+	:global(.dark) .app-install {
+		background: #ffffff;
+		color: #121212;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.how-row {
+			opacity: 1;
+			transform: none;
+			transition: none;
+		}
+		/* Already spread, just without the movement. */
+		.poker-card {
+			transition: none;
+			transform: translateX(calc((var(--c) - 1) * 96%)) rotate(calc((var(--c) - 1) * 13deg));
+		}
+		.app-card {
+			transition: none;
+			transform: translate(-50%, 0);
+			opacity: 1;
+		}
+		.pick,
+		.pick-score,
+		.pick-flag,
+		.pick-trend {
+			transition: none;
+			opacity: 1;
+		}
+		.pick {
+			transform: rotate(var(--r));
+		}
+		.pick-score,
+		.pick-flag,
+		.pick-trend {
+			transform: scale(1);
+		}
+		/* The route sits completed, with the parcel already arrived. */
+		.route-node,
+		.route-chip,
+		.route-drawn,
+		.route-dot {
+			transition: none;
+			animation: none;
+			opacity: 1;
+		}
+		.route-node {
+			transform: translate(-50%, -50%) scale(1);
+		}
+		.route-chip {
+			transform: translate(-50%, 0);
+		}
+		.route-drawn {
+			stroke-dashoffset: 0;
+		}
+		.route-parcel {
+			display: none;
+		}
+		.route-dot::after {
+			animation: none;
+			opacity: 0;
+		}
+		.wallet-bar,
+		.wallet-menu,
+		.wallet-item,
+		.wallet-amount-old,
+		.wallet-amount-new {
+			transition: none;
+		}
+		.wallet-btn {
+			animation: none;
+		}
+		.wallet-bar,
+		.wallet-menu,
+		.wallet-item {
+			opacity: 1;
+			transform: none;
+		}
+		/* No swap to watch, so the balance is simply the figure it ends on. */
+		.wallet-amount-old {
+			display: none;
+		}
+		.wallet-amount-new {
+			opacity: 1;
+			transform: none;
+		}
 	}
 </style>
 
-<script is:inline define:vars={{ stepCount: steps.length }}>
-	// Empty gradient hexagons flip like coins to reveal their number + text once the
-	// section is scrolled into view — same two-phase WAAPI flip as the Hero product
-	// cluster (content swap driven by the first half's own .finished promise, not a
-	// setTimeout race, and the stale forwards-filled first half is explicitly cancelled
-	// so it can't resurface once the second half finishes).
-	const section = document.getElementById("how-it-works");
-	if (section) {
-		const SPIN_MS = 650;
-		const STAGGER_MS = 120;
-
-		function playFlips() {
-			for (let i = 0; i < stepCount; i++) {
-				const hex = document.getElementById(`how-hex-flip-${i}`);
-				const text = document.getElementById(`how-hex-text-${i}`);
-				if (!hex || !text) continue;
-
-				const delay = i * STAGGER_MS;
-				const firstHalf = hex.animate(
-					[{ transform: "rotateY(0deg)" }, { transform: "rotateY(90deg)" }],
-					{ duration: SPIN_MS / 2, delay, easing: "ease-in", fill: "forwards" },
-				);
-				firstHalf.finished
-					.then(() => {
-						firstHalf.cancel();
-						text.classList.remove("opacity-0");
-						hex.animate([{ transform: "rotateY(-90deg)" }, { transform: "rotateY(0deg)" }], {
-							duration: SPIN_MS / 2,
-							easing: "ease-out",
-						});
-					})
-					.catch(() => {});
-			}
-		}
-
+<script>
+	const rows = document.querySelectorAll<HTMLElement>(".how-row");
+	if (rows.length) {
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
-						playFlips();
-						observer.disconnect();
+						entry.target.classList.add("is-revealed");
+						observer.unobserve(entry.target);
 					}
 				});
 			},
-			{ threshold: 0.3 },
+			{ threshold: 0.25 },
 		);
-		observer.observe(section);
+		rows.forEach((row) => observer.observe(row));
 	}
 </script>

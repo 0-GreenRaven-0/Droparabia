@@ -8,6 +8,7 @@
 // wrong products.
 import { getWinners } from "../../lib/winners";
 import { renderCard, type CardProduct } from "../../lib/productCard";
+import HexLoader from "../HexLoader.astro";
 
 const BATCH = 12;
 const winners = await getWinners(Number.MAX_SAFE_INTEGER);
@@ -49,13 +50,13 @@ const chip =
 					data-i18n="catalogpage.winners.heading"
 					class="font-ibrand text-2xl leading-[1.15] text-neutral-900 sm:text-3xl md:text-4xl dark:text-white"
 				>
-					Winning <span class="text-primary">right now</span>
+					AI <span class="text-primary">Winning products</span>
 				</h2>
 				<p
 					data-i18n="catalogpage.winners.sub"
 					class="mt-3 max-w-3xl font-helvetica text-sm text-neutral-600 sm:text-base dark:text-neutral-400"
 				>
-					Scored on Google Trends, TikTok demand and how many sellers are already advertising each product.
+					These are winners recommended by AI, they scored on Google Trends, TikTok demand and many sellers are already advertising each product.
 				</p>
 
 				{/* Same filter twice: an arrow toggle on a phone, chips once there's room to wrap. */}
@@ -110,11 +111,22 @@ const chip =
 					</div>
 				</div>
 
-				<div
-					id="catalog-winners-grid"
-					class="cards-grid mt-8 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4 lg:gap-6"
-					set:html={initial}
-				/>
+				<div class="relative mt-8">
+					<div
+						id="catalog-winners-grid"
+						class="cards-grid grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4 lg:gap-6"
+						set:html={initial}
+					/>
+
+					{/* Over the faded grid, so the section keeps its height while it changes. */}
+					<div
+						id="catalog-winners-loading"
+						hidden
+						class="pointer-events-none absolute inset-0 flex items-start justify-center pt-10 sm:pt-16"
+					>
+						<HexLoader size={72} label="Loading products" />
+					</div>
+				</div>
 
 				<p
 					id="catalog-winners-empty"
@@ -178,7 +190,10 @@ const chip =
 
 		const visible = () => (category ? all.filter((p) => p.category === category) : all);
 
-		const SWAP_MS = 140;
+		// These winners are already in the page, so this is a transition rather than a wait —
+		// but it's the same change of content the catalog below makes, and it gets the same
+		// loader so the two sections don't behave differently for the same gesture.
+		const SWAP_MS = 700;
 		const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 		// `grown` appends only the cards past the ones already on screen, so "Show more" deals
@@ -193,12 +208,15 @@ const chip =
 		};
 
 		// Fade the old set out, swap underneath, let the cards deal themselves back in.
+		const loading = document.getElementById("catalog-winners-loading");
 		const swap = (fn: () => void) => {
 			if (still) return fn();
 			grid.classList.add("cards-swapping");
 			catLabel?.classList.add("cat-label-swapping");
+			if (loading) loading.hidden = false;
 			window.setTimeout(() => {
 				fn();
+				if (loading) loading.hidden = true;
 				grid.classList.remove("cards-swapping");
 				catLabel?.classList.remove("cat-label-swapping");
 			}, SWAP_MS);

@@ -39,8 +39,8 @@ interface Pricing {
 // What the Droparabia price covers. The same for every product, so it's written once rather
 // than copied per product where the four copies could drift apart.
 const DROPARABIA_DETAIL: Row[] = [
-	{ label: "MOQ", value: "No minimum order quantity, you pay the cost of each item sold and keep the profit" },
-	{ label: "Price covers", value: "Sourcing, international shipping, warehousing, fulfillment and handling" },
+	{ label: "MOQ", value: "No minimum order quantity. You pay only for items you have already sold, so none of your cash is locked up in stock that might not move." },
+	{ label: "Included", value: "One price covering sourcing, customs clearance, international shipping, warehousing and fulfillment. No dead stock, no warehouse rent, no clearance delays." },
 	{ label: "Shipping", value: "Air freight to Lebanon averages around $15/kg, and varies by shipment" },
 	{ label: "Operations", value: "Around 15–20% covers fulfillment, warehousing and related running costs" },
 ];
@@ -635,7 +635,7 @@ const ROW_KEYS: Record<string, string> = {
 	// working's line are different strings and translate differently.
 	"Product cost": "catalog.row.productCostCalc",
 	"Shipping cost": "catalog.row.shippingCost",
-	"Price covers": "catalog.row.priceCovers",
+	"Included": "catalog.row.priceCovers",
 	Shipping: "catalog.row.shipping",
 	Operations: "catalog.row.operations",
 };
@@ -662,8 +662,8 @@ const NAME_KEYS: Record<string, string> = {
 const VALUE_KEYS: Record<string, string> = {
 	None: "catalog.value.none",
 	"150ml/bottle (≈ 0.150 Kg)": "catalog.value.shoeWeight",
-	"No minimum order quantity, you pay the cost of each item sold and keep the profit": "catalog.value.noMoq",
-	"Sourcing, international shipping, warehousing, fulfillment and handling": "catalog.value.covers",
+	"No minimum order quantity. You pay only for items you have already sold, so none of your cash is locked up in stock that might not move.": "catalog.value.noMoq",
+	"One price covering sourcing, customs clearance, international shipping, warehousing and fulfillment. No dead stock, no warehouse rent, no clearance delays.": "catalog.value.covers",
 	"Air freight to Lebanon averages around $15/kg, and varies by shipment": "catalog.value.airFreight",
 	"Around 15–20% covers fulfillment, warehousing and related running costs": "catalog.value.operations",
 };
@@ -915,7 +915,7 @@ const frameGradient = (a: { light: string; color: string; dark: string }) =>
 													<path d="M12 8h.01" />
 												</svg>
 												<span data-i18n={side === "alibaba" ? "catalog.info.button" : "catalog.info.whyHigher"}>
-													{side === "alibaba" ? "How is this calculated?" : "Why the cost on Droparabia is higher?"}
+													{side === "alibaba" ? "How is this calculated?" : "What this price protects you from"}
 												</span>
 											</button>
 

@@ -38,7 +38,7 @@ export const tools: Tool[] = [
 		description: {
 			heading: "Discover products that actually sell",
 			paragraph:
-				"Instead of searching for hours on Ali-baba or Ali-express to find a product to sell, Droparabia sources a huge variety of products for you that are in great demand and actually sell!",
+				"Instead of searching for hours to find a product to sell, Droparabia sources a huge variety of products for you that are in great demand and actually sell",
 		},
 		features: [
 			{

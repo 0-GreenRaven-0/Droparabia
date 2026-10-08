@@ -25,9 +25,9 @@ export const translations: Record<string, Record<Lang, string>> = {
 	"nav.login": { en: "Login", ar: "تسجيل الدخول", fr: "Connexion" },
 
 	"hero.headline": {
-		en: `<span class="block text-2xl leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">Everything you need to build a</span><span class="hero-gradient-text block text-3xl leading-[1.3] sm:text-4xl md:text-[3.3rem] md:whitespace-nowrap rtl:-mt-[0.38em] rtl:leading-[1.85]">successful &amp; high-earning</span><span class="block text-2xl leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">e-commerce store in Lebanon</span>`,
-		ar: `<span class="block text-2xl leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">كل ما تحتاجه لمتجر إلكتروني</span><span class="hero-gradient-text block text-3xl leading-[1.3] sm:text-4xl md:text-[3.3rem] md:whitespace-nowrap rtl:-mt-[0.38em] rtl:leading-[1.85]">ناجح وعالي الربح</span><span class="block text-2xl leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">في لبنان</span>`,
-		fr: `<span class="block text-2xl leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">Tout ce qu'il vous faut pour une boutique e-commerce</span><span class="hero-gradient-text block text-3xl leading-[1.3] sm:text-4xl md:text-[3.3rem] md:whitespace-nowrap rtl:-mt-[0.38em] rtl:leading-[1.85]">performante et très rentable</span><span class="block text-2xl leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">au Liban</span>`,
+		en: `<span class="block text-2xl leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">Everything you need to build a</span><span class="hero-gradient-text block text-3xl leading-[1.3] sm:text-4xl md:text-[3.3rem] md:whitespace-nowrap rtl:-mt-[0.38em] rtl:leading-[1.85]">successful &amp; high-earning</span><span class="block text-2xl leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">dropshipping store in Lebanon</span>`,
+		ar: `<span class="block text-2xl leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">كل ما تحتاجه لمتجر دروبشيبينغ</span><span class="hero-gradient-text block text-3xl leading-[1.3] sm:text-4xl md:text-[3.3rem] md:whitespace-nowrap rtl:-mt-[0.38em] rtl:leading-[1.85]">ناجح وعالي الربح</span><span class="block text-2xl leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">في لبنان</span>`,
+		fr: `<span class="block text-2xl leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">Tout ce qu'il vous faut pour une boutique de dropshipping</span><span class="hero-gradient-text block text-3xl leading-[1.3] sm:text-4xl md:text-[3.3rem] md:whitespace-nowrap rtl:-mt-[0.38em] rtl:leading-[1.85]">performante et très rentable</span><span class="block text-2xl leading-[1.3] sm:text-3xl md:text-[2.5rem] rtl:leading-[1.85]">au Liban</span>`,
 	},
 	"hero.subheadline": {
 		en: `Droparabia allows you to start dropshipping in Lebanon by helping you find winning products and deliver them to your customer's doorstep without spending a single dollar on inventory`,
@@ -37,6 +37,7 @@ export const translations: Record<string, Record<Lang, string>> = {
 
 	"cta.getStarted": { en: "Get Started", ar: "ابدأ الآن", fr: "Commencer" },
 	"cta.talkToUs": { en: "Talk to Us", ar: "تواصل معنا", fr: "Contactez-nous" },
+	"cta.seeCatalog": { en: "See our Catalog", ar: "تصفّح الكتالوج", fr: "Voir notre catalogue" },
 
 	"footer.cta.heading": {
 		en: "Kickstart your high-earning online store today!",
@@ -68,7 +69,8 @@ export const translations: Record<string, Record<Lang, string>> = {
 		fr: "de chiffre d'affaires mensuel moyen par boutique",
 	},
 	"social.stat2": { en: "sellers and brand owners", ar: "بائع وصاحب علامة تجارية", fr: "vendeurs et propriétaires de marques" },
-	"social.stat3": { en: "Official Shopify Partner", ar: "شريك رسمي لدى Shopify", fr: "Partenaire officiel Shopify" },
+	"social.stat3": { en: "delivery success rate in COD", ar: "نسبة نجاح التوصيل في الدفع عند الاستلام", fr: "taux de livraison réussie en paiement à la livraison" },
+	"social.stat4": { en: "Official Shopify Partner", ar: "شريك رسمي لدى Shopify", fr: "Partenaire officiel Shopify" },
 
 	// The accent moved from the subheading to the heading with this rewrite — the subheading
 	// is now a plain sentence, and the section would otherwise be the only one on the page
@@ -89,25 +91,40 @@ export const translations: Record<string, Record<Lang, string>> = {
 		ar: 'كيف يعمل <span class="text-primary">دروب أرابيا</span>',
 		fr: `Comment fonctionne <span class="text-primary">Droparabia</span>`,
 	},
+	// Short labels for the card stack; the full step text sits in the list beside it.
+	"howitworks.title0": { en: "Connect your store", ar: "اربط متجرك", fr: "Connectez votre boutique" },
+	"howitworks.title1": { en: "Pick winning products", ar: "اختر المنتجات الرابحة", fr: "Choisissez les produits gagnants" },
+	"howitworks.title2": { en: "We pack & deliver", ar: "نحن نغلّف ونوصّل", fr: "Nous emballons et livrons" },
+	"howitworks.title3": { en: "Get paid", ar: "استلم أرباحك", fr: "Encaissez vos gains" },
+	"howitworks.pick.winning": { en: "Winning", ar: "رابح", fr: "Gagnant" },
+	"howitworks.wallet.balance": { en: "BALANCE", ar: "الرصيد", fr: "SOLDE" },
+	"howitworks.wallet.withdraw": { en: "Withdraw", ar: "سحب", fr: "Retirer" },
+	"howitworks.wallet.card": { en: "Credit card", ar: "بطاقة ائتمان", fr: "Carte bancaire" },
+	"howitworks.wallet.soon": { en: "Soon", ar: "قريبًا", fr: "Bientôt" },
+	"howitworks.route.order": { en: "New order", ar: "طلب جديد", fr: "Nouvelle commande" },
+	"howitworks.route.delivered": { en: "Delivered", ar: "تم التوصيل", fr: "Livré" },
+	// The Shopify listing card at the end of step 1's animation.
+	"howitworks.app.store": { en: "App Store", ar: "متجر التطبيقات", fr: "App Store" },
+	"howitworks.app.install": { en: "Install", ar: "تثبيت", fr: "Installer" },
 	"howitworks.step0": {
 		en: "Integrate your Shopify store into Droparabia, which allows you to add & sell any product directly on your website",
-		ar: "اربط متجر Shopify الخاص بك بدروب أرابيا، ليتيح لك إضافة وبيع أي منتج مباشرة على موقعك",
-		fr: "Connectez votre boutique Shopify à Droparabia pour ajouter et vendre n'importe quel produit directement sur votre site",
+		ar: "ادمج متجر Shopify الخاص بك مع دروب أرابيا، ما يتيح لك إضافة وبيع أي منتج مباشرة على موقعك",
+		fr: "Intégrez votre boutique Shopify à Droparabia, ce qui vous permet d'ajouter et de vendre n'importe quel produit directement sur votre site",
 	},
 	"howitworks.step1": {
-		en: "Droparabia keeps track of stock and inventory for every product so you're not managing any inventory",
-		ar: "يتابع دروب أرابيا المخزون لكل منتج بحيث لا تُدير أي مخزون بنفسك",
-		fr: "Droparabia suit le stock et l'inventaire de chaque produit : vous n'avez aucun stock à gérer",
+		en: "Choose from a wide variety of carefully studied & proven winning products in the Lebanese market",
+		ar: "اختر من تشكيلة واسعة من المنتجات المدروسة بعناية والمثبت نجاحها في السوق اللبناني",
+		fr: "Choisissez parmi un large éventail de produits soigneusement étudiés et éprouvés sur le marché libanais",
 	},
 	"howitworks.step2": {
-		en: "Our system will handle packaging and order delivery every time a customer orders from your website",
-		ar: "يتولى نظامنا التغليف وتوصيل الطلب في كل مرة يطلب فيها عميل من موقعك",
-		fr: "Notre système s'occupe de l'emballage et de la livraison à chaque commande passée sur votre site",
+		en: "Let our advanced logistics network handle packaging and delivery as soon as someone orders from your website",
+		ar: "دع شبكتنا اللوجستية المتقدمة تتولى التغليف والتوصيل فور أن يطلب أحدهم من موقعك",
+		fr: "Laissez notre réseau logistique avancé gérer l'emballage et la livraison dès qu'une commande arrive sur votre site",
 	},
 	"howitworks.step3": {
-		en: "Droparabia charges per sold item only so you only pay for what you sold rather than purchasing stock",
-		ar: "يتقاضى دروب أرابيا رسومًا على كل قطعة تُباع فقط، فأنت تدفع مقابل ما بعته بدلًا من شراء مخزون",
-		fr: "Droparabia ne facture que les articles vendus : vous payez ce que vous avez vendu au lieu d'acheter du stock",
+		en: "Receive your profit through your own wallet upon a successful delivery & withdraw the funds through Whish",
+		ar: "استلم أرباحك عبر محفظتك الخاصة عند نجاح التوصيل، واسحب الأموال عبر Whish",
+		fr: "Recevez vos bénéfices sur votre propre portefeuille après chaque livraison réussie et retirez vos fonds via Whish",
 	},
 
 	"why.heading": {
@@ -264,9 +281,9 @@ export const translations: Record<string, Record<Lang, string>> = {
 
 	// --- Per-tool content (src/data/tools.ts), keyed by slug ---
 	"tool.find-products.paragraph": {
-		en: "Instead of searching for hours on Ali-baba or Ali-express to find a product to sell, Droparabia sources a huge variety of products for you that are in great demand and actually sell!",
-		ar: "بدلاً من قضاء ساعات في البحث على علي بابا أو علي إكسبرس عن منتج تبيعه، يوفر لك دروب أرابيا مجموعة ضخمة من المنتجات ذات الطلب العالي والتي تُباع فعليًا!",
-		fr: "Au lieu de passer des heures sur Alibaba ou AliExpress à chercher un produit à vendre, Droparabia vous propose une immense variété de produits très demandés qui se vendent vraiment !",
+		en: "Instead of searching for hours to find a product to sell, Droparabia sources a huge variety of products for you that are in great demand and actually sell",
+		ar: "بدلاً من قضاء ساعات في البحث عن منتج تبيعه، يوفر لك دروب أرابيا مجموعة ضخمة من المنتجات ذات الطلب العالي والتي تُباع فعليًا",
+		fr: "Au lieu de passer des heures à chercher un produit à vendre, Droparabia vous propose une immense variété de produits très demandés qui se vendent vraiment",
 	},
 	"tool.find-products.perksIntro": {
 		en: "Find Products is built to get you to a sellable product fast, without the guesswork.",
@@ -633,24 +650,24 @@ export const translations: Record<string, Record<Lang, string>> = {
 	"nav.catalog": { en: "Catalog", ar: "الكتالوج", fr: "Catalogue" },
 	"page.catalog": { en: "Catalog", ar: "الكتالوج", fr: "Catalogue" },
 	"catalogpage.heading": {
-		en: `Carefully picked <span class="text-primary">catalog</span>`,
-		ar: `<span class="text-primary">كتالوج</span> منتقى بعناية`,
-		fr: `Un <span class="text-primary">catalogue</span> trié sur le volet`,
+		en: `Only the <span class="text-primary">best</span> for you`,
+		ar: `<span class="text-primary">الأفضل</span> فقط من أجلك`,
+		fr: `Uniquement le <span class="text-primary">meilleur</span> pour vous`,
 	},
 	"catalogpage.subheading": {
-		en: "Every product here is already sourced, stocked and ready to deliver across Lebanon. You add it to your store, we handle the rest.",
-		ar: "كل منتج هنا تم توريده وتخزينه وجاهز للتوصيل في جميع أنحاء لبنان. أنت تضيفه إلى متجرك، ونحن نتولى الباقي.",
-		fr: "Chaque produit ici est déjà sourcé, stocké et prêt à être livré partout au Liban. Vous l'ajoutez à votre boutique, nous nous occupons du reste.",
+		en: "Not only we save you hours of searching for a product to sell, but we made it our mission to make sure you're selling only winners, not trivial losers",
+		ar: "نحن لا نوفّر عليك ساعات البحث عن منتج تبيعه فحسب، بل جعلنا مهمتنا أن نضمن أنك تبيع المنتجات الرابحة فقط، لا المنتجات الفاشلة",
+		fr: "Non seulement nous vous épargnons des heures de recherche d'un produit à vendre, mais nous avons fait de notre mission de garantir que vous ne vendez que des gagnants, et jamais des produits sans intérêt",
 	},
 	"catalogpage.winners.heading": {
-		en: `Winning <span class="text-primary">right now</span>`,
-		ar: `<span class="text-primary">الأكثر رواجًا</span> الآن`,
-		fr: `Ce qui <span class="text-primary">cartonne en ce moment</span>`,
+		en: `AI <span class="text-primary">Winning products</span>`,
+		ar: `منتجات رابحة <span class="text-primary">بالذكاء الاصطناعي</span>`,
+		fr: `Produits <span class="text-primary">gagnants</span> par IA`,
 	},
 	"catalogpage.winners.sub": {
-		en: "Scored on Google Trends, TikTok demand and how many sellers are already advertising each product.",
-		ar: "يتم التقييم بناءً على Google Trends والطلب على تيك توك وعدد البائعين الذين يعلنون عن كل منتج بالفعل.",
-		fr: "Notés selon Google Trends, la demande sur TikTok et le nombre de vendeurs qui font déjà la publicité de chaque produit.",
+		en: "These are winners recommended by AI, they scored on Google Trends, TikTok demand and many sellers are already advertising each product.",
+		ar: "هذه منتجات رابحة موصى بها من الذكاء الاصطناعي، وقد تم تقييمها بناءً على Google Trends والطلب على تيك توك، والعديد من البائعين يعلنون عن كل منتج بالفعل.",
+		fr: "Ce sont des produits gagnants recommandés par l'IA ; ils sont notés selon Google Trends et la demande sur TikTok, et de nombreux vendeurs font déjà la publicité de chaque produit.",
 	},
 	"catalogpage.filterLabel": { en: "Filter by category", ar: "تصفية حسب الفئة", fr: "Filtrer par catégorie" },
 	"catalogpage.winners.chipAll": { en: "All winners", ar: "كل المنتجات الرابحة", fr: "Tous les gagnants" },
@@ -1847,6 +1864,46 @@ export const translations: Record<string, Record<Lang, string>> = {
 		ar: `<p>غالبًا ما يعني الدروبشيبينغ التقليدي قضاء ساعات في إيجاد المنتجات، والبحث عن الموردين، والتفاوض على الأسعار، وترتيب الشحن الدولي، ومعرفة كيفية إيصال المنتجات إلى عملائك.</p><p>يجمع دروب أرابيا هذه القطع في نظام واحد مبني خصيصًا للسوق اللبناني.</p><p>تحصل على:</p><ul><li>بحث المنتجات</li><li>علاقات مع الموردين</li><li>توريد المنتجات</li><li>إدارة المخزون</li><li>التجهيز</li><li>التوصيل</li><li>تحصيل المدفوعات</li><li>تكامل مع شوبيفاي</li><li>أدوات ذكاء اصطناعي</li><li>تخصيص العلامة التجارية</li><li>موارد تعليمية</li><li>دعم المستشارين</li><li>مجتمع من البائعين الآخرين</li></ul><p>وبدلًا من بناء البنية التحتية بالكامل بنفسك، يمكنك التركيز على الجزء الذي ينمّي عملك فعلًا: البيع.</p>`,
 		fr: `<p>Le dropshipping traditionnel implique souvent de passer des heures à chercher des produits, étudier les fournisseurs, négocier les prix, organiser le transport international et trouver comment acheminer les produits jusqu'à vos clients.</p><p>Droparabia réunit toutes ces pièces dans un seul système conçu spécifiquement pour le marché libanais.</p><p>Vous obtenez :</p><ul><li>La recherche de produits</li><li>Les relations fournisseurs</li><li>Le sourcing produit</li><li>La gestion des stocks</li><li>La préparation</li><li>La livraison</li><li>L'encaissement</li><li>L'intégration Shopify</li><li>Des outils d'IA</li><li>Le branding produit</li><li>Des ressources pédagogiques</li><li>Le support de conseillers</li><li>Une communauté d'autres vendeurs</li></ul><p>Ainsi, au lieu de bâtir toute l'infrastructure vous-même, vous pouvez vous concentrer sur ce qui fait réellement grandir votre activité : vendre.</p>`,
 	},
+	"faq.q22": {
+		en: `How long does it take to get my money after a successful delivery?`,
+		ar: `كم من الوقت يستغرق استلام أموالي بعد التوصيل الناجح؟`,
+		fr: `Combien de temps faut-il pour recevoir mon argent après une livraison réussie ?`,
+	},
+	"faq.a22": {
+		en: `<p>Once our drivers successfully delivered a product and received the payment, the funds are transferred to Droparabia users within 48 hours, which they can withdraw later on to their Whish accounts</p>`,
+		ar: `<p>بمجرد أن يسلّم سائقونا المنتج بنجاح ويستلموا الدفعة، تُحوَّل الأموال إلى مستخدمي دروب أرابيا خلال 48 ساعة، ويمكنهم سحبها لاحقًا إلى حساباتهم على Whish</p>`,
+		fr: `<p>Dès que nos livreurs ont remis le produit et encaissé le paiement, les fonds sont transférés aux utilisateurs de Droparabia sous 48 heures ; ils peuvent ensuite les retirer vers leur compte Whish</p>`,
+	},
+	"faq.q23": {
+		en: `How do I withdraw my earnings out of my Droparabia Wallet?`,
+		ar: `كيف أسحب أرباحي من محفظة دروب أرابيا؟`,
+		fr: `Comment retirer mes gains de mon portefeuille Droparabia ?`,
+	},
+	"faq.a23": {
+		en: `<p>Our platform is integrated with Whish money, which allows you to receive and withdraw your funds directly to your Whish money account</p>`,
+		ar: `<p>منصتنا متكاملة مع Whish Money، ما يتيح لك استلام أموالك وسحبها مباشرة إلى حسابك على Whish Money</p>`,
+		fr: `<p>Notre plateforme est intégrée à Whish Money, ce qui vous permet de recevoir et de retirer vos fonds directement sur votre compte Whish Money</p>`,
+	},
+	"faq.q24": {
+		en: `How does Droparabia protect my store from high Cash on Delivery (COD) return rates?`,
+		ar: `كيف يحمي دروب أرابيا متجري من ارتفاع نسب الإرجاع في الدفع عند الاستلام؟`,
+		fr: `Comment Droparabia protège-t-il ma boutique des taux de retour élevés en paiement à la livraison ?`,
+	},
+	"faq.a24": {
+		en: `<p>Our drivers will first call the recipients to confirm the intention of receiving the order or to re-schedule the delivery to another time that best suits the customer in case they weren't available to receive it at the moment</p>`,
+		ar: `<p>يتصل سائقونا أولًا بالمستلمين لتأكيد رغبتهم في استلام الطلب، أو لإعادة جدولة التوصيل في وقت آخر يناسب العميل في حال لم يكن متاحًا لاستلامه في حينه</p>`,
+		fr: `<p>Nos livreurs appellent d'abord les destinataires pour confirmer leur intention de recevoir la commande, ou pour reprogrammer la livraison à un moment qui convient mieux au client s'il n'était pas disponible sur le moment</p>`,
+	},
+	"faq.q25": {
+		en: `What if I'm already an e-com owner with my very own Inventory?`,
+		ar: `ماذا لو كنت بالفعل صاحب متجر إلكتروني ولديّ مخزوني الخاص؟`,
+		fr: `Et si je suis déjà propriétaire d'une boutique en ligne avec mon propre stock ?`,
+	},
+	"faq.a25": {
+		en: `<p>You can easily import your custom stock or external bulk inventory directly into our central Mount Lebanon hub. We will handle the secure storage, precision picking, and doorstep packaging.</p>`,
+		ar: `<p>يمكنك بسهولة إدخال مخزونك الخاص أو بضاعتك بالجملة مباشرة إلى مركزنا الرئيسي في جبل لبنان. وسنتولى التخزين الآمن والانتقاء الدقيق والتغليف وتوصيله إلى باب العميل.</p>`,
+		fr: `<p>Vous pouvez importer facilement votre stock personnel ou vos achats en gros directement dans notre hub central du Mont-Liban. Nous nous chargeons du stockage sécurisé, de la préparation précise et de l'emballage jusqu'à la porte du client.</p>`,
+	},
 
 	"mobileapp.heading": {
 		en: "Manage your business with Droparabia anywhere you go!",
@@ -2033,9 +2090,9 @@ export const translations: Record<string, Record<Lang, string>> = {
 	"catalog.toggle.droparabia": { en: "On Droparabia", ar: "على دروب أرابيا", fr: "Sur Droparabia" },
 	"catalog.info.button": { en: "How is this calculated?", ar: "كيف يتم حساب ذلك؟", fr: "Comment est-ce calculé ?" },
 	"catalog.info.whyHigher": {
-		en: "Why the cost on Droparabia is higher?",
-		ar: "لماذا التكلفة على دروب أرابيا أعلى؟",
-		fr: "Pourquoi le coût est-il plus élevé sur Droparabia ?",
+		en: "What this price protects you from",
+		ar: "ما الذي يحميك منه هذا السعر",
+		fr: "Ce que ce prix vous évite",
 	},
 	"catalog.info.source": { en: "See it on Alibaba", ar: "شاهده على علي بابا", fr: "Voir sur Alibaba" },
 
@@ -2073,7 +2130,7 @@ export const translations: Record<string, Record<Lang, string>> = {
 	"catalog.row.shippingCostPerItem": { en: "Shipping cost per item", ar: "تكلفة الشحن للقطعة", fr: "Coût de livraison par article" },
 	"catalog.row.productCostCalc": { en: "Product cost", ar: "تكلفة المنتج", fr: "Coût du produit" },
 	"catalog.row.shippingCost": { en: "Shipping cost", ar: "تكلفة الشحن", fr: "Coût de livraison" },
-	"catalog.row.priceCovers": { en: "Price covers", ar: "السعر يشمل", fr: "Le prix couvre" },
+	"catalog.row.priceCovers": { en: "Included", ar: "مشمول", fr: "Inclus" },
 	"catalog.row.shipping": { en: "Shipping", ar: "الشحن", fr: "Livraison" },
 	"catalog.row.operations": { en: "Operations", ar: "التشغيل", fr: "Opérations" },
 
@@ -2082,14 +2139,14 @@ export const translations: Record<string, Record<Lang, string>> = {
 	"catalog.value.none": { en: "None", ar: "لا يوجد", fr: "Aucune" },
 	"catalog.value.piece": { en: "piece", ar: "قطعة", fr: "pièce" },
 	"catalog.value.noMoq": {
-		en: "No minimum order quantity, you pay the cost of each item sold and keep the profit",
-		ar: "لا حدّ أدنى لكمية الطلب، تدفع تكلفة كل قطعة تُباع وتحتفظ بالربح",
-		fr: "Aucune quantité minimum de commande : vous payez le coût de chaque article vendu et gardez le bénéfice",
+		en: "No minimum order quantity. You pay only for items you have already sold, so none of your cash is locked up in stock that might not move.",
+		ar: "لا حدّ أدنى لكمية الطلب. تدفع فقط مقابل القطع التي بعتها بالفعل، فلا يبقى أي من أموالك محتجزًا في مخزون قد لا يُباع.",
+		fr: "Aucune quantité minimum de commande. Vous ne payez que les articles déjà vendus, donc aucune de vos liquidités n'est immobilisée dans un stock qui pourrait ne jamais partir.",
 	},
 	"catalog.value.covers": {
-		en: "Sourcing, international shipping, warehousing, fulfillment and handling",
-		ar: "التوريد والشحن الدولي والتخزين والتجهيز والمناولة",
-		fr: "Sourcing, transport international, stockage, préparation et manutention",
+		en: "One price covering sourcing, customs clearance, international shipping, warehousing and fulfillment. No dead stock, no warehouse rent, no clearance delays.",
+		ar: "سعر واحد يشمل التوريد والتخليص الجمركي والشحن الدولي والتخزين والتجهيز. لا مخزون راكد، ولا إيجار مستودع، ولا تأخير في التخليص.",
+		fr: "Un seul prix couvrant le sourcing, le dédouanement, le transport international, le stockage et la préparation. Aucun stock mort, aucun loyer d'entrepôt, aucun délai de dédouanement.",
 	},
 	"catalog.value.airFreight": {
 		en: "Air freight to Lebanon averages around $15/kg, and varies by shipment",

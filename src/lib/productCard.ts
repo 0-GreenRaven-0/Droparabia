@@ -55,7 +55,6 @@ export function renderCard(p: CardProduct, index = 0): string {
 	return `<article style="--card-i:${delay}" class="winners-card flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_12px_-2px_rgba(0,0,0,0.12),0_15px_35px_-18px_rgba(0,0,0,0.25)] dark:bg-neutral-900">
 	<div class="relative aspect-square w-full shrink-0 overflow-hidden bg-white dark:bg-neutral-800">
 		<img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" width="600" height="600" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover" />
-		${p.score ? `<span class="absolute end-2 top-2 rounded-full bg-primary px-2.5 py-1 font-ibrand text-xs text-white shadow-[0_4px_10px_-2px_rgba(0,30,255,0.5)]">${p.score}</span>` : ""}
 	</div>
 	<div class="flex flex-1 flex-col p-3 text-left sm:p-4">
 		${p.category ? `<p class="font-helvetica text-[0.65rem] tracking-wide text-neutral-500 uppercase sm:text-xs dark:text-neutral-400">${escapeHtml(p.category)}</p>` : ""}

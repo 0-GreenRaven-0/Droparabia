@@ -7,10 +7,32 @@
 // in the browser. It does not, deliberately: fetching at build keeps the cards in the HTML —
 // no loading state, no layout shift, and the content is there for crawlers.
 
+// Last known good copy of everything below, committed to the repo. When the backend is
+// slow or down — which it has been — the page renders from this instead of rendering empty.
+// It is refreshed by scripts/snapshot-catalog.cjs, not automatically: a build should never
+// be able to overwrite good data with a half-failed fetch.
+import snapshot from "../data/catalog-snapshot.json";
+
 const ENDPOINT = "https://backend.droparabia.com/api/metrics/winners";
+
+// Astro re-runs page frontmatter on every request in dev, so without this the catalog page
+// re-fetched ~20 upstream pages per reload and took about twelve seconds to return — long
+// enough to look like a blank page. A build calls each of these once, so the cache costs it
+// nothing; in dev the data is fetched once per server start (restart to pick up new data).
+const memo = new Map<string, Promise<unknown>>();
+function once<T>(key: string, make: () => Promise<T>): Promise<T> {
+	let hit = memo.get(key) as Promise<T> | undefined;
+	if (!hit) {
+		hit = make();
+		memo.set(key, hit);
+	}
+	return hit;
+}
 /** Safety net: the API reports last_page, but a runaway value shouldn't stall a build. */
 const MAX_PAGES = 10;
-const TIMEOUT_MS = 10_000;
+// The backend has been seen answering in 15-70s. Ten seconds was aborting every request and
+// silently emptying the catalog page, so this is generous on purpose.
+const TIMEOUT_MS = 30_000;
 
 /** The slice of the API payload this site actually renders. */
 export interface Winner {
@@ -59,16 +81,21 @@ async function fetchPage(page: number): Promise<{ rows: unknown[]; lastPage: num
  * fail a deploy, and the section simply doesn't render when there's nothing to show.
  */
 export async function getWinners(limit = 8): Promise<Winner[]> {
+	return (await once("winners", loadWinners)).slice(0, limit);
+}
+
+async function loadWinners(): Promise<Winner[]> {
 	let rows: any[] = [];
 	try {
 		const first = await fetchPage(1);
-		rows = first.rows;
-		for (let page = 2; page <= Math.min(first.lastPage, MAX_PAGES); page++) {
-			rows = rows.concat((await fetchPage(page)).rows);
-		}
+		// Page 1 reports how many there are, so the rest go out together rather than one
+		// after another — seven serial round trips was most of the render time.
+		const last = Math.min(first.lastPage, MAX_PAGES);
+		const rest = await Promise.all(Array.from({ length: Math.max(0, last - 1) }, (_, i) => fetchPage(i + 2)));
+		rows = rest.reduce((acc, p) => acc.concat(p.rows), first.rows);
 	} catch (err) {
-		console.warn(`[winners] live product data unavailable, section will be skipped — ${(err as Error).message}`);
-		return [];
+		console.warn(`[winners] live data unavailable, falling back to the snapshot — ${(err as Error).message}`);
+		rows = snapshot.winnerRows as any[];
 	}
 
 	// A product can be scored more than once; keep only its most recent check.
@@ -82,7 +109,6 @@ export async function getWinners(limit = 8): Promise<Winner[]> {
 
 	return [...latest.values()]
 		.sort((a, b) => Number(b.overall_score) - Number(a.overall_score) || +new Date(b.checked_at) - +new Date(a.checked_at))
-		.slice(0, limit)
 		.map((row): Winner => {
 			const rec = parseBlob(row.ai_recommendation);
 			const trend = num(rec.trend_percentage);
@@ -121,6 +147,10 @@ export interface CatalogCategory {
  * Categories with nothing in them are dropped: a chip that leads to an empty grid is a dead end.
  */
 export async function getCatalogCategories(): Promise<{ categories: CatalogCategory[]; total: number }> {
+	return once("categories", loadCatalogCategories);
+}
+
+async function loadCatalogCategories(): Promise<{ categories: CatalogCategory[]; total: number }> {
 	try {
 		const res = await fetch(`${CATALOG_ENDPOINT}?limit=1&page=1`, { signal: AbortSignal.timeout(TIMEOUT_MS) });
 		if (!res.ok) throw new Error(`categories → ${res.status}`);
@@ -143,8 +173,8 @@ export async function getCatalogCategories(): Promise<{ categories: CatalogCateg
 		);
 		return { categories: counted.filter((c) => c.total > 0).sort((a, b) => b.total - a.total), total };
 	} catch (err) {
-		console.warn(`[winners] catalog categories unavailable — ${(err as Error).message}`);
-		return { categories: [], total: 0 };
+		console.warn(`[winners] categories unavailable, falling back to the snapshot — ${(err as Error).message}`);
+		return { categories: snapshot.categories as CatalogCategory[], total: snapshot.catalogTotal };
 	}
 }
 
@@ -161,6 +191,10 @@ export interface CatalogPage {
  * galleries is megabytes of JSON, far too much to inline to serve one filter click.
  */
 export async function getCatalogPage(limit = 12, page = 1): Promise<CatalogPage> {
+	return once(`page:${limit}:${page}`, () => loadCatalogPage(limit, page));
+}
+
+async function loadCatalogPage(limit: number, page: number): Promise<CatalogPage> {
 	try {
 		const res = await fetch(`${CATALOG_ENDPOINT}?limit=${limit}&page=${page}&search=`, {
 			signal: AbortSignal.timeout(TIMEOUT_MS),
@@ -173,7 +207,10 @@ export async function getCatalogPage(limit = 12, page = 1): Promise<CatalogPage>
 			total: Number(json.products?.total) || 0,
 		};
 	} catch (err) {
-		console.warn(`[winners] catalog page unavailable — ${(err as Error).message}`);
-		return { rows: [], lastPage: 1, total: 0 };
+		console.warn(`[winners] catalog page unavailable, falling back to the snapshot — ${(err as Error).message}`);
+		// Only page one is in the snapshot; later pages are the browser's job anyway.
+		return page === 1
+			? { rows: snapshot.firstPage.rows as any[], lastPage: snapshot.firstPage.lastPage, total: snapshot.firstPage.total }
+			: { rows: [], lastPage: 1, total: 0 };
 	}
 }

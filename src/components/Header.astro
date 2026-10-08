@@ -195,7 +195,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 	 rectangle bar + full-screen menu below instead (see #mobile-header / #mobile-menu). -->
 <header class="fixed inset-x-0 top-6 z-50 hidden justify-center px-4 lg:flex">
 	<nav
-		class="theme-static-blur relative flex w-full max-w-5xl items-center justify-between gap-2 rounded-full border border-black/5 bg-white/70 py-3 pl-5 pr-3 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.15)] backdrop-blur-xl rtl:flex-row-reverse dark:border-white/10 dark:bg-neutral-900/70 dark:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.4)]"
+		class="theme-static-blur relative flex w-full max-w-6xl items-center justify-between gap-2 rounded-full border border-black/5 bg-white/70 py-3 pl-5 pr-3 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.15)] backdrop-blur-xl rtl:flex-row-reverse dark:border-white/10 dark:bg-neutral-900/70 dark:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.4)]"
 	>
 		<!-- Logo -->
 		<a href="/" class="flex shrink-0 items-center gap-2.5 pl-2 rtl:flex-row-reverse">
@@ -208,7 +208,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 			{navLinks.map((link) =>
 				link.label === "Tools" || link.label === "Resources" ? (
 					<li class="relative" data-nav-item={link.label === "Tools" ? "tools" : "resources"}>
-						<span class="inline-flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2.5 transition-all duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]">
+						<span class="inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-2.5 transition-all xl:px-4 duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]">
 							<span data-i18n={`nav.${link.label.toLowerCase()}`}>{link.label}</span>
 							<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-900 dark:text-white">
 								<polyline points="6 9 12 15 18 9" />
@@ -222,7 +222,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 							target={link.href.startsWith("http") ? "_blank" : undefined}
 							rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
 							data-i18n={`nav.${link.label.toLowerCase()}`}
-							class="inline-block cursor-pointer rounded-full px-4 py-2.5 transition-all duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]"
+							class="inline-block cursor-pointer rounded-full px-3 py-2.5 transition-all xl:px-4 duration-150 ease-out hover:translate-y-px hover:bg-black/[0.07] hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(0,0,0,0.15)] dark:hover:bg-black/25 dark:hover:shadow-[inset_0_2px_5px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(0,0,0,0.35)]"
 						>
 							{link.label}
 						</a>
@@ -415,7 +415,7 @@ const resBottomRow = resources.slice(3, 6).map((r, i) => ({ ...r, color: TOOL_HE
 		<!-- Utility buttons -->
 		<div class="flex shrink-0 items-center gap-1 rtl:flex-row-reverse">
 			<!-- Dropvault Community -->
-			<a href="/dropvault" class="group flex cursor-pointer items-center gap-2 rounded-full px-4 py-2.5">
+			<a href="/dropvault" class="group flex cursor-pointer items-center gap-2 rounded-full px-3 py-2.5 xl:px-4">
 				<img src={ik("/Dropvault.png", "w-80,q-80")} alt="" class="h-6 w-6 rounded-full backface-hidden transition-transform duration-300 ease-out transform-[translateZ(0)] group-hover:rotate-180" />
 				<span data-i18n="nav.dropvault" class="font-ibrand text-neutral-900 transition-[font-weight] duration-150 group-hover:font-bold dark:text-white">Dropvault Community</span>
 			</a>

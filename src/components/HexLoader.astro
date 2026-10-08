@@ -1,0 +1,158 @@
+---
+// Droparabia loading animation: a honeycomb of seven rounded hexagons, with a light running
+// clockwise around the ring and the centre answering once the lap closes.
+//
+// Pointy-top and rounded through the same path builder the Hero cluster and the Tools menu
+// use, so it reads as the same hexagon the rest of the site is built from rather than a
+// generic one. Pure CSS — a loader that waits on a script to download is no loader.
+import { hexCorners, roundedHexPath } from "../lib/hexPath";
+
+interface Props {
+	/** Rendered width/height, in px. */
+	size?: number;
+	/** Screen-reader text. The animation itself is decorative. */
+	label?: string;
+}
+
+const { size = 84, label = "Loading" } = Astro.props;
+
+// Gradient ids are document-global, so two loaders on a page would otherwise fight over them.
+const uid = Math.random().toString(36).slice(2, 8);
+
+// Geometry. For pointy-top hexagons all six neighbours sit one width away, at 60° apart, so
+// the ring is just those six offsets around the centre.
+const S = 11; // centre to corner
+const W = Math.sqrt(3) * S; // flat to flat
+const ROUND = 2.6;
+
+const CENTRE: [number, number] = [35, 35];
+// Clockwise from the top-right, which is the direction the light travels.
+const RING: [number, number][] = [
+	[CENTRE[0] + W / 2, CENTRE[1] - S * 1.5],
+	[CENTRE[0] + W, CENTRE[1]],
+	[CENTRE[0] + W / 2, CENTRE[1] + S * 1.5],
+	[CENTRE[0] - W / 2, CENTRE[1] + S * 1.5],
+	[CENTRE[0] - W, CENTRE[1]],
+	[CENTRE[0] - W / 2, CENTRE[1] - S * 1.5],
+];
+
+const hex = (c: [number, number]) => roundedHexPath(hexCorners(c[0], c[1], S), ROUND);
+const centrePath = hex(CENTRE);
+const ringPaths = RING.map(hex);
+---
+
+<div class="hex-loader" style={`--loader-size:${size}px`} role="status" aria-live="polite">
+	<svg class="hl-svg" viewBox="0 0 70 70" aria-hidden="true">
+		<defs>
+			{/* objectBoundingBox (the default) means one gradient maps itself to each hexagon
+				separately, so all six can share it and still read as individually lit. */}
+			<linearGradient id={`hl-lit-${uid}`} x1="0%" y1="0%" x2="100%" y2="100%">
+				<stop offset="0%" stop-color="#06a2d1" />
+				<stop offset="55%" stop-color="#2745ff" />
+				<stop offset="100%" stop-color="#001eff" />
+			</linearGradient>
+			<linearGradient id={`hl-core-${uid}`} x1="0%" y1="100%" x2="100%" y2="0%">
+				<stop offset="0%" stop-color="#001eff" />
+				<stop offset="100%" stop-color="#06a2d1" />
+			</linearGradient>
+		</defs>
+
+		{/* The comb is always there, faintly. The animation lights cells of it rather than
+			building the shape from nothing, so the silhouette never flickers. */}
+		<g class="hl-base">
+			<path d={centrePath} />
+			{ringPaths.map((d) => <path d={d} />)}
+		</g>
+
+		<path class="hl-core" d={centrePath} fill={`url(#hl-core-${uid})`} />
+		{
+			ringPaths.map((d, i) => (
+				<path class="hl-cell" style={`--i:${i}`} d={d} fill={`url(#hl-lit-${uid})`} />
+			))
+		}
+	</svg>
+
+	<span class="sr-only">{label}</span>
+</div>
+
+<style>
+	.hex-loader {
+		display: inline-flex;
+	}
+
+	.hl-svg {
+		width: var(--loader-size);
+		height: var(--loader-size);
+		/* Cells overshoot their own bounds at the peak of the pulse. */
+		overflow: visible;
+	}
+
+	.hl-base path {
+		fill: #000c66;
+		opacity: 0.12;
+	}
+	:global(.dark) .hl-base path {
+		fill: #2745ff;
+		opacity: 0.16;
+	}
+
+	/* fill-box so every cell scales about its own centre instead of the SVG origin. */
+	.hl-cell,
+	.hl-core {
+		transform-box: fill-box;
+		transform-origin: center;
+	}
+
+	/* One lap of the ring per cycle: six cells, each starting an eighth of a cycle after the
+	   one before it, which leaves the last two eighths for the centre to answer in. */
+	.hl-cell {
+		animation: hl-pulse 1.8s ease-in-out infinite;
+		animation-delay: calc(var(--i) * 0.15s);
+	}
+	@keyframes hl-pulse {
+		0%,
+		100% {
+			opacity: 0;
+			transform: scale(0.74);
+		}
+		10% {
+			opacity: 1;
+			transform: scale(1.08);
+		}
+		34% {
+			opacity: 0;
+			transform: scale(0.74);
+		}
+	}
+
+	/* Fires as the lap closes, so the comb reads as filling and then releasing. */
+	.hl-core {
+		animation: hl-core 1.8s ease-in-out infinite;
+		animation-delay: 0.9s;
+	}
+	@keyframes hl-core {
+		0%,
+		100% {
+			opacity: 0;
+			transform: scale(0.7);
+		}
+		14% {
+			opacity: 1;
+			transform: scale(1.12);
+		}
+		46% {
+			opacity: 0;
+			transform: scale(0.7);
+		}
+	}
+
+	/* A loader still has to say "working" without motion, so the comb stays lit. */
+	@media (prefers-reduced-motion: reduce) {
+		.hl-cell,
+		.hl-core {
+			animation: none;
+			opacity: 1;
+			transform: none;
+		}
+	}
+</style>

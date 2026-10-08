@@ -1,0 +1,219 @@
+---
+// Droparabia loading animation: the logo's box assembles itself, face by face, then packs
+// away and does it again. Three isometric rhombi make the cube — top, left, right — each
+// sliding in from the direction it would come from if someone were folding the box.
+//
+// Pure CSS, no JS and no network: a loader that waits on a bundle to download is no loader.
+// Currently looping on the catalog page as a preview, and deliberately generic so it can be
+// dropped anywhere once it's approved.
+interface Props {
+	/** Rendered width/height of the cube, in px. */
+	size?: number;
+	/** Screen-reader text. The animation itself is decorative. */
+	label?: string;
+}
+
+const { size = 76, label = "Loading" } = Astro.props;
+
+// SVG gradient ids are global to the document, so two loaders on one page would otherwise
+// share — and fight over — the same three.
+const uid = Math.random().toString(36).slice(2, 8);
+
+// Isometric cube in a 100×100 box: centre (50,50), radius 34. The six outer points make the
+// hexagon silhouette; each face is two of them plus the centre.
+const TOP = "M50 16 L79.4 33 L50 50 L20.6 33 Z";
+const LEFT = "M20.6 33 L50 50 L50 84 L20.6 67 Z";
+const RIGHT = "M79.4 33 L79.4 67 L50 84 L50 50 Z";
+---
+
+<div class="drop-loader" style={`--loader-size:${size}px`} role="status" aria-live="polite">
+	<svg class="dl-cube" viewBox="0 0 100 100" aria-hidden="true">
+		<defs>
+			<linearGradient id={`dl-top-${uid}`} x1="0%" y1="0%" x2="100%" y2="100%">
+				<stop offset="0%" stop-color="#5c76ff" />
+				<stop offset="100%" stop-color="#2745ff" />
+			</linearGradient>
+			<linearGradient id={`dl-left-${uid}`} x1="0%" y1="0%" x2="100%" y2="100%">
+				<stop offset="0%" stop-color="#001eff" />
+				<stop offset="100%" stop-color="#000c66" />
+			</linearGradient>
+			<linearGradient id={`dl-right-${uid}`} x1="0%" y1="0%" x2="100%" y2="100%">
+				<stop offset="0%" stop-color="#2745ff" />
+				<stop offset="100%" stop-color="#000c66" />
+			</linearGradient>
+		</defs>
+
+		<g class="dl-bob">
+			<path class="dl-face dl-left" d={LEFT} fill={`url(#dl-left-${uid})`} />
+			<path class="dl-face dl-right" d={RIGHT} fill={`url(#dl-right-${uid})`} />
+			<path class="dl-face dl-top" d={TOP} fill={`url(#dl-top-${uid})`} />
+		</g>
+	</svg>
+
+	<span class="dl-shadow" aria-hidden="true"></span>
+	<span class="sr-only">{label}</span>
+</div>
+
+<style>
+	.drop-loader {
+		display: inline-flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.dl-cube {
+		width: var(--loader-size);
+		height: var(--loader-size);
+		/* The faces translate outwards past the viewBox on their way in and out. */
+		overflow: visible;
+	}
+
+	/* fill-box so each rhombus rotates and scales about itself rather than the SVG origin. */
+	.dl-face {
+		transform-box: fill-box;
+		transform-origin: center;
+		animation-duration: 2.2s;
+		animation-timing-function: cubic-bezier(0.34, 1.12, 0.4, 1);
+		animation-iteration-count: infinite;
+	}
+
+	/* Each face enters from the direction it would fold in from, and leaves the same way.
+	   The staggered hold between 66% and 80% is what makes it read as "assembled, then
+	   packed away" instead of three things blinking. */
+	.dl-top {
+		animation-name: dl-top;
+	}
+	.dl-left {
+		animation-name: dl-left;
+	}
+	.dl-right {
+		animation-name: dl-right;
+	}
+
+	@keyframes dl-top {
+		0%,
+		6% {
+			opacity: 0;
+			transform: translateY(-20px) scale(0.92);
+		}
+		20%,
+		66% {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+		82%,
+		100% {
+			opacity: 0;
+			transform: translateY(-20px) scale(0.92);
+		}
+	}
+
+	@keyframes dl-left {
+		0%,
+		12% {
+			opacity: 0;
+			transform: translate(-18px, 10px) scale(0.92);
+		}
+		26%,
+		66% {
+			opacity: 1;
+			transform: translate(0, 0) scale(1);
+		}
+		80%,
+		100% {
+			opacity: 0;
+			transform: translate(-18px, 10px) scale(0.92);
+		}
+	}
+
+	@keyframes dl-right {
+		0%,
+		18% {
+			opacity: 0;
+			transform: translate(18px, 10px) scale(0.92);
+		}
+		32%,
+		66% {
+			opacity: 1;
+			transform: translate(0, 0) scale(1);
+		}
+		78%,
+		100% {
+			opacity: 0;
+			transform: translate(18px, 10px) scale(0.92);
+		}
+	}
+
+	/* A slow lift once the box is whole — it gives the pause in the middle something to do. */
+	.dl-bob {
+		transform-box: fill-box;
+		transform-origin: center;
+		animation: dl-bob 2.2s ease-in-out infinite;
+	}
+	@keyframes dl-bob {
+		0%,
+		24% {
+			transform: translateY(0);
+		}
+		52% {
+			transform: translateY(-5px);
+		}
+		72%,
+		100% {
+			transform: translateY(0);
+		}
+	}
+
+	/* Ground shadow. Tightens as the box lifts, which is most of what sells the weight. */
+	.dl-shadow {
+		width: calc(var(--loader-size) * 0.42);
+		height: calc(var(--loader-size) * 0.08);
+		margin-top: calc(var(--loader-size) * -0.08);
+		border-radius: 999px;
+		background: radial-gradient(ellipse at center, rgba(0, 12, 102, 0.55), rgba(0, 12, 102, 0) 70%);
+		animation: dl-shadow 2.2s ease-in-out infinite;
+	}
+	:global(.dark) .dl-shadow {
+		background: radial-gradient(ellipse at center, rgba(39, 69, 255, 0.65), rgba(39, 69, 255, 0) 70%);
+	}
+	@keyframes dl-shadow {
+		0%,
+		18% {
+			opacity: 0;
+			transform: scaleX(0.6);
+		}
+		32% {
+			opacity: 1;
+			transform: scaleX(1);
+		}
+		52% {
+			opacity: 0.55;
+			transform: scaleX(0.78);
+		}
+		66% {
+			opacity: 1;
+			transform: scaleX(1);
+		}
+		82%,
+		100% {
+			opacity: 0;
+			transform: scaleX(0.6);
+		}
+	}
+
+	/* A loader still has to say "working" without motion, so the assembled box stays. */
+	@media (prefers-reduced-motion: reduce) {
+		.dl-face,
+		.dl-bob,
+		.dl-shadow {
+			animation: none;
+		}
+		.dl-face {
+			opacity: 1;
+			transform: none;
+		}
+		.dl-shadow {
+			opacity: 0.5;
+		}
+	}
+</style>

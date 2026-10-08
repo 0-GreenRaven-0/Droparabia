@@ -6,6 +6,7 @@
 // the browser. 563 products with their galleries is far too much JSON to inline.
 import { getCatalogCategories, getCatalogPage } from "../../lib/winners";
 import { renderCard, fromCatalogRow, isRenderable } from "../../lib/productCard";
+import HexLoader from "../HexLoader.astro";
 
 const PAGE_SIZE = 12;
 const { categories } = await getCatalogCategories();
@@ -90,12 +91,24 @@ const chip =
 					</div>
 				</div>
 
-				<div
-					id="catalog-all-grid"
-					aria-busy="false"
-					class="cards-grid mt-8 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4 lg:gap-6"
-					set:html={initial}
-				/>
+				<div class="relative mt-8">
+					<div
+						id="catalog-all-grid"
+						aria-busy="false"
+						class="cards-grid grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4 lg:gap-6"
+						set:html={initial}
+					/>
+
+					{/* Over the grid rather than in place of it, and anchored near the top so it's
+						on screen whatever the grid's height. */}
+					<div
+						id="catalog-all-loading"
+						hidden
+						class="pointer-events-none absolute inset-0 flex items-start justify-center pt-10 sm:pt-16"
+					>
+						<HexLoader size={72} label="Loading products" />
+					</div>
+				</div>
 
 				<p
 					id="catalog-all-empty"
@@ -112,7 +125,10 @@ const chip =
 						type="button"
 						class="cursor-pointer rounded-full border-[3px] border-primary bg-white px-6 py-2.5 font-ibrand text-sm text-neutral-900 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-8px_rgba(0,30,255,0.35)] dark:bg-neutral-900 dark:text-white"
 					>
-						<span data-i18n="winners.more">Load more</span>
+						<span id="catalog-all-more-label" data-i18n="winners.more">Load more</span>
+						<span id="catalog-all-more-spin" hidden class="inline-flex items-center">
+							<HexLoader size={26} label="Loading more products" />
+						</span>
 					</button>
 				</div>
 			</div>
@@ -153,6 +169,17 @@ const chip =
 		const state = { categoryId: null as number | null, page: 1, lastPage: 2 };
 
 		const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const loading = document.getElementById("catalog-all-loading");
+		const moreLabel = document.getElementById("catalog-all-more-label");
+		const moreSpin = document.getElementById("catalog-all-more-spin");
+
+		// The loader goes up the moment a request starts and stays up for at least this long.
+		// The endpoint often answers in well under 100ms, and without a floor the animation
+		// would be gone before anyone could see it.
+		const LOADER_MIN_MS = 700;
+		// The backend has answered anywhere between 0.5s and over a minute. Past this the
+		// request is abandoned so the button comes back instead of spinning indefinitely.
+		const REQUEST_TIMEOUT_MS = 15_000;
 
 		async function load(append: boolean) {
 			grid!.setAttribute("aria-busy", "true");
@@ -162,15 +189,21 @@ const chip =
 				grid!.classList.add("cards-swapping");
 				catLabel?.classList.add("cat-label-swapping");
 			}
-			// The fade needs to be seen even when the response comes back in 40ms.
-			const settled = still ? null : new Promise((r) => window.setTimeout(r, 140));
+			const settled = still ? null : new Promise((r) => window.setTimeout(r, LOADER_MIN_MS));
+
+			if (append) {
+				if (moreLabel) moreLabel.hidden = true;
+				if (moreSpin) moreSpin.hidden = false;
+			} else if (loading) {
+				loading.hidden = false;
+			}
 			try {
 				const url = new URL(ENDPOINT);
 				url.searchParams.set("limit", String(PAGE_SIZE));
 				url.searchParams.set("page", String(state.page));
 				if (state.categoryId) url.searchParams.set("category_id", String(state.categoryId));
 
-				const res = await fetch(url);
+				const res = await fetch(url, { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
 				if (!res.ok) throw new Error(String(res.status));
 				const json = await res.json();
 				const rows: any[] = json.products?.data ?? [];
@@ -186,12 +219,22 @@ const chip =
 				if (moreBtn) moreBtn.hidden = state.page >= state.lastPage;
 			} catch {
 				// A failed request leaves what's already on screen rather than blanking the grid.
-				if (!append && empty) {
-					grid!.innerHTML = "";
-					empty.hidden = false;
+				if (append) {
+					// Step back so the same page is retried rather than silently skipped, and
+					// leave the button up: the next tap is the retry.
+					state.page = Math.max(1, state.page - 1);
+				} else {
+					if (empty) {
+						grid!.innerHTML = "";
+						empty.hidden = false;
+					}
+					if (moreBtn) moreBtn.hidden = true;
 				}
-				if (moreBtn) moreBtn.hidden = true;
 			} finally {
+				if (settled) await settled;
+				if (loading) loading.hidden = true;
+				if (moreLabel) moreLabel.hidden = false;
+				if (moreSpin) moreSpin.hidden = true;
 				grid!.setAttribute("aria-busy", "false");
 				grid!.classList.remove("cards-swapping");
 				catLabel?.classList.remove("cat-label-swapping");

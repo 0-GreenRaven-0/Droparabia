@@ -29,6 +29,14 @@ const stats = [
 		label: "sellers and brand owners",
 	},
 	{
+		prefix: "",
+		from: 0,
+		to: 90,
+		suffix: "%",
+		range: false,
+		label: "delivery success rate in COD",
+	},
+	{
 		static: true,
 		text: "Official Shopify Partner",
 	},
@@ -43,14 +51,14 @@ const stats = [
 					{i > 0 && (
 						<div class="hidden w-1 shrink-0 self-stretch rounded-full bg-[linear-gradient(to_bottom,transparent,#2745ff_25%,#001eff_75%,transparent)] lg:block" />
 					)}
-					<div class="stat-item flex flex-1 flex-col items-center gap-2 px-4 text-center" style={{ transitionDelay: `${i * 100}ms` }}>
+					<div class="stat-item flex flex-1 flex-col items-center gap-2 px-4 text-center lg:px-2" style={{ transitionDelay: `${i * 100}ms` }}>
 						{stat.static ? (
-							<span data-i18n={`social.stat${i}`} class="font-ibrand text-3xl leading-none text-neutral-900 sm:text-4xl dark:text-white">
+							<span data-i18n={`social.stat${i}`} class="font-ibrand text-3xl leading-none text-neutral-900 sm:text-4xl lg:text-2xl dark:text-white">
 								{stat.text}
 							</span>
 						) : (
 							<>
-								<span class="font-ibrand text-4xl leading-none text-neutral-900 sm:text-5xl dark:text-white">
+								<span class="font-ibrand text-4xl leading-none text-neutral-900 sm:text-5xl lg:text-3xl dark:text-white">
 									{stat.prefix}
 									<span
 										class="stat-number tabular-nums"
@@ -64,7 +72,7 @@ const stats = [
 									</span>
 									{stat.suffix}
 								</span>
-								<p data-i18n={`social.stat${i}`} class="font-nunito text-sm text-neutral-600 sm:text-base dark:text-neutral-400">{stat.label}</p>
+								<p data-i18n={`social.stat${i}`} class="font-nunito text-sm text-neutral-600 sm:text-base lg:text-xs dark:text-neutral-400">{stat.label}</p>
 							</>
 						)}
 					</div>
